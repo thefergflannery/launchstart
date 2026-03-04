@@ -2,24 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Base ─────────────────────────────────────────────── */
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 html {
   scroll-behavior: smooth;
-  background-color: #F3F2EF;
+  background-color: #0a0a0a;
 }
 
-/* Subtle grid overlay — EigenPal-style structural lines */
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── WCAG 2.2 Focus (SC 2.4.13) ──────────────────────── */
+/* Visible focus on keyboard navigation only */
+:focus-visible {
+  outline: 2px solid #00ff88;
+  outline-offset: 3px;
+}
+
+/* Remove default focus ring for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── Skip link (SC 2.4.1) ────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: #00ff88;
+  color: #0a0a0a;
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: top 0.15s;
+}
+.skip-link:focus {
+  top: 1rem;
+  outline: 2px solid #0a0a0a;
+  outline-offset: 2px;
+}
+
+/* ── Grid background ─────────────────────────────────── */
 .grid-bg {
   background-image:
-    linear-gradient(to right, #D4D1CB 1px, transparent 1px),
-    linear-gradient(to bottom, #D4D1CB 1px, transparent 1px);
+    linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
   background-size: 80px 80px;
 }
 
-/* Purple corner marks for cards */
+/* ── Corner marks (accent color) ────────────────────── */
 .corner-mark {
   position: relative;
 }
@@ -29,7 +69,7 @@ html {
   position: absolute;
   width: 8px;
   height: 8px;
-  border-color: #9177CF;
+  border-color: #00ff88;
   border-style: solid;
 }
 .corner-mark::before {
@@ -41,4 +81,30 @@ html {
   bottom: -1px;
   right: -1px;
   border-width: 0 1.5px 1.5px 0;
+}
+
+/* ── Headings use Syne display font ─────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-syne), sans-serif;
+}
+
+/* ── Form inputs — dark base ────────────────────────── */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  background-color: #111111;
+  color: #f0f0f0;
+  border-color: #222222;
+}
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+  color: #555555;
+}
+
+/* ── Selection colour ────────────────────────────────── */
+::selection {
+  background-color: rgba(0, 255, 136, 0.25);
+  color: #f0f0f0;
 }

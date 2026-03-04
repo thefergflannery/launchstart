@@ -9,22 +9,32 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Design system — dark #0a0a0a + #00ff88 accent
         lc: {
-          bg: '#F3F2EF',
-          fg: '#0C0B09',
-          purple: '#9177CF',
-          'purple-light': '#EDE8F8',
-          muted: '#74675A',
-          border: '#D4D1CB',
-          card: '#FAFAF8',
+          bg:           '#0a0a0a',
+          fg:           '#f0f0f0',
+          accent:       '#00ff88',
+          'accent-dim': 'rgba(0,255,136,0.10)',
+          purple:       '#00ff88', // legacy alias → accent
+          'purple-light': 'rgba(0,255,136,0.08)',
+          muted:        '#888888',
+          border:       '#222222',
+          card:         '#111111',
         },
-        pass: '#16A34A',
-        amber: '#D97706',
-        fail: '#DC2626',
+        pass:  '#22c55e',
+        amber: '#f59e0b',
+        fail:  '#ef4444',
       },
       fontFamily: {
-        sans: ['var(--font-geist-sans)', 'system-ui', 'sans-serif'],
-        mono: ['var(--font-geist-mono)', 'monospace'],
+        display: ['var(--font-syne)',  'sans-serif'],
+        sans:    ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        mono:    ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+      },
+      keyframes: {
+        'fade-in': { from: { opacity: '0', transform: 'translateY(4px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
+      },
+      animation: {
+        'fade-in': 'fade-in 0.2s ease-out',
       },
     },
   },

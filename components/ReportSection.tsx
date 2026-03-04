@@ -18,11 +18,17 @@ export default function ReportSection({ title, icon, checks, defaultOpen = true 
   const total = checks.length;
   const pct = total > 0 ? Math.round((passed / total) * 100) : 0;
 
+  const barColor =
+    pct === 100 ? '#16A34A' : pct >= 60 ? '#D97706' : '#DC2626';
+
   const scoreColor =
-    passed === total ? 'text-pass' : passed >= Math.ceil(total * 0.6) ? 'text-amber' : 'text-fail';
+    pct === 100 ? 'text-pass' : pct >= 60 ? 'text-amber' : 'text-fail';
 
   return (
     <div className="corner-mark border border-lc-border bg-lc-card">
+      {/* Coloured accent bar */}
+      <div className="h-0.5 w-full" style={{ backgroundColor: barColor }} />
+
       {/* Header */}
       <button
         onClick={() => setOpen((o) => !o)}
@@ -30,23 +36,22 @@ export default function ReportSection({ title, icon, checks, defaultOpen = true 
         aria-expanded={open}
       >
         <div className="flex items-center gap-3">
-          <span className="text-base">{icon}</span>
+          <span className="w-8 h-8 flex items-center justify-center border border-lc-border bg-lc-bg text-sm">
+            {icon}
+          </span>
           <span className="font-semibold text-lc-fg">{title}</span>
         </div>
 
-        <div className="flex items-center gap-5">
-          {/* Score */}
-          <span className={`font-mono text-sm font-medium ${scoreColor}`}>
+        <div className="flex items-center gap-4">
+          <span className={`font-mono text-sm font-semibold ${scoreColor}`}>
             {passed}/{total}
           </span>
 
-          {/* Bar */}
-          <div className="w-16 h-px bg-lc-border relative hidden sm:block">
+          {/* Progress bar */}
+          <div className="w-20 h-1.5 bg-lc-border hidden sm:block">
             <div
-              className={`absolute left-0 top-0 h-px transition-all ${
-                pct === 100 ? 'bg-pass' : pct >= 60 ? 'bg-amber' : 'bg-fail'
-              }`}
-              style={{ width: `${pct}%` }}
+              className="h-full transition-all"
+              style={{ width: `${pct}%`, backgroundColor: barColor }}
             />
           </div>
 
@@ -54,7 +59,6 @@ export default function ReportSection({ title, icon, checks, defaultOpen = true 
         </div>
       </button>
 
-      {/* Items */}
       {open && (
         <div className="px-6 border-t border-lc-border pb-2">
           {checks.map((check) => (
