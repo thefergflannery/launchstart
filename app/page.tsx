@@ -116,9 +116,9 @@ export default function HomePage() {
       {/* Nav */}
       <header className="border-b border-lc-border bg-lc-bg/90 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          <span className="font-mono text-sm tracking-widest uppercase text-lc-fg font-semibold">
+          <Link href="/" className="font-mono text-sm tracking-widest uppercase text-lc-fg font-semibold hover:text-lc-purple transition-colors">
             A11YO
-          </span>
+          </Link>
           <nav className="flex items-center gap-6">
             <Link
               href="/tools/alt-text"
