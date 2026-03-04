@@ -3,6 +3,7 @@
 CREATE TABLE public.scans (
   id          UUID        DEFAULT gen_random_uuid() PRIMARY KEY,
   url         TEXT        NOT NULL,
+  summary     TEXT        NOT NULL,          -- e.g. "14/17 checks passed"
   results     JSONB       NOT NULL,
   created_at  TIMESTAMPTZ DEFAULT NOW()
 );

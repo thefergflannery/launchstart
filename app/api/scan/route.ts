@@ -32,10 +32,15 @@ export async function POST(request: NextRequest) {
     // Run the scan
     const results = await runScan(parsedUrl.toString());
 
+    // Compute a plain-text summary for the summary column
+    const allChecks = [...results.accessibility, ...results.seo, ...results.launch];
+    const passed = allChecks.filter((c) => c.status === 'pass').length;
+    const summary = `${passed}/${allChecks.length} checks passed`;
+
     // Persist to Supabase
     const { data, error } = await supabase
       .from('scans')
-      .insert({ url: parsedUrl.toString(), results })
+      .insert({ url: parsedUrl.toString(), results, summary })
       .select('id')
       .single();
 
