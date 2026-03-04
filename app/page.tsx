@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const SCAN_MESSAGES = [
   'Loading page…',
@@ -118,9 +119,20 @@ export default function HomePage() {
           <span className="font-mono text-sm tracking-widest uppercase text-lc-fg font-semibold">
             LaunchCheck
           </span>
-          <span className="font-mono text-xs tracking-wider uppercase text-lc-muted hidden sm:block">
-            Free · No login · Shareable reports
-          </span>
+          <nav className="flex items-center gap-6">
+            <Link
+              href="/tools/alt-text"
+              className="font-mono text-xs tracking-wider uppercase text-lc-muted hover:text-lc-fg transition-colors hidden sm:block"
+            >
+              Alt Text Tool
+            </Link>
+            <Link
+              href="/pricing"
+              className="font-mono text-xs tracking-wider uppercase text-lc-muted hover:text-lc-fg transition-colors hidden sm:block"
+            >
+              Pricing
+            </Link>
+          </nav>
         </div>
       </header>
 
@@ -150,7 +162,7 @@ export default function HomePage() {
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
                     placeholder="https://yoursite.com"
-                    className="flex-1 px-5 py-4 bg-transparent text-lc-fg placeholder-lc-muted/60 focus:outline-none text-base font-mono"
+                    className="flex-1 px-5 py-4 bg-white text-lc-fg placeholder-lc-muted/50 focus:outline-none text-base font-mono"
                     disabled={loading}
                     autoFocus
                   />
@@ -275,7 +287,7 @@ export default function HomePage() {
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://yoursite.com"
-                  className="flex-1 px-5 py-4 bg-transparent text-lc-fg placeholder-lc-muted/60 focus:outline-none text-base font-mono"
+                  className="flex-1 px-5 py-4 bg-white text-lc-fg placeholder-lc-muted/50 focus:outline-none text-base font-mono"
                   disabled={loading}
                 />
                 <button
