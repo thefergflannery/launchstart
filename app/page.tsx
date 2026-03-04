@@ -12,6 +12,12 @@ const SCAN_MESSAGES = [
   'Saving your report…',
 ];
 
+const CHECKS = [
+  { label: 'Accessibility', count: '7 checks', desc: 'Images, labels, contrast, ARIA, headings, focus' },
+  { label: 'SEO Basics', count: '5 checks', desc: 'Meta description, OG tags, viewport, HTTPS' },
+  { label: 'Launch Readiness', count: '5 checks', desc: 'Robots.txt, sitemap, load time, broken links' },
+];
+
 export default function HomePage() {
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
@@ -48,7 +54,6 @@ export default function HomePage() {
       });
 
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.error ?? 'Scan failed');
 
       router.push(`/report/${data.id}`);
@@ -59,95 +64,104 @@ export default function HomePage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-950 flex flex-col items-center justify-center px-4">
-      <div className="w-full max-w-2xl">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-1.5 text-blue-400 text-sm font-medium mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-            Pre-launch website auditor
-          </div>
-          <h1 className="text-6xl font-bold text-white tracking-tight mb-4">
+    <div className="min-h-screen bg-lc-bg grid-bg flex flex-col">
+      {/* Nav */}
+      <header className="border-b border-lc-border bg-lc-bg/80 backdrop-blur-sm sticky top-0 z-10">
+        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+          <span className="font-mono text-sm tracking-widest uppercase text-lc-fg font-semibold">
             LaunchCheck
-          </h1>
-          <p className="text-xl text-gray-400 max-w-lg mx-auto">
-            Scan any URL for accessibility issues, SEO basics, and launch readiness — in one click.
-          </p>
+          </span>
+          <span className="font-mono text-xs tracking-wider uppercase text-lc-muted">
+            Pre-launch auditor
+          </span>
         </div>
+      </header>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="flex gap-3">
-            <input
-              type="text"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://yoursite.com"
-              className="flex-1 px-5 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg transition-colors"
-              disabled={loading}
-              autoFocus
-            />
-            <button
-              type="submit"
-              disabled={loading || !url.trim()}
-              className="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold text-lg hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
-            >
-              {loading ? 'Scanning…' : 'Check site'}
-            </button>
+      {/* Hero */}
+      <main className="flex-1 flex flex-col items-center justify-center px-6 py-24">
+        <div className="w-full max-w-2xl">
+
+          {/* Label */}
+          <div className="mb-6">
+            <span className="font-mono text-xs tracking-widest uppercase text-lc-purple font-medium">
+              Website Audit Tool
+            </span>
           </div>
-          {error && (
-            <p className="text-red-400 text-sm text-center pt-1">{error}</p>
-          )}
-        </form>
 
-        {/* Scan progress */}
-        {loading && (
-          <div className="mt-8 text-center">
-            <div className="inline-flex items-center gap-3 text-gray-300 text-sm">
-              <span className="w-4 h-4 border-2 border-gray-600 border-t-blue-500 rounded-full animate-spin flex-shrink-0" />
-              <span>{SCAN_MESSAGES[msgIndex]}</span>
-            </div>
-            <p className="mt-2 text-gray-600 text-xs">
-              This can take up to 30 seconds for complex pages
-            </p>
-          </div>
-        )}
+          {/* Heading */}
+          <h1 className="text-5xl font-semibold text-lc-fg leading-tight tracking-tight mb-4">
+            Ship with{' '}
+            <span className="text-lc-purple">confidence.</span>
+          </h1>
+          <p className="text-lc-muted text-lg mb-10 max-w-lg">
+            Scan any URL for accessibility violations, SEO gaps, and launch
+            readiness — get a shareable report in under 30 seconds.
+          </p>
 
-        {/* Feature grid */}
-        {!loading && (
-          <div className="mt-16 grid grid-cols-3 gap-4">
-            {[
-              {
-                icon: '♿',
-                title: 'Accessibility',
-                desc: 'axe-core WCAG checks',
-                cls: 'border-purple-500/20 bg-purple-500/5',
-              },
-              {
-                icon: '🔍',
-                title: 'SEO Basics',
-                desc: 'Meta tags, OG & HTTPS',
-                cls: 'border-blue-500/20 bg-blue-500/5',
-              },
-              {
-                icon: '🚀',
-                title: 'Launch Readiness',
-                desc: 'Robots, sitemap & links',
-                cls: 'border-green-500/20 bg-green-500/5',
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className={`rounded-xl p-5 border ${item.cls} text-center`}
+          {/* Input */}
+          <form onSubmit={handleSubmit}>
+            <div className="corner-mark border border-lc-border bg-lc-card flex items-stretch">
+              <input
+                type="text"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="https://yoursite.com"
+                className="flex-1 px-5 py-4 bg-transparent text-lc-fg placeholder-lc-muted/60 focus:outline-none text-base font-mono"
+                disabled={loading}
+                autoFocus
+              />
+              <button
+                type="submit"
+                disabled={loading || !url.trim()}
+                className="px-7 py-4 bg-lc-fg text-lc-bg font-mono text-sm tracking-wider uppercase hover:bg-lc-purple disabled:opacity-40 disabled:cursor-not-allowed transition-colors border-l border-lc-border"
               >
-                <div className="text-2xl mb-2">{item.icon}</div>
-                <h3 className="text-white font-semibold text-sm mb-1">{item.title}</h3>
-                <p className="text-gray-500 text-xs">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </main>
+                {loading ? 'Scanning…' : 'Audit →'}
+              </button>
+            </div>
+
+            {error && (
+              <p className="mt-3 font-mono text-xs text-fail">{error}</p>
+            )}
+          </form>
+
+          {/* Progress */}
+          {loading && (
+            <div className="mt-6 flex items-center gap-3">
+              <span className="w-3 h-3 border border-lc-purple border-t-transparent rounded-full animate-spin flex-shrink-0" />
+              <span className="font-mono text-xs tracking-wider text-lc-muted uppercase">
+                {SCAN_MESSAGES[msgIndex]}
+              </span>
+            </div>
+          )}
+
+          {/* Check grid */}
+          {!loading && (
+            <div className="mt-14 grid grid-cols-3 divide-x divide-lc-border border border-lc-border">
+              {CHECKS.map((item) => (
+                <div key={item.label} className="p-5">
+                  <span className="font-mono text-xs tracking-widest uppercase text-lc-purple block mb-2">
+                    {item.count}
+                  </span>
+                  <p className="text-lc-fg font-semibold text-sm mb-1">{item.label}</p>
+                  <p className="text-lc-muted text-xs leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-lc-border px-6 py-5">
+        <div className="max-w-5xl mx-auto flex items-center justify-between">
+          <span className="font-mono text-xs text-lc-muted tracking-wider uppercase">
+            LaunchCheck
+          </span>
+          <span className="font-mono text-xs text-lc-muted">
+            Powered by axe-core + Puppeteer
+          </span>
+        </div>
+      </footer>
+    </div>
   );
 }

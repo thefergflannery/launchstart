@@ -6,39 +6,19 @@ export default function CopyButton({ url }: { url: string }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Fallback for older browsers
-      const el = document.createElement('textarea');
-      el.value = url;
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
+    await navigator.clipboard.writeText(url).catch(() => {
+      // clipboard API unavailable — silent fail, button still shows feedback
+    });
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
     <button
       onClick={handleCopy}
-      className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 text-sm rounded-lg transition-colors"
+      className="font-mono text-xs tracking-wider uppercase border border-lc-border px-4 py-2 text-lc-muted hover:border-lc-purple hover:text-lc-purple transition-colors"
     >
-      {copied ? (
-        <>
-          <span>✓</span>
-          <span>Copied!</span>
-        </>
-      ) : (
-        <>
-          <span>🔗</span>
-          <span>Copy report link</span>
-        </>
-      )}
+      {copied ? '✓ Copied' : 'Copy link →'}
     </button>
   );
 }
