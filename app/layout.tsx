@@ -4,9 +4,9 @@ import { GeistMono } from 'geist/font/mono';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'LaunchCheck — Pre-launch website auditor',
+  title: 'A11YO — Ship accessible, ready sites',
   description:
-    'Scan any URL for accessibility issues, SEO basics, and launch readiness in seconds.',
+    'A11YO scans any URL for accessibility violations, SEO gaps, and launch readiness. Get a shareable report in under 30 seconds.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

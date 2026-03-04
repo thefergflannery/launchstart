@@ -117,7 +117,7 @@ export default function HomePage() {
       <header className="border-b border-lc-border bg-lc-bg/90 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <span className="font-mono text-sm tracking-widest uppercase text-lc-fg font-semibold">
-            LaunchCheck
+            A11YO
           </span>
           <nav className="flex items-center gap-6">
             <Link
@@ -143,15 +143,17 @@ export default function HomePage() {
           <div className="max-w-5xl mx-auto px-6 py-24 lg:py-32">
             <div className="max-w-2xl">
               <span className="font-mono text-xs tracking-widest uppercase text-lc-purple block mb-5">
-                Pre-launch website auditor
+                Ship accessible, ready sites
               </span>
               <h1 className="text-5xl lg:text-6xl font-semibold text-lc-fg leading-tight tracking-tight mb-5">
-                Ship with{' '}
-                <span className="text-lc-purple">confidence.</span>
+                A11YO
               </h1>
+              <p className="text-lc-muted text-xl mb-2 font-medium text-lc-fg">
+                Ship accessible, ready sites.
+              </p>
               <p className="text-lc-muted text-lg mb-10 leading-relaxed">
                 17 automated checks across accessibility, SEO, and launch readiness.
-                Paste a URL, get a shareable report in under 30 seconds.
+                Paste a URL and get a shareable report in under 30 seconds.
               </p>
 
               {/* Input */}
@@ -307,12 +309,17 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="border-t border-lc-border px-6 py-6 bg-lc-card">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="font-mono text-xs text-lc-muted tracking-wider uppercase">
-            LaunchCheck
+          <span className="font-mono text-xs text-lc-fg tracking-wider uppercase font-semibold">
+            A11YO
           </span>
-          <span className="font-mono text-xs text-lc-muted">
-            Powered by axe-core + Puppeteer + Supabase
-          </span>
+          <div className="flex items-center gap-4">
+            <Link href="/tools/alt-text" className="font-mono text-xs text-lc-muted hover:text-lc-fg transition-colors">
+              Alt Text Tool
+            </Link>
+            <Link href="/pricing" className="font-mono text-xs text-lc-muted hover:text-lc-fg transition-colors">
+              Pricing
+            </Link>
+          </div>
         </div>
       </footer>
 

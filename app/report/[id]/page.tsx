@@ -41,7 +41,7 @@ export default async function ReportPage({ params }: PageProps) {
   const scoreColor =
     overallPct >= 80 ? 'text-pass' : overallPct >= 50 ? 'text-amber' : 'text-fail';
 
-  const reportUrl = `https://launchcheck.vercel.app/report/${params.id}`;
+  const reportUrl = `https://a11yo.vercel.app/report/${params.id}`;
 
   return (
     <div className="min-h-screen bg-lc-bg grid-bg flex flex-col">
@@ -52,7 +52,7 @@ export default async function ReportPage({ params }: PageProps) {
             href="/"
             className="font-mono text-sm tracking-widest uppercase text-lc-fg hover:text-lc-purple transition-colors"
           >
-            LaunchCheck
+            A11YO
           </Link>
           <Link
             href="/"
@@ -118,7 +118,7 @@ export default async function ReportPage({ params }: PageProps) {
       <footer className="border-t border-lc-border px-6 py-5 mt-8">
         <div className="max-w-2xl mx-auto text-center">
           <span className="font-mono text-xs text-lc-muted tracking-wider">
-            Powered by LaunchCheck
+            Powered by A11YO
           </span>
         </div>
       </footer>

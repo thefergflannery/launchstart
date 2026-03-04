@@ -48,7 +48,7 @@ export default function PricingPage() {
             href="/"
             className="font-mono text-sm tracking-widest uppercase text-lc-fg hover:text-lc-purple transition-colors"
           >
-            LaunchCheck
+            A11YO
           </Link>
           <Link
             href="/"
@@ -141,7 +141,7 @@ export default function PricingPage() {
               </ul>
 
               <a
-                href="mailto:hello@launchcheck.io?subject=Pro waitlist"
+                href="mailto:hello@a11yo.io?subject=Pro waitlist"
                 className="block text-center font-mono text-sm tracking-wider uppercase border border-lc-purple px-6 py-3.5 text-lc-purple hover:bg-lc-purple hover:text-white transition-colors"
               >
                 Join waitlist →
@@ -171,7 +171,7 @@ export default function PricingPage() {
       <footer className="border-t border-lc-border px-6 py-5 bg-lc-card mt-16">
         <div className="max-w-5xl mx-auto text-center">
           <span className="font-mono text-xs text-lc-muted">
-            Powered by LaunchCheck
+            Powered by A11YO
           </span>
         </div>
       </footer>

@@ -130,7 +130,7 @@ export default function AltTextTool() {
             href="/"
             className="font-mono text-sm tracking-widest uppercase text-lc-fg hover:text-lc-purple transition-colors"
           >
-            LaunchCheck
+            A11YO
           </Link>
           <div className="flex items-center gap-4">
             <span className="font-mono text-xs tracking-wider uppercase text-lc-purple">
@@ -232,7 +232,7 @@ export default function AltTextTool() {
       <footer className="border-t border-lc-border px-6 py-5 bg-lc-card">
         <div className="max-w-4xl mx-auto text-center">
           <span className="font-mono text-xs text-lc-muted">
-            Powered by Claude · LaunchCheck
+            Powered by Claude · A11YO
           </span>
         </div>
       </footer>
