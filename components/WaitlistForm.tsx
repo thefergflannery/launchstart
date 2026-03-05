@@ -34,7 +34,7 @@ export default function WaitlistForm({ placeholder = 'your@email.com' }: { place
         <span className="mt-0.5 flex-shrink-0 text-green"><PassIcon size={13} /></span>
         <div>
           <p className="text-white text-sm font-semibold mb-0.5">You&apos;re on the list.</p>
-          <p className="text-white/50 text-xs font-mono">{email}</p>
+          <p className="text-white/80 text-xs font-mono">{email}</p>
         </div>
       </div>
     );
@@ -50,7 +50,7 @@ export default function WaitlistForm({ placeholder = 'your@email.com' }: { place
           placeholder={placeholder}
           required
           disabled={state === 'loading'}
-          className="flex-1 px-4 py-3 bg-transparent text-white placeholder-white/25 focus:outline-none font-mono text-sm"
+          className="flex-1 px-4 py-3 bg-transparent text-white placeholder-secondary focus:outline-none font-mono text-sm"
         />
         <button
           type="submit"

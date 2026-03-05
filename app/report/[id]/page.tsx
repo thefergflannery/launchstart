@@ -143,7 +143,7 @@ export default async function ReportPage({ params }: PageProps) {
                     </span>
                   </div>
                   <p className="text-white font-semibold mb-1">Unlock the full report</p>
-                  <p className="text-white/50 text-sm leading-relaxed">
+                  <p className="text-white/80 text-sm leading-relaxed">
                     All 17 checks, multi-page crawls, scheduled scans, and PDF exports.
                   </p>
                 </div>

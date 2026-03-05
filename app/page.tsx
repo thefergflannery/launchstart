@@ -175,17 +175,16 @@ export default function HomePage() {
 
         {/* ── Hero ── */}
         <section id="scan" className="grid-bg border-b border-border">
-          <div className="max-w-5xl mx-auto px-6 py-24 lg:py-32">
-            <div className="max-w-2xl">
-              <span className="font-mono text-xs tracking-widest uppercase text-green block mb-5">
+          <div className="max-w-5xl mx-auto px-6 py-28 lg:py-40">
+            <div className="max-w-3xl">
+              <span className="font-mono text-xs tracking-widest uppercase text-green block mb-6">
                 Accessibility · SEO · Launch readiness
               </span>
-              <h1 className="text-5xl lg:text-6xl font-semibold text-white leading-tight tracking-tight mb-5">
-                Ship accessible,<br />audit-ready sites.
+              <h1 className="text-6xl lg:text-8xl font-display font-extrabold text-white leading-none tracking-tight mb-6">
+                Ship sites<br />that work<br /><span className="text-green">for everyone.</span>
               </h1>
-              <p className="text-secondary text-lg mb-10 leading-relaxed">
-                Paste a URL and get a shareable report in under 30 seconds.
-                5 checks free — upgrade to Pro for all 17.
+              <p className="text-secondary text-xl mb-12 leading-relaxed max-w-xl">
+                Paste a URL. Get a full accessibility, SEO, and launch-readiness audit in under 30 seconds — with a shareable report and one-line fixes for every issue.
               </p>
 
               <form onSubmit={handleSubmit}>
@@ -245,6 +244,27 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── Compliance standards strip ── */}
+        <section className="border-b border-border bg-black overflow-hidden" aria-label="Supported compliance standards">
+          <div className="max-w-5xl mx-auto px-6 py-5">
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
+              <span className="font-mono text-[10px] tracking-widest uppercase text-muted flex-shrink-0">Standards covered</span>
+              {[
+                { label: 'WCAG 2.2 AA' },
+                { label: 'EN 301 549' },
+                { label: 'ADA Title III' },
+                { label: 'Section 508' },
+                { label: 'EAA 2025' },
+                { label: 'AODA' },
+              ].map((s) => (
+                <span key={s.label} className="font-mono text-xs tracking-wider uppercase text-secondary border border-border px-3 py-1.5">
+                  {s.label}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ── How it works ── */}
         <section id="how-it-works" className="border-b border-border py-20">
           <div className="max-w-5xl mx-auto px-6">
@@ -288,7 +308,7 @@ export default function HomePage() {
                   <div className={check.free ? 'text-green-mid flex-shrink-0' : 'text-border flex-shrink-0'}>
                     {check.free ? <PassIcon size={13} /> : <LockIcon size={13} />}
                   </div>
-                  <span className={`text-sm flex-1 ${check.free ? 'text-white' : 'text-secondary/50'}`}>
+                  <span className={`text-sm flex-1 ${check.free ? 'text-white' : 'text-secondary'}`}>
                     {check.label}
                   </span>
                   <span className={`font-mono text-[10px] uppercase tracking-wider flex-shrink-0 ${CATEGORY_COLORS[check.category]} ${!check.free ? 'opacity-30' : ''}`}>
@@ -340,25 +360,25 @@ export default function HomePage() {
               </div>
 
               {/* Pro */}
-              <div className="corner-mark p-10" style={{ backgroundColor: 'var(--color-green-dark)' }}>
+              <div className="relative corner-mark p-10 bg-black border border-green/20" style={{ boxShadow: '0 0 40px -8px rgba(0,233,106,0.12)' }}>
                 <div className="mb-8">
                   <div className="flex items-center gap-3 mb-3">
                     <span className="font-mono text-xs tracking-widest uppercase text-green">Pro</span>
-                    <span className="font-mono text-[10px] bg-green text-white px-2 py-0.5 uppercase tracking-wider">
-                      Coming soon
+                    <span className="font-mono text-[10px] border border-green/30 text-green px-2 py-0.5 uppercase tracking-wider">
+                      One-time report
                     </span>
                   </div>
                   <div className="flex items-baseline gap-2 mb-2">
                     <span className="font-mono text-5xl font-semibold text-white">€29</span>
-                    <span className="text-white/50 text-sm">/ month</span>
+                    <span className="text-secondary text-sm">/ report</span>
                   </div>
-                  <p className="text-white/50 text-sm">For agencies, freelancers, and teams shipping regularly.</p>
+                  <p className="text-secondary text-sm">Pay once, get a full 17-check audit with a shareable PDF report.</p>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {PRO_FEATURES.map((f) => (
                     <li key={f} className="flex items-start gap-3">
                       <span className="mt-0.5 flex-shrink-0 text-green"><SparkleIcon size={11} /></span>
-                      <span className="text-white/70 text-sm">{f}</span>
+                      <span className="text-secondary text-sm">{f}</span>
                     </li>
                   ))}
                 </ul>

@@ -5,7 +5,7 @@ import { getUser, getProfile, createSupabaseServerClient } from '@/lib/supabase-
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' });
 
 const PRICE_IDS: Record<string, string> = {
-  pro: process.env.STRIPE_PRICE_PRO!,
+  pro:    process.env.STRIPE_PRICE_PRO!,
   agency: process.env.STRIPE_PRICE_AGENCY!,
 };
 
@@ -41,14 +41,14 @@ export async function POST(request: NextRequest) {
       .eq('id', user.id);
   }
 
+  // One-time payment — not a subscription
   const params: Stripe.Checkout.SessionCreateParams = {
     customer: customerId,
-    mode: 'subscription',
+    mode: 'payment',
     line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${baseUrl}/dashboard?upgraded=1`,
     cancel_url: `${baseUrl}/pricing`,
     metadata: { supabase_user_id: user.id, plan: plan ?? '' },
-    subscription_data: { metadata: { supabase_user_id: user.id, plan: plan ?? '' } },
   };
   const session = await stripe.checkout.sessions.create(params);
 

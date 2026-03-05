@@ -35,16 +35,16 @@ const FAQ = [
     a: 'No. Single-page scans are free forever — no account or card required.',
   },
   {
-    q: 'What happens when I upgrade?',
-    a: 'You get immediate access to all 17 checks, multi-page crawl, and the AI alt text generator.',
+    q: 'What does a Pro report include?',
+    a: 'A one-time payment gives you all 17 checks, multi-page crawl, AI alt text generator, and a PDF export for client delivery.',
   },
   {
-    q: 'Can I cancel at any time?',
-    a: 'Yes. Cancel from your account settings and your plan reverts to Free at the end of the billing period.',
+    q: 'Is it a subscription?',
+    a: 'No. Pro is a one-off payment per report — no recurring charges, no cancellation needed.',
   },
   {
-    q: 'Is there a trial?',
-    a: 'Sign up free and run up to 5 scans per day. Pro and Agency plans have a 7-day money-back guarantee.',
+    q: 'Is there a money-back guarantee?',
+    a: 'Yes. If your report fails to generate we\'ll refund you in full, no questions asked.',
   },
 ];
 
@@ -122,20 +122,20 @@ export default function PricingPage() {
             </div>
 
             {/* Pro */}
-            <div className="bg-surface p-8 flex flex-col border-t-2 border-green">
+            <div className="bg-black p-8 flex flex-col border border-green/20" style={{ boxShadow: '0 0 40px -8px rgba(0,233,106,0.12)' }}>
               <div className="mb-8 flex-1">
                 <div className="flex items-center gap-3 mb-3">
                   <span className="font-mono text-xs tracking-widest uppercase text-green block">Pro</span>
-                  <span className="font-mono text-xs bg-green text-black px-2 py-0.5 uppercase tracking-wider font-semibold">
-                    Popular
+                  <span className="font-mono text-[10px] border border-green/30 text-green px-2 py-0.5 uppercase tracking-wider">
+                    One-time report
                   </span>
                 </div>
                 <div className="flex items-baseline gap-2 mb-2">
                   <span className="text-4xl font-display font-semibold text-white">€29</span>
-                  <span className="text-secondary text-sm">/ month</span>
+                  <span className="text-secondary text-sm">/ report</span>
                 </div>
                 <p className="text-secondary text-sm mb-6">
-                  For freelancers and agencies shipping client sites.
+                  Pay once. Full 17-check audit with shareable PDF report — no subscription.
                 </p>
                 <ul className="space-y-3">
                   {PRO_FEATURES.map((f) => (
