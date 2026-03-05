@@ -5,7 +5,7 @@ import { PassIcon } from './Icons';
 
 type State = 'idle' | 'loading' | 'success' | 'error' | 'duplicate';
 
-export default function WaitlistForm() {
+export default function WaitlistForm({ placeholder = 'your@email.com' }: { placeholder?: string }) {
   const [email, setEmail] = useState('');
   const [state, setState] = useState<State>('idle');
 
@@ -47,7 +47,7 @@ export default function WaitlistForm() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="your@email.com"
+          placeholder={placeholder}
           required
           disabled={state === 'loading'}
           className="flex-1 px-4 py-3 bg-transparent text-white placeholder-white/25 focus:outline-none font-mono text-sm"
