@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import CheckoutButton from './CheckoutButton';
+import Nav, { PAGE_NAV_LINKS } from '@/components/Nav';
+import SiteFooter from '@/components/SiteFooter';
 
 export const metadata: Metadata = { title: 'Pricing — A11YO' };
 
@@ -51,28 +53,7 @@ const FAQ = [
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-black flex flex-col">
-      {/* Nav */}
-      <header className="border-b border-border bg-black/90 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link
-            href="/"
-            className="font-display text-sm font-bold text-white hover:text-green transition-colors"
-          >
-            A11YO
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link href="/dashboard" className="font-mono text-xs text-secondary hover:text-white transition-colors uppercase tracking-wider">
-              Dashboard
-            </Link>
-            <Link
-              href="/"
-              className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors"
-            >
-              ← Back
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Nav links={PAGE_NAV_LINKS} cta={{ href: '/', label: 'Full audit →' }} />
 
       <main id="main-content" className="flex-1 py-20 px-6">
         <div className="max-w-5xl mx-auto">
@@ -190,14 +171,7 @@ export default function PricingPage() {
         </div>
       </main>
 
-      <footer className="border-t border-border px-6 py-5 mt-16">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="font-mono text-xs text-secondary">A11YO</span>
-          <Link href="/accessibility" className="font-mono text-xs text-secondary hover:text-white transition-colors">
-            Accessibility statement
-          </Link>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

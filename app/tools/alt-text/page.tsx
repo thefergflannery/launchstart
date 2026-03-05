@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { ImageResult } from '@/app/api/alt-text/route';
+import Nav, { TOOLS_NAV_LINKS } from '@/components/Nav';
+import SiteFooter from '@/components/SiteFooter';
 import {
   PassIcon,
   FailIcon,
@@ -197,28 +199,7 @@ export default function AltTextTool() {
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
-      {/* Nav */}
-      <header className="border-b border-border bg-black/90 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link
-            href="/"
-            className="font-mono text-sm tracking-widest uppercase text-white hover:text-green transition-colors font-semibold"
-          >
-            A11YO
-          </Link>
-          <nav className="flex items-center gap-4">
-            <Link href="/tools" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors hidden sm:block">
-              ← All tools
-            </Link>
-            <Link
-              href="/"
-              className="font-mono text-xs tracking-wider uppercase bg-white text-black px-4 py-2 hover:bg-green transition-colors"
-            >
-              Full audit →
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <Nav links={TOOLS_NAV_LINKS} cta={{ href: '/', label: 'Full audit →' }} maxWidth="max-w-4xl" />
 
       <main className="flex-1 py-12 px-6">
         <div className="max-w-4xl mx-auto">
@@ -356,21 +337,7 @@ export default function AltTextTool() {
         </div>
       </main>
 
-      <footer className="border-t border-border px-6 py-5 mt-auto">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <span className="font-mono text-xs text-secondary">
-            Powered by Claude · A11YO
-          </span>
-          <div className="flex items-center gap-4">
-            <Link href="/tools" className="font-mono text-xs text-secondary hover:text-white transition-colors">
-              All tools
-            </Link>
-            <Link href="/" className="font-mono text-xs text-secondary hover:text-white transition-colors">
-              Full site audit →
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter maxWidth="max-w-4xl" />
     </div>
   );
 }

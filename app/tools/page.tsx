@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { ScanIcon, SparkleIcon, PassIcon } from '@/components/Icons';
+import Nav, { PAGE_NAV_LINKS } from '@/components/Nav';
+import SiteFooter from '@/components/SiteFooter';
 
 export const metadata: Metadata = {
   title: 'Free Accessibility Tools — A11YO',
@@ -56,25 +58,7 @@ export default function ToolsPage() {
   return (
     <div className="min-h-screen bg-black flex flex-col">
 
-      {/* Nav */}
-      <header className="border-b border-border bg-black/90 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="font-mono text-sm tracking-widest uppercase text-white font-semibold hover:text-green transition-colors">
-            A11YO
-          </Link>
-          <nav className="flex items-center gap-1">
-            <Link href="/" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-3 hidden sm:block">
-              Site audit
-            </Link>
-            <Link href="/pricing" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-3 hidden sm:block">
-              Pricing
-            </Link>
-            <Link href="/" className="ml-2 font-mono text-xs tracking-wider uppercase bg-white text-black px-4 py-2 hover:bg-green transition-colors">
-              Audit →
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <Nav links={PAGE_NAV_LINKS} cta={{ href: '/', label: 'Audit →' }} />
 
       <main id="main-content" className="flex-1">
 
@@ -173,14 +157,7 @@ export default function ToolsPage() {
 
       </main>
 
-      <footer className="border-t border-border px-6 py-5">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="font-mono text-xs text-secondary">A11YO — Free accessibility tools</span>
-          <Link href="/accessibility" className="font-mono text-xs text-secondary hover:text-white transition-colors">
-            Accessibility statement
-          </Link>
-        </div>
-      </footer>
+      <SiteFooter />
 
     </div>
   );

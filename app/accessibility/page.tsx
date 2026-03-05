@@ -1,5 +1,6 @@
-import Link from 'next/link';
 import type { Metadata } from 'next';
+import Nav, { PAGE_NAV_LINKS } from '@/components/Nav';
+import SiteFooter from '@/components/SiteFooter';
 
 export const metadata: Metadata = {
   title: 'Accessibility Statement — A11YO',
@@ -9,16 +10,7 @@ export const metadata: Metadata = {
 export default function AccessibilityPage() {
   return (
     <div className="min-h-screen bg-black flex flex-col">
-      <header className="border-b border-border bg-black/90 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="font-display text-sm font-bold text-white hover:text-green transition-colors">
-            A11YO
-          </Link>
-          <Link href="/" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors">
-            ← Back
-          </Link>
-        </div>
-      </header>
+      <Nav links={PAGE_NAV_LINKS} cta={{ href: '/', label: 'Full audit →' }} maxWidth="max-w-3xl" />
 
       <main id="main-content" className="flex-1 py-16 px-6">
         <div className="max-w-3xl mx-auto">
@@ -122,14 +114,7 @@ export default function AccessibilityPage() {
         </div>
       </main>
 
-      <footer className="border-t border-border px-6 py-5 mt-16">
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <span className="font-mono text-xs text-secondary">A11YO</span>
-          <Link href="/pricing" className="font-mono text-xs text-secondary hover:text-white transition-colors">
-            Pricing
-          </Link>
-        </div>
-      </footer>
+      <SiteFooter maxWidth="max-w-3xl" />
     </div>
   );
 }

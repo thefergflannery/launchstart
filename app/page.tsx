@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { PassIcon, LockIcon, SparkleIcon } from '@/components/Icons';
 import WaitlistForm from '@/components/WaitlistForm';
+import Nav, { HOME_NAV_LINKS } from '@/components/Nav';
+import SiteFooter from '@/components/SiteFooter';
 
 const SCAN_MESSAGES = [
   'Loading page…',
@@ -49,24 +50,24 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 const BLOG_POSTS = [
   {
-    slug: 'wcag-22-what-changed',
+    slug: 'ten-accessibility-quick-wins',
     category: 'Accessibility',
-    title: 'WCAG 2.2: What Changed and Why It Matters for Your Site',
-    excerpt: 'The latest Web Content Accessibility Guidelines introduced 9 new success criteria. Here\'s what\'s new, what was removed, and the fastest way to check your site\'s compliance.',
+    title: 'Is Your Website Leaving People Out? 10 Fixes You Can Ask For Today',
+    excerpt: 'WCAG 2.2 AA compliance isn\'t just a legal obligation — it\'s a commercial opportunity. Here are 10 quick wins you can brief your web team on today.',
     date: 'Feb 2026',
   },
   {
-    slug: 'accessibility-seo-connection',
+    slug: 'seven-free-accessibility-tools',
     category: 'SEO',
-    title: 'Accessibility and SEO Are the Same Problem',
-    excerpt: 'Alt text, semantic headings, and descriptive links aren\'t just WCAG requirements — they\'re what Google crawlers read too. Fix your accessibility score and your rankings follow.',
+    title: '7 Essential Free Tools to Check Your Website\'s Accessibility',
+    excerpt: 'Automated scanners identify 30–40% of WCAG failures. Here are 7 free tools — from WAVE and Axe to VoiceOver — that surface the obvious issues fast.',
     date: 'Jan 2026',
   },
   {
-    slug: 'five-common-accessibility-failures',
+    slug: 'curb-cut-effect',
     category: 'Checklist',
-    title: 'The 5 Most Common Accessibility Failures (and How to Fix Each One)',
-    excerpt: 'Missing form labels, low contrast text, images without alt attributes — the same five issues show up on 80% of audited sites. Here\'s how to find and fix them in under an hour.',
+    title: 'The Curb Cut Effect: Why Designing for Disability Makes Everything Better',
+    excerpt: 'The slope at the footpath wasn\'t designed for you. But you use it constantly. The same principle applies to every accessibility improvement on the web.',
     date: 'Jan 2026',
   },
 ];
@@ -139,37 +140,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-black flex flex-col">
 
-      {/* ── Nav ── */}
-      <header className="border-b border-border bg-black/90 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="font-mono text-sm tracking-widest uppercase text-white font-semibold hover:text-green transition-colors">
-            A11YO
-          </Link>
-          <nav className="flex items-center gap-1">
-            <a href="#how-it-works" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-3 hidden sm:block">
-              How it works
-            </a>
-            <a href="#checks" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-3 hidden sm:block">
-              Checks
-            </a>
-            <a href="#pricing" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-3 hidden sm:block">
-              Pricing
-            </a>
-            <a href="#blog" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-3 hidden sm:block">
-              Blog
-            </a>
-            <Link href="/tools" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-3 hidden md:block">
-              Tools
-            </Link>
-            <a
-              href="#scan"
-              className="ml-2 font-mono text-xs tracking-wider uppercase bg-white text-black px-4 py-2 hover:bg-green transition-colors"
-            >
-              Audit →
-            </a>
-          </nav>
-        </div>
-      </header>
+      <Nav links={HOME_NAV_LINKS} cta={{ href: '#scan', label: 'Audit →', isAnchor: true }} />
 
       <main className="flex-1">
 
@@ -494,7 +465,7 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border">
               {BLOG_POSTS.map((post) => (
-                <article key={post.slug} className="bg-black p-8 flex flex-col group">
+                <a key={post.slug} href={`/blog/${post.slug}`} className="bg-black p-8 flex flex-col group">
                   <div className="flex items-center justify-between mb-6">
                     <span className={`font-mono text-xs uppercase tracking-wider ${BLOG_CATEGORY_COLORS[post.category] ?? 'text-secondary'}`}>
                       {post.category}
@@ -510,7 +481,7 @@ export default function HomePage() {
                   <span className="font-mono text-xs uppercase tracking-wider text-green mt-auto self-start">
                     Read →
                   </span>
-                </article>
+                </a>
               ))}
             </div>
 
@@ -520,25 +491,7 @@ export default function HomePage() {
       </main>
 
       {/* ── Footer ── */}
-      <footer className="border-t border-border px-6 py-6 bg-surface">
-        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="font-mono text-xs text-white tracking-wider uppercase font-semibold">A11YO</span>
-          <div className="flex items-center gap-4">
-            <Link href="/tools" className="font-mono text-xs text-secondary hover:text-white transition-colors">
-              Tools
-            </Link>
-            <a href="#pricing" className="font-mono text-xs text-secondary hover:text-white transition-colors">
-              Pricing
-            </a>
-            <a href="#blog" className="font-mono text-xs text-secondary hover:text-white transition-colors">
-              Blog
-            </a>
-            <Link href="/accessibility" className="font-mono text-xs text-secondary hover:text-white transition-colors">
-              Accessibility
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
 
     </div>
   );

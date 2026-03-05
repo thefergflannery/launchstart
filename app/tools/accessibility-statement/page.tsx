@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { PassIcon, CopyIcon } from '@/components/Icons';
+import Nav, { TOOLS_NAV_LINKS } from '@/components/Nav';
+import SiteFooter from '@/components/SiteFooter';
 
 type ConformanceLevel = 'fully' | 'partially' | 'non';
 type Standard = 'wcag22aa' | 'wcag22a' | 'wcag22aaa' | 'en301549' | 'ada' | 'section508' | 'eaa' | 'aoda' | 'aca';
@@ -44,7 +46,6 @@ function generateStatement(f: FormData): string {
     : new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
   const selectedStandards = STANDARDS.filter((s) => f.standards.includes(s.id));
-  const standardList = selectedStandards.map((s) => s.label).join(', ');
   const hasEAA = f.standards.includes('eaa') || f.standards.includes('en301549');
   const hasACA = f.standards.includes('aca');
   const hasUSLaw = f.standards.includes('ada') || f.standards.includes('section508');
@@ -172,22 +173,7 @@ export default function AccessibilityStatementTool() {
   return (
     <div className="min-h-screen bg-black flex flex-col">
 
-      {/* Nav */}
-      <header className="border-b border-border bg-black/90 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="font-mono text-sm tracking-widest uppercase text-white font-semibold hover:text-green transition-colors">
-            A11YO
-          </Link>
-          <nav className="flex items-center gap-4">
-            <Link href="/tools" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors">
-              ← All tools
-            </Link>
-            <Link href="/" className="font-mono text-xs tracking-wider uppercase bg-white text-black px-4 py-2 hover:bg-green transition-colors">
-              Full audit →
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <Nav links={TOOLS_NAV_LINKS} cta={{ href: '/', label: 'Full audit →' }} />
 
       <main id="main-content" className="flex-1 py-12 px-6">
         <div className="max-w-3xl mx-auto">
@@ -475,14 +461,7 @@ export default function AccessibilityStatementTool() {
         </div>
       </main>
 
-      <footer className="border-t border-border px-6 py-5 mt-8">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="font-mono text-xs text-secondary">A11YO — Free accessibility tools</span>
-          <Link href="/accessibility" className="font-mono text-xs text-secondary hover:text-white transition-colors">
-            Accessibility statement
-          </Link>
-        </div>
-      </footer>
+      <SiteFooter />
 
     </div>
   );
