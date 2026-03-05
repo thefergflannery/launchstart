@@ -19,8 +19,7 @@ export async function runAccessibilityScan(page: Page): Promise<CheckResult[]> {
   await page.evaluate(axeSource);
 
   const violations: AxeViolation[] = await page.evaluate(async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const results = await (window as any).axe.run();
+    const results = await (window as any).axe.run(); // axe injected via page.evaluate
     return results.violations;
   });
 

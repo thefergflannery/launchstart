@@ -47,6 +47,36 @@ const CATEGORY_COLORS: Record<string, string> = {
   Launch: 'text-amber',
 };
 
+const BLOG_POSTS = [
+  {
+    slug: 'wcag-22-what-changed',
+    category: 'Accessibility',
+    title: 'WCAG 2.2: What Changed and Why It Matters for Your Site',
+    excerpt: 'The latest Web Content Accessibility Guidelines introduced 9 new success criteria. Here\'s what\'s new, what was removed, and the fastest way to check your site\'s compliance.',
+    date: 'Feb 2026',
+  },
+  {
+    slug: 'accessibility-seo-connection',
+    category: 'SEO',
+    title: 'Accessibility and SEO Are the Same Problem',
+    excerpt: 'Alt text, semantic headings, and descriptive links aren\'t just WCAG requirements — they\'re what Google crawlers read too. Fix your accessibility score and your rankings follow.',
+    date: 'Jan 2026',
+  },
+  {
+    slug: 'five-common-accessibility-failures',
+    category: 'Checklist',
+    title: 'The 5 Most Common Accessibility Failures (and How to Fix Each One)',
+    excerpt: 'Missing form labels, low contrast text, images without alt attributes — the same five issues show up on 80% of audited sites. Here\'s how to find and fix them in under an hour.',
+    date: 'Jan 2026',
+  },
+];
+
+const BLOG_CATEGORY_COLORS: Record<string, string> = {
+  Accessibility: 'text-lc-accent',
+  SEO: 'text-pass',
+  Checklist: 'text-amber',
+};
+
 const FREE_FEATURES = [
   '5 automated checks',
   'Single-page scan',
@@ -124,6 +154,9 @@ export default function HomePage() {
             </a>
             <a href="#pricing" className="font-mono text-xs tracking-wider uppercase text-lc-muted hover:text-lc-fg transition-colors px-3 py-2 hidden sm:block">
               Pricing
+            </a>
+            <a href="#blog" className="font-mono text-xs tracking-wider uppercase text-lc-muted hover:text-lc-fg transition-colors px-3 py-2 hidden sm:block">
+              Blog
             </a>
             <Link href="/tools/alt-text" className="font-mono text-xs tracking-wider uppercase text-lc-muted hover:text-lc-fg transition-colors px-3 py-2 hidden md:block">
               Alt Text Tool
@@ -332,6 +365,42 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── Blog ── */}
+        <section id="blog" className="border-b border-lc-border py-20">
+          <div className="max-w-5xl mx-auto px-6">
+
+            <div className="mb-12 flex items-end justify-between gap-4">
+              <div>
+                <span className="font-mono text-xs tracking-widest uppercase text-lc-accent block mb-3">From the blog</span>
+                <h2 className="text-3xl font-display font-semibold text-lc-fg tracking-tight">Accessibility, SEO & launch guides</h2>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-lc-border">
+              {BLOG_POSTS.map((post) => (
+                <article key={post.slug} className="bg-lc-bg p-8 flex flex-col group">
+                  <div className="flex items-center justify-between mb-6">
+                    <span className={`font-mono text-xs uppercase tracking-wider ${BLOG_CATEGORY_COLORS[post.category] ?? 'text-lc-muted'}`}>
+                      {post.category}
+                    </span>
+                    <span className="font-mono text-xs text-lc-muted">{post.date}</span>
+                  </div>
+                  <h3 className="text-lc-fg font-semibold text-base leading-snug mb-3 group-hover:text-lc-accent transition-colors">
+                    {post.title}
+                  </h3>
+                  <p className="text-lc-muted text-sm leading-relaxed flex-1 mb-6">
+                    {post.excerpt}
+                  </p>
+                  <span className="font-mono text-xs uppercase tracking-wider text-lc-accent mt-auto self-start">
+                    Read →
+                  </span>
+                </article>
+              ))}
+            </div>
+
+          </div>
+        </section>
+
       </main>
 
       {/* ── Footer ── */}
@@ -345,9 +414,12 @@ export default function HomePage() {
             <a href="#pricing" className="font-mono text-xs text-lc-muted hover:text-lc-fg transition-colors">
               Pricing
             </a>
-            <a href="#how-it-works" className="font-mono text-xs text-lc-muted hover:text-lc-fg transition-colors">
-              How it works
+            <a href="#blog" className="font-mono text-xs text-lc-muted hover:text-lc-fg transition-colors">
+              Blog
             </a>
+            <Link href="/accessibility" className="font-mono text-xs text-lc-muted hover:text-lc-fg transition-colors">
+              Accessibility
+            </Link>
           </div>
         </div>
       </footer>

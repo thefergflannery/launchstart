@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { getUser, getProfile, createSupabaseServerClient } from '@/lib/supabase-server';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2025-01-27.acacia' });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' });
 
 const PRICE_IDS: Record<string, string> = {
   pro: process.env.STRIPE_PRICE_PRO!,
@@ -25,14 +25,15 @@ export async function POST(request: NextRequest) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
 
   // Reuse existing Stripe customer if available
-  let customerId = profile?.stripe_customer_id ?? undefined;
-  if (!customerId) {
+  let customerId: string;
+  if (profile?.stripe_customer_id) {
+    customerId = profile.stripe_customer_id;
+  } else {
     const customer = await stripe.customers.create({
       email: user.email,
       metadata: { supabase_user_id: user.id },
     });
     customerId = customer.id;
-    // Persist customer ID
     const supabase = createSupabaseServerClient();
     await supabase
       .from('profiles')
@@ -40,15 +41,16 @@ export async function POST(request: NextRequest) {
       .eq('id', user.id);
   }
 
-  const session = await stripe.checkout.sessions.create({
+  const params: Stripe.Checkout.SessionCreateParams = {
     customer: customerId,
     mode: 'subscription',
     line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${baseUrl}/dashboard?upgraded=1`,
     cancel_url: `${baseUrl}/pricing`,
-    metadata: { supabase_user_id: user.id, plan },
-    subscription_data: { metadata: { supabase_user_id: user.id, plan } },
-  });
+    metadata: { supabase_user_id: user.id, plan: plan ?? '' },
+    subscription_data: { metadata: { supabase_user_id: user.id, plan: plan ?? '' } },
+  };
+  const session = await stripe.checkout.sessions.create(params);
 
   return NextResponse.json({ url: session.url });
 }

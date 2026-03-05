@@ -4,12 +4,8 @@ import { createSupabaseServerClient } from '@/lib/supabase-server';
 
 export const runtime = 'nodejs';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2025-01-27.acacia' });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' });
 
-const PLAN_MAP: Record<string, string> = {
-  [process.env.STRIPE_PRICE_PRO ?? '']: 'pro',
-  [process.env.STRIPE_PRICE_AGENCY ?? '']: 'agency',
-};
 
 async function updateProfile(supabaseUserId: string, plan: string, stripeSubscriptionId: string) {
   const supabase = createSupabaseServerClient();
