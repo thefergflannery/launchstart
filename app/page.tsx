@@ -158,8 +158,8 @@ export default function HomePage() {
             <a href="#blog" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-3 hidden sm:block">
               Blog
             </a>
-            <Link href="/tools/alt-text" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-3 hidden md:block">
-              Alt Text Tool
+            <Link href="/tools" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-3 hidden md:block">
+              Tools
             </Link>
             <a
               href="#scan"
@@ -524,8 +524,8 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <span className="font-mono text-xs text-white tracking-wider uppercase font-semibold">A11YO</span>
           <div className="flex items-center gap-4">
-            <Link href="/tools/alt-text" className="font-mono text-xs text-secondary hover:text-white transition-colors">
-              Alt Text Tool
+            <Link href="/tools" className="font-mono text-xs text-secondary hover:text-white transition-colors">
+              Tools
             </Link>
             <a href="#pricing" className="font-mono text-xs text-secondary hover:text-white transition-colors">
               Pricing

@@ -10,7 +10,6 @@ import {
   SparkleIcon,
   CopyIcon,
   ImagePlaceholderIcon,
-  ScanIcon,
 } from '@/components/Icons';
 
 const STATUS_CONFIG = {
@@ -207,17 +206,17 @@ export default function AltTextTool() {
           >
             A11YO
           </Link>
-          <div className="flex items-center gap-4">
-            <span className="font-mono text-xs tracking-wider uppercase text-green">
-              Alt Text Tool
-            </span>
-            <Link
-              href="/pricing"
-              className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors"
-            >
-              Pricing
+          <nav className="flex items-center gap-4">
+            <Link href="/tools" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors hidden sm:block">
+              ← All tools
             </Link>
-          </div>
+            <Link
+              href="/"
+              className="font-mono text-xs tracking-wider uppercase bg-white text-black px-4 py-2 hover:bg-green transition-colors"
+            >
+              Full audit →
+            </Link>
+          </nav>
         </div>
       </header>
 
@@ -225,24 +224,18 @@ export default function AltTextTool() {
         <div className="max-w-4xl mx-auto">
 
           {/* Header */}
-          <div className="mb-10 grid-bg border border-border bg-surface p-8">
-            <div className="flex items-start gap-5">
-              <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center border border-border bg-black">
-                <ScanIcon size={22} className="text-green" />
-              </div>
-              <div>
-                <span className="font-mono text-xs tracking-widest uppercase text-green block mb-2">
-                  Free Tool
-                </span>
-                <h1 className="text-3xl font-semibold text-white tracking-tight mb-2">
-                  AI Alt Text Generator
-                </h1>
-                <p className="text-secondary leading-relaxed max-w-xl">
-                  Finds every image on your page, flags missing or generic alt text,
-                  and uses Claude to generate contextual suggestions — ready to copy.
-                </p>
-              </div>
-            </div>
+          <div className="mb-10">
+            <Link href="/tools" className="font-mono text-xs text-secondary hover:text-green transition-colors uppercase tracking-wider block mb-6">
+              ← Tools
+            </Link>
+            <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">Free Tool · WCAG 1.1.1</span>
+            <h1 className="text-4xl lg:text-5xl font-display font-extrabold text-white tracking-tight leading-tight mb-4">
+              AI Alt Text<br /><span className="text-green">Generator</span>
+            </h1>
+            <p className="text-secondary leading-relaxed max-w-xl">
+              Finds every image on your page, flags missing or generic alt text,
+              and uses Claude to generate contextual suggestions — ready to copy into your codebase.
+            </p>
           </div>
 
           {/* Input */}
@@ -363,17 +356,19 @@ export default function AltTextTool() {
         </div>
       </main>
 
-      <footer className="border-t border-border px-6 py-5 bg-surface mt-auto">
+      <footer className="border-t border-border px-6 py-5 mt-auto">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <span className="font-mono text-xs text-secondary">
             Powered by Claude · A11YO
           </span>
-          <Link
-            href="/"
-            className="font-mono text-xs text-secondary hover:text-white transition-colors"
-          >
-            ← Full site audit
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link href="/tools" className="font-mono text-xs text-secondary hover:text-white transition-colors">
+              All tools
+            </Link>
+            <Link href="/" className="font-mono text-xs text-secondary hover:text-white transition-colors">
+              Full site audit →
+            </Link>
+          </div>
         </div>
       </footer>
     </div>
