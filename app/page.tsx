@@ -128,8 +128,9 @@ export default function HomePage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: normalized }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? 'Scan failed');
+      let data: { id?: string; error?: string } = {};
+      try { data = await res.json(); } catch { /* empty body — timeout or crash */ }
+      if (!res.ok) throw new Error(data.error ?? 'Scan timed out — please try again.');
       router.push(`/report/${data.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
