@@ -51,6 +51,7 @@ export default function NewScanFormClient() {
           placeholder="https://yoursite.com"
           disabled={loading}
           className="flex-1 bg-surface border border-border text-white placeholder-secondary font-mono text-sm px-4 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green disabled:opacity-50"
+          aria-invalid={error ? 'true' : 'false'}
           aria-describedby={error ? 'scan-error' : undefined}
         />
         <button

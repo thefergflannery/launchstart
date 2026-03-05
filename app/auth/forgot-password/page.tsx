@@ -76,11 +76,13 @@ export default function ForgotPasswordPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 bg-black border border-border text-white text-sm focus:outline-none focus:border-green transition-colors"
                 disabled={loading}
+                aria-invalid={error ? 'true' : 'false'}
+                aria-describedby={error ? 'forgot-error' : undefined}
               />
             </div>
 
             {error && (
-              <p role="alert" className="mb-4 font-mono text-xs text-fail">
+              <p id="forgot-error" role="alert" className="mb-4 font-mono text-xs text-fail">
                 {error}
               </p>
             )}

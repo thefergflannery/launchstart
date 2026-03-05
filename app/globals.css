@@ -45,6 +45,8 @@ h1, h2, h3, h4, h5, h6 {
 :focus-visible {
   outline: 3px solid var(--color-green);
   outline-offset: 2px;
+  /* SC 2.4.11 — prevent sticky header from obscuring focused elements */
+  scroll-margin-top: 4rem;
 }
 
 :focus:not(:focus-visible) {

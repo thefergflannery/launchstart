@@ -146,19 +146,19 @@ export default function HomePage() {
             A11YO
           </Link>
           <nav className="flex items-center gap-1">
-            <a href="#how-it-works" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-2 hidden sm:block">
+            <a href="#how-it-works" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-3 hidden sm:block">
               How it works
             </a>
-            <a href="#checks" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-2 hidden sm:block">
+            <a href="#checks" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-3 hidden sm:block">
               Checks
             </a>
-            <a href="#pricing" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-2 hidden sm:block">
+            <a href="#pricing" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-3 hidden sm:block">
               Pricing
             </a>
-            <a href="#blog" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-2 hidden sm:block">
+            <a href="#blog" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-3 hidden sm:block">
               Blog
             </a>
-            <Link href="/tools/alt-text" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-2 hidden md:block">
+            <Link href="/tools/alt-text" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-3 hidden md:block">
               Alt Text Tool
             </Link>
             <a
@@ -189,8 +189,10 @@ export default function HomePage() {
               </p>
 
               <form onSubmit={handleSubmit}>
+                <label htmlFor="hero-url" className="sr-only">Website URL to audit</label>
                 <div className="corner-mark border border-border bg-surface flex items-stretch max-w-xl">
                   <input
+                    id="hero-url"
                     type="text"
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
@@ -198,6 +200,8 @@ export default function HomePage() {
                     className="flex-1 px-5 py-4 bg-black text-white placeholder-secondary/50 focus:outline-none text-base font-mono"
                     disabled={loading}
                     autoFocus
+                    aria-invalid={error ? 'true' : 'false'}
+                    aria-describedby={error ? 'hero-error' : undefined}
                   />
                   <button
                     type="submit"
@@ -207,12 +211,12 @@ export default function HomePage() {
                     {loading ? 'Scanning…' : 'Audit →'}
                   </button>
                 </div>
-                {error && <p className="mt-3 font-mono text-xs text-fail">{error}</p>}
+                {error && <p id="hero-error" role="alert" className="mt-3 font-mono text-xs text-fail">{error}</p>}
               </form>
 
               {loading && (
-                <div className="mt-5 flex items-center gap-3">
-                  <span className="w-3 h-3 border border-green border-t-transparent rounded-full animate-spin flex-shrink-0" />
+                <div className="mt-5 flex items-center gap-3" aria-live="polite">
+                  <span className="w-3 h-3 border border-green border-t-transparent rounded-full animate-spin flex-shrink-0" aria-hidden="true" />
                   <span className="font-mono text-xs tracking-wider text-secondary uppercase">
                     {SCAN_MESSAGES[msgIndex]}
                   </span>

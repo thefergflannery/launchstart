@@ -47,7 +47,8 @@ export default function AccessibilityPage() {
               <p>
                 A11YO is <strong className="text-white">partially conformant</strong> with WCAG 2.2 Level AA.
                 Partially conformant means that some parts of the content do not fully conform to the
-                accessibility standard. We are actively working to resolve known issues.
+                accessibility standard. We are actively working to resolve the known limitations listed
+                below.
               </p>
             </section>
 
@@ -55,15 +56,20 @@ export default function AccessibilityPage() {
               <h2 id="measures-heading" className="text-white font-semibold text-lg mb-3">Measures taken</h2>
               <ul className="space-y-2 list-none">
                 {[
-                  'Semantic HTML5 landmarks on every page (header, main, footer, nav)',
                   'Skip-to-main-content link at the top of every page (SC 2.4.1)',
-                  'Visible focus indicators on all interactive elements (SC 2.4.7)',
-                  'Colour contrast ratios ≥ 4.5:1 for normal text (SC 1.4.3)',
-                  'All images include descriptive alt attributes (SC 1.1.1)',
-                  'Error messages associated with form fields via aria-describedby (SC 3.3.1)',
-                  'Status messages use role="alert" (SC 4.1.3)',
-                  'Keyboard navigation tested across all major browsers',
-                  'Screen reader tested with VoiceOver (macOS) and NVDA (Windows)',
+                  'lang="en" declared on the html element (SC 3.1.1)',
+                  'Semantic HTML5 landmarks on every page — header, main, footer, nav (SC 1.3.1)',
+                  '3 px green (#00E96A) focus outline on all interactive elements, 12.8:1 contrast on dark backgrounds (SC 2.4.7, SC 2.4.13)',
+                  'Colour contrast ratios verified ≥ 4.5:1 for all normal-sized text (SC 1.4.3)',
+                  'Heading hierarchy h1 → h2 → h3 maintained throughout (SC 1.3.1)',
+                  'prefers-reduced-motion respected — animations disabled when user preference is set (SC 2.3.3)',
+                  'SC 2.4.11 Focus Not Obscured — scroll-margin-top: 4rem prevents the 56 px sticky header from obscuring any focused element',
+                  'SC 2.5.8 Target Size — all interactive targets meet the 24 × 24 CSS px minimum; nav links padded to 44 px touch targets',
+                  'autocomplete attributes on all authentication form inputs (SC 1.3.5)',
+                  'aria-invalid and aria-describedby on all form fields that surface validation errors (SC 3.3.1, SC 4.1.2)',
+                  'Error messages use role="alert" so screen readers announce them immediately (SC 4.1.3)',
+                  'Loading status messages in scan forms use aria-live="polite" (SC 4.1.3)',
+                  'Visible labels or sr-only labels on every form input (SC 3.3.2)',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-green-mid flex-shrink-0" aria-hidden="true" />
@@ -77,8 +83,9 @@ export default function AccessibilityPage() {
               <h2 id="known-issues-heading" className="text-white font-semibold text-lg mb-3">Known limitations</h2>
               <ul className="space-y-2 list-none">
                 {[
-                  'Report charts do not yet include text alternatives (fix in progress)',
-                  'Some third-party embedded content may not meet AA',
+                  'Report page score visualisation has no text alternative for the graphic — fix in progress (SC 1.1.1)',
+                  'AI-generated alt text suggestions are provided as a starting point and require human review before use (advisory)',
+                  'Some third-party content loaded during page scans may not meet WCAG 2.2 AA',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-warn flex-shrink-0" aria-hidden="true" />
