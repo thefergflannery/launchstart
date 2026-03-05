@@ -32,16 +32,16 @@ export default function ForgotPasswordPage() {
 
   if (done) {
     return (
-      <div className="min-h-screen bg-lc-bg flex flex-col items-center justify-center px-4">
-        <div className="w-full max-w-sm corner-mark border border-lc-border bg-lc-card p-8 text-center">
-          <div className="w-10 h-10 border border-lc-accent flex items-center justify-center mx-auto mb-4">
-            <span className="text-lc-accent font-mono text-lg">✓</span>
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4">
+        <div className="w-full max-w-sm corner-mark border border-border bg-surface p-8 text-center">
+          <div className="w-10 h-10 border border-green flex items-center justify-center mx-auto mb-4">
+            <span className="text-green font-mono text-lg">✓</span>
           </div>
-          <h1 className="text-xl font-display font-semibold text-lc-fg mb-2">Check your inbox</h1>
-          <p className="text-lc-muted text-sm mb-4">
-            If <strong className="text-lc-fg">{email}</strong> has an account, we&apos;ve sent a password reset link.
+          <h1 className="text-xl font-display font-semibold text-white mb-2">Check your inbox</h1>
+          <p className="text-secondary text-sm mb-4">
+            If <strong className="text-white">{email}</strong> has an account, we&apos;ve sent a password reset link.
           </p>
-          <Link href="/auth/login" className="font-mono text-xs text-lc-accent hover:underline">
+          <Link href="/auth/login" className="font-mono text-xs text-green hover:underline">
             ← Back to sign in
           </Link>
         </div>
@@ -50,21 +50,21 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-lc-bg flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-sm">
-        <Link href="/" className="block text-center font-display text-xl font-bold text-lc-fg hover:text-lc-accent transition-colors mb-8">
+        <Link href="/" className="block text-center font-display text-xl font-bold text-white hover:text-green transition-colors mb-8">
           A11YO
         </Link>
 
-        <div className="corner-mark border border-lc-border bg-lc-card p-8">
-          <h1 className="text-xl font-display font-semibold text-lc-fg mb-1">Reset password</h1>
-          <p className="text-lc-muted text-sm mb-6">
+        <div className="corner-mark border border-border bg-surface p-8">
+          <h1 className="text-xl font-display font-semibold text-white mb-1">Reset password</h1>
+          <p className="text-secondary text-sm mb-6">
             Enter your email and we&apos;ll send a reset link.
           </p>
 
           <form onSubmit={handleSubmit} noValidate>
             <div className="mb-4">
-              <label htmlFor="email" className="block font-mono text-xs uppercase tracking-wider text-lc-muted mb-1.5">
+              <label htmlFor="email" className="block font-mono text-xs uppercase tracking-wider text-secondary mb-1.5">
                 Email
               </label>
               <input
@@ -74,7 +74,7 @@ export default function ForgotPasswordPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-lc-bg border border-lc-border text-lc-fg text-sm focus:outline-none focus:border-lc-accent transition-colors"
+                className="w-full px-4 py-3 bg-black border border-border text-white text-sm focus:outline-none focus:border-green transition-colors"
                 disabled={loading}
               />
             </div>
@@ -88,15 +88,15 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={loading || !email.trim()}
-              className="w-full py-3 bg-lc-accent text-lc-bg font-mono text-sm tracking-wider uppercase font-semibold hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+              className="w-full py-3 bg-green text-black font-mono text-sm tracking-wider uppercase font-semibold hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
             >
               {loading ? 'Sending…' : 'Send reset link →'}
             </button>
           </form>
         </div>
 
-        <p className="text-center font-mono text-xs text-lc-muted mt-5">
-          <Link href="/auth/login" className="text-lc-accent hover:underline">
+        <p className="text-center font-mono text-xs text-secondary mt-5">
+          <Link href="/auth/login" className="text-green hover:underline">
             ← Back to sign in
           </Link>
         </p>

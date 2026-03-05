@@ -16,7 +16,7 @@ export default function CopyButton({ url }: { url: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="font-mono text-xs tracking-wider uppercase border border-lc-border px-4 py-2 text-lc-muted hover:border-lc-purple hover:text-lc-purple transition-colors"
+      className="font-mono text-xs tracking-wider uppercase border border-border px-4 py-2 text-secondary hover:border-green hover:text-green transition-colors"
     >
       {copied ? '✓ Copied' : 'Copy link →'}
     </button>

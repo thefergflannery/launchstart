@@ -24,14 +24,14 @@ const STATUS_CONFIG = {
   generic: {
     Icon: AmberIcon,
     label: 'Generic',
-    textClass: 'text-amber',
+    textClass: 'text-warn',
     bg: 'rgba(217,119,6,0.07)',
     border: 'rgba(217,119,6,0.22)',
   },
   ok: {
     Icon: PassIcon,
     label: 'Has alt',
-    textClass: 'text-pass',
+    textClass: 'text-green-mid',
     bg: 'rgba(22,163,74,0.07)',
     border: 'rgba(22,163,74,0.22)',
   },
@@ -57,13 +57,13 @@ function ImageRow({ img, index }: { img: ImageResult; index: number }) {
 
   return (
     <div
-      className="flex items-start gap-5 py-5 border-b border-lc-border last:border-0"
+      className="flex items-start gap-5 py-5 border-b border-border last:border-0"
       style={{ animationDelay: `${index * 60}ms` }}
     >
       {/* Thumbnail / placeholder */}
-      <div className="flex-shrink-0 w-20 h-14 border border-lc-border bg-lc-bg flex items-center justify-center overflow-hidden">
+      <div className="flex-shrink-0 w-20 h-14 border border-border bg-black flex items-center justify-center overflow-hidden">
         {imgError ? (
-          <ImagePlaceholderIcon size={36} className="text-lc-border" />
+          <ImagePlaceholderIcon size={36} className="text-border" />
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -85,21 +85,21 @@ function ImageRow({ img, index }: { img: ImageResult; index: number }) {
             <s.Icon size={11} />
             <span className="font-mono text-[10px] uppercase tracking-widest">{s.label}</span>
           </div>
-          <span className="font-mono text-xs text-lc-muted truncate max-w-xs" title={img.src}>
+          <span className="font-mono text-xs text-secondary truncate max-w-xs" title={img.src}>
             {filename}
           </span>
         </div>
 
         {/* Current alt */}
         {img.currentAlt !== null && img.status !== 'ok' && (
-          <p className="text-xs text-lc-muted mb-2">
-            <span className="font-mono text-lc-muted/60">current: </span>
+          <p className="text-xs text-secondary mb-2">
+            <span className="font-mono text-secondary/60">current: </span>
             &ldquo;{img.currentAlt}&rdquo;
           </p>
         )}
         {img.status === 'ok' && (
-          <p className="text-xs text-lc-muted mb-2">
-            <span className="font-mono text-lc-muted/60">alt: </span>
+          <p className="text-xs text-secondary mb-2">
+            <span className="font-mono text-secondary/60">alt: </span>
             &ldquo;{img.currentAlt}&rdquo;
           </p>
         )}
@@ -108,24 +108,24 @@ function ImageRow({ img, index }: { img: ImageResult; index: number }) {
         {img.suggestedAlt && (
           <div className="flex items-stretch gap-0">
             <div
-              className="flex-1 px-3 py-2.5 border border-lc-border border-r-0"
+              className="flex-1 px-3 py-2.5 border border-border border-r-0"
               style={{ backgroundColor: 'rgba(145,119,207,0.06)' }}
             >
               <div className="flex items-center gap-1.5 mb-1.5">
-                <SparkleIcon size={12} className="text-lc-purple flex-shrink-0" />
-                <span className="font-mono text-[10px] uppercase tracking-widest text-lc-purple">
+                <SparkleIcon size={12} className="text-green flex-shrink-0" />
+                <span className="font-mono text-[10px] uppercase tracking-widest text-green">
                   AI suggestion
                 </span>
               </div>
-              <p className="text-sm text-lc-fg leading-relaxed">{img.suggestedAlt}</p>
+              <p className="text-sm text-white leading-relaxed">{img.suggestedAlt}</p>
             </div>
             <button
               onClick={() => copy(img.suggestedAlt!)}
-              className="flex-shrink-0 w-10 flex flex-col items-center justify-center gap-1 border border-lc-border text-lc-muted hover:border-lc-purple hover:text-lc-purple transition-colors"
+              className="flex-shrink-0 w-10 flex flex-col items-center justify-center gap-1 border border-border text-secondary hover:border-green hover:text-green transition-colors"
               title="Copy suggestion"
             >
               {copied ? (
-                <PassIcon size={13} className="text-pass" />
+                <PassIcon size={13} className="text-green-mid" />
               ) : (
                 <CopyIcon size={13} />
               )}
@@ -197,23 +197,23 @@ export default function AltTextTool() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-lc-bg flex flex-col">
+    <div className="min-h-screen bg-black flex flex-col">
       {/* Nav */}
-      <header className="border-b border-lc-border bg-lc-bg/90 backdrop-blur-sm sticky top-0 z-10">
+      <header className="border-b border-border bg-black/90 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link
             href="/"
-            className="font-mono text-sm tracking-widest uppercase text-lc-fg hover:text-lc-purple transition-colors font-semibold"
+            className="font-mono text-sm tracking-widest uppercase text-white hover:text-green transition-colors font-semibold"
           >
             A11YO
           </Link>
           <div className="flex items-center gap-4">
-            <span className="font-mono text-xs tracking-wider uppercase text-lc-purple">
+            <span className="font-mono text-xs tracking-wider uppercase text-green">
               Alt Text Tool
             </span>
             <Link
               href="/pricing"
-              className="font-mono text-xs tracking-wider uppercase text-lc-muted hover:text-lc-fg transition-colors"
+              className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors"
             >
               Pricing
             </Link>
@@ -225,19 +225,19 @@ export default function AltTextTool() {
         <div className="max-w-4xl mx-auto">
 
           {/* Header */}
-          <div className="mb-10 grid-bg border border-lc-border bg-lc-card p-8">
+          <div className="mb-10 grid-bg border border-border bg-surface p-8">
             <div className="flex items-start gap-5">
-              <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center border border-lc-border bg-lc-bg">
-                <ScanIcon size={22} className="text-lc-purple" />
+              <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center border border-border bg-black">
+                <ScanIcon size={22} className="text-green" />
               </div>
               <div>
-                <span className="font-mono text-xs tracking-widest uppercase text-lc-purple block mb-2">
+                <span className="font-mono text-xs tracking-widest uppercase text-green block mb-2">
                   Free Tool
                 </span>
-                <h1 className="text-3xl font-semibold text-lc-fg tracking-tight mb-2">
+                <h1 className="text-3xl font-semibold text-white tracking-tight mb-2">
                   AI Alt Text Generator
                 </h1>
-                <p className="text-lc-muted leading-relaxed max-w-xl">
+                <p className="text-secondary leading-relaxed max-w-xl">
                   Finds every image on your page, flags missing or generic alt text,
                   and uses Claude to generate contextual suggestions — ready to copy.
                 </p>
@@ -247,20 +247,20 @@ export default function AltTextTool() {
 
           {/* Input */}
           <form onSubmit={handleSubmit} className="mb-10">
-            <div className="corner-mark border border-lc-border bg-white flex items-stretch max-w-2xl">
+            <div className="corner-mark border border-border bg-black flex items-stretch max-w-2xl">
               <input
                 type="text"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="https://yoursite.com"
-                className="flex-1 px-5 py-4 bg-white text-lc-fg placeholder-lc-muted/50 focus:outline-none text-base font-mono"
+                className="flex-1 px-5 py-4 bg-black text-white placeholder-secondary/50 focus:outline-none text-base font-mono"
                 disabled={loading}
                 autoFocus
               />
               <button
                 type="submit"
                 disabled={loading || !url.trim()}
-                className="px-7 py-4 bg-lc-fg text-lc-bg font-mono text-sm tracking-wider uppercase hover:bg-lc-purple disabled:opacity-40 disabled:cursor-not-allowed transition-colors border-l border-lc-border whitespace-nowrap"
+                className="px-7 py-4 bg-white text-black font-mono text-sm tracking-wider uppercase hover:bg-green disabled:opacity-40 disabled:cursor-not-allowed transition-colors border-l border-border whitespace-nowrap"
               >
                 {loading ? 'Scanning…' : 'Generate →'}
               </button>
@@ -280,14 +280,14 @@ export default function AltTextTool() {
                       className="h-0.5 flex-1 transition-colors duration-500"
                       style={{
                         backgroundColor:
-                          i <= stepIndex ? '#9177CF' : '#D4D1CB',
+                          i <= stepIndex ? 'var(--color-green)' : 'var(--color-border)',
                       }}
                     />
                   ))}
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="w-3 h-3 border border-lc-purple border-t-transparent rounded-full animate-spin flex-shrink-0" />
-                  <span className="font-mono text-xs tracking-wider uppercase text-lc-muted transition-all">
+                  <span className="w-3 h-3 border border-green border-t-transparent rounded-full animate-spin flex-shrink-0" />
+                  <span className="font-mono text-xs tracking-wider uppercase text-secondary transition-all">
                     {SCAN_STEPS[stepIndex]}
                   </span>
                 </div>
@@ -299,9 +299,9 @@ export default function AltTextTool() {
           {data && (
             <div className="space-y-5">
               {/* Summary bar */}
-              <div className="corner-mark border border-lc-border bg-lc-card">
+              <div className="corner-mark border border-border bg-surface">
                 {/* Coverage bar */}
-                <div className="h-1 bg-lc-border">
+                <div className="h-1 bg-border">
                   <div
                     className="h-full transition-all duration-700"
                     style={{
@@ -310,34 +310,34 @@ export default function AltTextTool() {
                     }}
                   />
                 </div>
-                <div className="grid grid-cols-3 divide-x divide-lc-border">
+                <div className="grid grid-cols-3 divide-x divide-border">
                   <div className="px-6 py-5 text-center">
-                    <p className="font-mono text-3xl font-semibold text-lc-fg leading-none mb-1">
+                    <p className="font-mono text-3xl font-semibold text-white leading-none mb-1">
                       {data.total}
                     </p>
-                    <p className="font-mono text-xs uppercase tracking-wider text-lc-muted">
+                    <p className="font-mono text-xs uppercase tracking-wider text-secondary">
                       Images found
                     </p>
                   </div>
                   <div className="px-6 py-5 text-center">
                     <p
                       className={`font-mono text-3xl font-semibold leading-none mb-1 ${
-                        data.missing > 0 ? 'text-fail' : 'text-pass'
+                        data.missing > 0 ? 'text-fail' : 'text-green-mid'
                       }`}
                     >
                       {data.missing}
                     </p>
-                    <p className="font-mono text-xs uppercase tracking-wider text-lc-muted">
+                    <p className="font-mono text-xs uppercase tracking-wider text-secondary">
                       Missing / generic
                     </p>
                   </div>
                   <div className="px-6 py-5 text-center">
-                    <p className="font-mono text-3xl font-semibold text-lc-purple leading-none mb-1">
+                    <p className="font-mono text-3xl font-semibold text-green leading-none mb-1">
                       {data.generated}
                     </p>
                     <div className="flex items-center justify-center gap-1.5">
-                      <SparkleIcon size={11} className="text-lc-purple" />
-                      <p className="font-mono text-xs uppercase tracking-wider text-lc-muted">
+                      <SparkleIcon size={11} className="text-green" />
+                      <p className="font-mono text-xs uppercase tracking-wider text-secondary">
                         AI suggestions
                       </p>
                     </div>
@@ -346,15 +346,15 @@ export default function AltTextTool() {
               </div>
 
               {/* Image list */}
-              <div className="corner-mark border border-lc-border bg-lc-card px-5">
+              <div className="corner-mark border border-border bg-surface px-5">
                 {data.results.map((img, i) => (
                   <ImageRow key={i} img={img} index={i} />
                 ))}
               </div>
 
               {/* Attribution */}
-              <p className="font-mono text-xs text-lc-muted/60 text-center flex items-center justify-center gap-1.5">
-                <SparkleIcon size={10} className="text-lc-purple/60" />
+              <p className="font-mono text-xs text-secondary/60 text-center flex items-center justify-center gap-1.5">
+                <SparkleIcon size={10} className="text-green/60" />
                 Suggestions generated by Claude · Anthropic
               </p>
             </div>
@@ -363,14 +363,14 @@ export default function AltTextTool() {
         </div>
       </main>
 
-      <footer className="border-t border-lc-border px-6 py-5 bg-lc-card mt-auto">
+      <footer className="border-t border-border px-6 py-5 bg-surface mt-auto">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <span className="font-mono text-xs text-lc-muted">
+          <span className="font-mono text-xs text-secondary">
             Powered by Claude · A11YO
           </span>
           <Link
             href="/"
-            className="font-mono text-xs text-lc-muted hover:text-lc-fg transition-colors"
+            className="font-mono text-xs text-secondary hover:text-white transition-colors"
           >
             ← Full site audit
           </Link>

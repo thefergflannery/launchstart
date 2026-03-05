@@ -30,8 +30,8 @@ export default function WaitlistForm() {
 
   if (state === 'success') {
     return (
-      <div className="flex items-start gap-3 border border-lc-purple px-4 py-3">
-        <span className="mt-0.5 flex-shrink-0 text-lc-purple"><PassIcon size={13} /></span>
+      <div className="flex items-start gap-3 border border-green px-4 py-3">
+        <span className="mt-0.5 flex-shrink-0 text-green"><PassIcon size={13} /></span>
         <div>
           <p className="text-white text-sm font-semibold mb-0.5">You&apos;re on the list.</p>
           <p className="text-white/50 text-xs font-mono">{email}</p>
@@ -42,7 +42,7 @@ export default function WaitlistForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="flex items-stretch border border-white/15 hover:border-lc-purple transition-colors">
+      <div className="flex items-stretch border border-white/15 hover:border-green transition-colors">
         <input
           type="email"
           value={email}
@@ -55,13 +55,13 @@ export default function WaitlistForm() {
         <button
           type="submit"
           disabled={state === 'loading' || !email.trim()}
-          className="px-5 py-3 bg-lc-purple text-white font-mono text-xs tracking-wider uppercase hover:bg-lc-purple/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors whitespace-nowrap border-l border-white/15"
+          className="px-5 py-3 bg-green text-white font-mono text-xs tracking-wider uppercase hover:bg-green/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors whitespace-nowrap border-l border-white/15"
         >
           {state === 'loading' ? '…' : 'Join →'}
         </button>
       </div>
       {state === 'duplicate' && (
-        <p className="mt-2 font-mono text-xs text-lc-purple">Already on the list.</p>
+        <p className="mt-2 font-mono text-xs text-green">Already on the list.</p>
       )}
       {state === 'error' && (
         <p className="mt-2 font-mono text-xs text-fail">Something went wrong — try again.</p>

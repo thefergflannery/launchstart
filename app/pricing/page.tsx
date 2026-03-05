@@ -50,23 +50,23 @@ const FAQ = [
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen bg-lc-bg flex flex-col">
+    <div className="min-h-screen bg-black flex flex-col">
       {/* Nav */}
-      <header className="border-b border-lc-border bg-lc-bg/90 backdrop-blur-sm sticky top-0 z-10">
+      <header className="border-b border-border bg-black/90 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link
             href="/"
-            className="font-display text-sm font-bold text-lc-fg hover:text-lc-accent transition-colors"
+            className="font-display text-sm font-bold text-white hover:text-green transition-colors"
           >
             A11YO
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/dashboard" className="font-mono text-xs text-lc-muted hover:text-lc-fg transition-colors uppercase tracking-wider">
+            <Link href="/dashboard" className="font-mono text-xs text-secondary hover:text-white transition-colors uppercase tracking-wider">
               Dashboard
             </Link>
             <Link
               href="/"
-              className="font-mono text-xs tracking-wider uppercase text-lc-muted hover:text-lc-fg transition-colors"
+              className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors"
             >
               ← Back
             </Link>
@@ -79,69 +79,69 @@ export default function PricingPage() {
 
           {/* Header */}
           <div className="text-center mb-16">
-            <span className="font-mono text-xs tracking-widest uppercase text-lc-accent block mb-4">
+            <span className="font-mono text-xs tracking-widest uppercase text-green block mb-4">
               Pricing
             </span>
-            <h1 className="text-5xl font-display font-semibold text-lc-fg tracking-tight mb-4">
+            <h1 className="text-5xl font-display font-semibold text-white tracking-tight mb-4">
               Simple, honest pricing.
             </h1>
-            <p className="text-lc-muted text-lg max-w-md mx-auto">
+            <p className="text-secondary text-lg max-w-md mx-auto">
               Start free. Upgrade when you need all 17 checks, multi-page crawls, and AI tools.
             </p>
           </div>
 
           {/* Tier cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-lc-border mb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border mb-20">
 
             {/* Free */}
-            <div className="bg-lc-bg p-8 flex flex-col">
+            <div className="bg-black p-8 flex flex-col">
               <div className="mb-8 flex-1">
-                <span className="font-mono text-xs tracking-widest uppercase text-lc-muted block mb-3">Free</span>
+                <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">Free</span>
                 <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-4xl font-display font-semibold text-lc-fg">€0</span>
-                  <span className="text-lc-muted text-sm">forever</span>
+                  <span className="text-4xl font-display font-semibold text-white">€0</span>
+                  <span className="text-secondary text-sm">forever</span>
                 </div>
-                <p className="text-lc-muted text-sm mb-6">
+                <p className="text-secondary text-sm mb-6">
                   No account required. Paste and scan instantly.
                 </p>
                 <ul className="space-y-3">
                   {FREE_FEATURES.map((f) => (
                     <li key={f} className="flex items-start gap-3">
-                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-pass flex-shrink-0" />
-                      <span className="text-lc-muted text-sm">{f}</span>
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-green-mid flex-shrink-0" />
+                      <span className="text-secondary text-sm">{f}</span>
                     </li>
                   ))}
                 </ul>
               </div>
               <Link
                 href="/"
-                className="block text-center font-mono text-sm tracking-wider uppercase border border-lc-border px-6 py-3 text-lc-fg hover:border-lc-fg transition-colors"
+                className="block text-center font-mono text-sm tracking-wider uppercase border border-border px-6 py-3 text-white hover:border-white transition-colors"
               >
                 Start scanning →
               </Link>
             </div>
 
             {/* Pro */}
-            <div className="bg-lc-card p-8 flex flex-col border-t-2 border-lc-accent">
+            <div className="bg-surface p-8 flex flex-col border-t-2 border-green">
               <div className="mb-8 flex-1">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="font-mono text-xs tracking-widest uppercase text-lc-accent block">Pro</span>
-                  <span className="font-mono text-xs bg-lc-accent text-lc-bg px-2 py-0.5 uppercase tracking-wider font-semibold">
+                  <span className="font-mono text-xs tracking-widest uppercase text-green block">Pro</span>
+                  <span className="font-mono text-xs bg-green text-black px-2 py-0.5 uppercase tracking-wider font-semibold">
                     Popular
                   </span>
                 </div>
                 <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-4xl font-display font-semibold text-lc-fg">€29</span>
-                  <span className="text-lc-muted text-sm">/ month</span>
+                  <span className="text-4xl font-display font-semibold text-white">€29</span>
+                  <span className="text-secondary text-sm">/ month</span>
                 </div>
-                <p className="text-lc-muted text-sm mb-6">
+                <p className="text-secondary text-sm mb-6">
                   For freelancers and agencies shipping client sites.
                 </p>
                 <ul className="space-y-3">
                   {PRO_FEATURES.map((f) => (
                     <li key={f} className="flex items-start gap-3">
-                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-lc-accent flex-shrink-0" />
-                      <span className="text-lc-muted text-sm">{f}</span>
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-green flex-shrink-0" />
+                      <span className="text-secondary text-sm">{f}</span>
                     </li>
                   ))}
                 </ul>
@@ -150,21 +150,21 @@ export default function PricingPage() {
             </div>
 
             {/* Agency */}
-            <div className="bg-lc-bg p-8 flex flex-col">
+            <div className="bg-black p-8 flex flex-col">
               <div className="mb-8 flex-1">
-                <span className="font-mono text-xs tracking-widest uppercase text-lc-muted block mb-3">Agency</span>
+                <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">Agency</span>
                 <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-4xl font-display font-semibold text-lc-fg">€79</span>
-                  <span className="text-lc-muted text-sm">/ month</span>
+                  <span className="text-4xl font-display font-semibold text-white">€79</span>
+                  <span className="text-secondary text-sm">/ month</span>
                 </div>
-                <p className="text-lc-muted text-sm mb-6">
+                <p className="text-secondary text-sm mb-6">
                   For teams with multiple clients and high scan volume.
                 </p>
                 <ul className="space-y-3">
                   {AGENCY_FEATURES.map((f) => (
                     <li key={f} className="flex items-start gap-3">
-                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-lc-muted flex-shrink-0" />
-                      <span className="text-lc-muted text-sm">{f}</span>
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />
+                      <span className="text-secondary text-sm">{f}</span>
                     </li>
                   ))}
                 </ul>
@@ -176,12 +176,12 @@ export default function PricingPage() {
 
           {/* FAQ */}
           <div>
-            <span className="font-mono text-xs tracking-widest uppercase text-lc-accent block mb-8">FAQ</span>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-lc-border">
+            <span className="font-mono text-xs tracking-widest uppercase text-green block mb-8">FAQ</span>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-border">
               {FAQ.map((item) => (
-                <div key={item.q} className="bg-lc-bg p-7">
-                  <h3 className="text-lc-fg font-semibold mb-2">{item.q}</h3>
-                  <p className="text-lc-muted text-sm leading-relaxed">{item.a}</p>
+                <div key={item.q} className="bg-black p-7">
+                  <h3 className="text-white font-semibold mb-2">{item.q}</h3>
+                  <p className="text-secondary text-sm leading-relaxed">{item.a}</p>
                 </div>
               ))}
             </div>
@@ -190,10 +190,10 @@ export default function PricingPage() {
         </div>
       </main>
 
-      <footer className="border-t border-lc-border px-6 py-5 mt-16">
+      <footer className="border-t border-border px-6 py-5 mt-16">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="font-mono text-xs text-lc-muted">A11YO</span>
-          <Link href="/accessibility" className="font-mono text-xs text-lc-muted hover:text-lc-fg transition-colors">
+          <span className="font-mono text-xs text-secondary">A11YO</span>
+          <Link href="/accessibility" className="font-mono text-xs text-secondary hover:text-white transition-colors">
             Accessibility statement
           </Link>
         </div>

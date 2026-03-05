@@ -2,30 +2,61 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Base ─────────────────────────────────────────────── */
+/* ── CSS custom properties ───────────────────────────── */
 :root {
   color-scheme: dark;
+
+  --color-black:      #0A0A0A;
+  --color-white:      #F5F4F0;
+  --color-green:      #00E96A;
+  --color-green-mid:  #00B851;
+  --color-green-dark: #003D1B;
+  --color-surface:    #161A16;
+  --color-border:     #1E2A1E;
+  --color-muted:      #4A5E4A;
+  --color-secondary:  #8FA88F;
+  --color-warn:       #FFB400;
+  --color-fail:       #FF4D4D;
 }
 
+/* ── Base ─────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
-  background-color: #0a0a0a;
+  background-color: var(--color-black);
 }
 
 body {
   -webkit-font-smoothing: antialiased;
+  background-color: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* ── Typography ──────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-syne), 'Syne', sans-serif;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
 /* ── WCAG 2.2 Focus (SC 2.4.13) ──────────────────────── */
-/* Visible focus on keyboard navigation only */
 :focus-visible {
-  outline: 2px solid #00ff88;
-  outline-offset: 3px;
+  outline: 3px solid var(--color-green);
+  outline-offset: 2px;
 }
 
-/* Remove default focus ring for mouse users */
 :focus:not(:focus-visible) {
   outline: none;
+}
+
+/* ── Reduced motion (SC 2.3.3) ───────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ── Skip link (SC 2.4.1) ────────────────────────────── */
@@ -35,9 +66,9 @@ body {
   left: 1rem;
   z-index: 9999;
   padding: 0.5rem 1rem;
-  background: #00ff88;
-  color: #0a0a0a;
-  font-family: ui-monospace, monospace;
+  background: var(--color-green);
+  color: var(--color-black);
+  font-family: var(--font-dm-mono), 'DM Mono', monospace;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -47,19 +78,19 @@ body {
 }
 .skip-link:focus {
   top: 1rem;
-  outline: 2px solid #0a0a0a;
+  outline: 2px solid var(--color-black);
   outline-offset: 2px;
 }
 
 /* ── Grid background ─────────────────────────────────── */
 .grid-bg {
   background-image:
-    linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
   background-size: 80px 80px;
 }
 
-/* ── Corner marks (accent color) ────────────────────── */
+/* ── Corner marks ────────────────────────────────────── */
 .corner-mark {
   position: relative;
 }
@@ -69,7 +100,7 @@ body {
   position: absolute;
   width: 8px;
   height: 8px;
-  border-color: #00ff88;
+  border-color: var(--color-green);
   border-style: solid;
 }
 .corner-mark::before {
@@ -83,28 +114,36 @@ body {
   border-width: 0 1.5px 1.5px 0;
 }
 
-/* ── Headings use Syne display font ─────────────────── */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-syne), sans-serif;
-}
-
 /* ── Form inputs — dark base ────────────────────────── */
 input[type="text"],
 input[type="email"],
+input[type="url"],
 input[type="password"],
 textarea {
-  background-color: #111111;
-  color: #f0f0f0;
-  border-color: #222222;
+  background-color: var(--color-black);
+  color: var(--color-white);
+  border-color: var(--color-border);
+  border-radius: 0;
+  transition: border-color 150ms, box-shadow 150ms;
 }
 input[type="text"]::placeholder,
 input[type="email"]::placeholder,
-input[type="password"]::placeholder {
-  color: #555555;
+input[type="url"]::placeholder,
+input[type="password"]::placeholder,
+textarea::placeholder {
+  color: var(--color-muted);
+}
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+  border-color: var(--color-green);
+  box-shadow: 0 0 0 2px rgba(0, 233, 106, 0.1);
 }
 
 /* ── Selection colour ────────────────────────────────── */
 ::selection {
-  background-color: rgba(0, 255, 136, 0.25);
-  color: #f0f0f0;
+  background-color: rgba(0, 233, 106, 0.2);
+  color: var(--color-white);
 }

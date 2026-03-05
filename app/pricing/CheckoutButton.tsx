@@ -39,7 +39,7 @@ export default function CheckoutButton({ plan, label }: { plan: string; label: s
       <button
         onClick={handleClick}
         disabled={loading}
-        className="w-full font-mono text-xs uppercase tracking-wider border border-lc-accent text-lc-accent px-6 py-3 hover:bg-lc-accent hover:text-lc-bg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        className="w-full font-mono text-xs uppercase tracking-wider border border-green text-green px-6 py-3 hover:bg-green hover:text-black transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {loading ? 'Redirecting…' : label}
       </button>

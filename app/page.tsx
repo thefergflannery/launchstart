@@ -42,9 +42,9 @@ const ALL_CHECKS = [
 ];
 
 const CATEGORY_COLORS: Record<string, string> = {
-  A11y:   'text-lc-purple',
-  SEO:    'text-pass',
-  Launch: 'text-amber',
+  A11y:   'text-green',
+  SEO:    'text-green-mid',
+  Launch: 'text-warn',
 };
 
 const BLOG_POSTS = [
@@ -72,9 +72,9 @@ const BLOG_POSTS = [
 ];
 
 const BLOG_CATEGORY_COLORS: Record<string, string> = {
-  Accessibility: 'text-lc-accent',
-  SEO: 'text-pass',
-  Checklist: 'text-amber',
+  Accessibility: 'text-green',
+  SEO: 'text-green-mid',
+  Checklist: 'text-warn',
 };
 
 const FREE_FEATURES = [
@@ -137,33 +137,33 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-lc-bg flex flex-col">
+    <div className="min-h-screen bg-black flex flex-col">
 
       {/* ── Nav ── */}
-      <header className="border-b border-lc-border bg-lc-bg/90 backdrop-blur-sm sticky top-0 z-10">
+      <header className="border-b border-border bg-black/90 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="font-mono text-sm tracking-widest uppercase text-lc-fg font-semibold hover:text-lc-purple transition-colors">
+          <Link href="/" className="font-mono text-sm tracking-widest uppercase text-white font-semibold hover:text-green transition-colors">
             A11YO
           </Link>
           <nav className="flex items-center gap-1">
-            <a href="#how-it-works" className="font-mono text-xs tracking-wider uppercase text-lc-muted hover:text-lc-fg transition-colors px-3 py-2 hidden sm:block">
+            <a href="#how-it-works" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-2 hidden sm:block">
               How it works
             </a>
-            <a href="#checks" className="font-mono text-xs tracking-wider uppercase text-lc-muted hover:text-lc-fg transition-colors px-3 py-2 hidden sm:block">
+            <a href="#checks" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-2 hidden sm:block">
               Checks
             </a>
-            <a href="#pricing" className="font-mono text-xs tracking-wider uppercase text-lc-muted hover:text-lc-fg transition-colors px-3 py-2 hidden sm:block">
+            <a href="#pricing" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-2 hidden sm:block">
               Pricing
             </a>
-            <a href="#blog" className="font-mono text-xs tracking-wider uppercase text-lc-muted hover:text-lc-fg transition-colors px-3 py-2 hidden sm:block">
+            <a href="#blog" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-2 hidden sm:block">
               Blog
             </a>
-            <Link href="/tools/alt-text" className="font-mono text-xs tracking-wider uppercase text-lc-muted hover:text-lc-fg transition-colors px-3 py-2 hidden md:block">
+            <Link href="/tools/alt-text" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors px-3 py-2 hidden md:block">
               Alt Text Tool
             </Link>
             <a
               href="#scan"
-              className="ml-2 font-mono text-xs tracking-wider uppercase bg-lc-fg text-lc-bg px-4 py-2 hover:bg-lc-purple transition-colors"
+              className="ml-2 font-mono text-xs tracking-wider uppercase bg-white text-black px-4 py-2 hover:bg-green transition-colors"
             >
               Audit →
             </a>
@@ -174,35 +174,35 @@ export default function HomePage() {
       <main className="flex-1">
 
         {/* ── Hero ── */}
-        <section id="scan" className="grid-bg border-b border-lc-border">
+        <section id="scan" className="grid-bg border-b border-border">
           <div className="max-w-5xl mx-auto px-6 py-24 lg:py-32">
             <div className="max-w-2xl">
-              <span className="font-mono text-xs tracking-widest uppercase text-lc-purple block mb-5">
+              <span className="font-mono text-xs tracking-widest uppercase text-green block mb-5">
                 Accessibility · SEO · Launch readiness
               </span>
-              <h1 className="text-5xl lg:text-6xl font-semibold text-lc-fg leading-tight tracking-tight mb-5">
+              <h1 className="text-5xl lg:text-6xl font-semibold text-white leading-tight tracking-tight mb-5">
                 Ship accessible,<br />audit-ready sites.
               </h1>
-              <p className="text-lc-muted text-lg mb-10 leading-relaxed">
+              <p className="text-secondary text-lg mb-10 leading-relaxed">
                 Paste a URL and get a shareable report in under 30 seconds.
                 5 checks free — upgrade to Pro for all 17.
               </p>
 
               <form onSubmit={handleSubmit}>
-                <div className="corner-mark border border-lc-border bg-lc-card flex items-stretch max-w-xl">
+                <div className="corner-mark border border-border bg-surface flex items-stretch max-w-xl">
                   <input
                     type="text"
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
                     placeholder="https://yoursite.com"
-                    className="flex-1 px-5 py-4 bg-white text-lc-fg placeholder-lc-muted/50 focus:outline-none text-base font-mono"
+                    className="flex-1 px-5 py-4 bg-black text-white placeholder-secondary/50 focus:outline-none text-base font-mono"
                     disabled={loading}
                     autoFocus
                   />
                   <button
                     type="submit"
                     disabled={loading || !url.trim()}
-                    className="px-7 py-4 bg-lc-fg text-lc-bg font-mono text-sm tracking-wider uppercase hover:bg-lc-purple disabled:opacity-40 disabled:cursor-not-allowed transition-colors border-l border-lc-border whitespace-nowrap"
+                    className="px-7 py-4 bg-white text-black font-mono text-sm tracking-wider uppercase hover:bg-green disabled:opacity-40 disabled:cursor-not-allowed transition-colors border-l border-border whitespace-nowrap"
                   >
                     {loading ? 'Scanning…' : 'Audit →'}
                   </button>
@@ -212,8 +212,8 @@ export default function HomePage() {
 
               {loading && (
                 <div className="mt-5 flex items-center gap-3">
-                  <span className="w-3 h-3 border border-lc-purple border-t-transparent rounded-full animate-spin flex-shrink-0" />
-                  <span className="font-mono text-xs tracking-wider text-lc-muted uppercase">
+                  <span className="w-3 h-3 border border-green border-t-transparent rounded-full animate-spin flex-shrink-0" />
+                  <span className="font-mono text-xs tracking-wider text-secondary uppercase">
                     {SCAN_MESSAGES[msgIndex]}
                   </span>
                 </div>
@@ -223,9 +223,9 @@ export default function HomePage() {
         </section>
 
         {/* ── Stats bar ── */}
-        <section className="border-b border-lc-border bg-lc-card">
+        <section className="border-b border-border bg-surface">
           <div className="max-w-5xl mx-auto px-6">
-            <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-lc-border">
+            <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-border">
               {[
                 { value: '5',    label: 'Free checks' },
                 { value: '17',   label: 'Pro checks'  },
@@ -233,8 +233,8 @@ export default function HomePage() {
                 { value: '€0',   label: 'To start'   },
               ].map((s) => (
                 <div key={s.label} className="px-6 py-6 text-center">
-                  <p className="font-mono text-2xl font-semibold text-lc-fg mb-1">{s.value}</p>
-                  <p className="font-mono text-xs tracking-wider uppercase text-lc-muted">{s.label}</p>
+                  <p className="font-mono text-2xl font-semibold text-white mb-1">{s.value}</p>
+                  <p className="font-mono text-xs tracking-wider uppercase text-secondary">{s.label}</p>
                 </div>
               ))}
             </div>
@@ -242,18 +242,18 @@ export default function HomePage() {
         </section>
 
         {/* ── How it works ── */}
-        <section id="how-it-works" className="border-b border-lc-border py-20">
+        <section id="how-it-works" className="border-b border-border py-20">
           <div className="max-w-5xl mx-auto px-6">
             <div className="mb-12">
-              <span className="font-mono text-xs tracking-widest uppercase text-lc-purple block mb-3">How it works</span>
-              <h2 className="text-3xl font-semibold text-lc-fg tracking-tight">Three steps to a full audit</h2>
+              <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">How it works</span>
+              <h2 className="text-3xl font-semibold text-white tracking-tight">Three steps to a full audit</h2>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-lc-border">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border">
               {STEPS.map((step) => (
-                <div key={step.n} className="bg-lc-bg p-8">
-                  <span className="font-mono text-xs tracking-widest text-lc-purple block mb-6">{step.n}</span>
-                  <h3 className="text-lc-fg font-semibold text-lg mb-3">{step.title}</h3>
-                  <p className="text-lc-muted text-sm leading-relaxed">{step.desc}</p>
+                <div key={step.n} className="bg-black p-8">
+                  <span className="font-mono text-xs tracking-widest text-green block mb-6">{step.n}</span>
+                  <h3 className="text-white font-semibold text-lg mb-3">{step.title}</h3>
+                  <p className="text-secondary text-sm leading-relaxed">{step.desc}</p>
                 </div>
               ))}
             </div>
@@ -261,14 +261,14 @@ export default function HomePage() {
         </section>
 
         {/* ── What we check ── */}
-        <section id="checks" className="border-b border-lc-border py-20 bg-lc-card">
+        <section id="checks" className="border-b border-border py-20 bg-surface">
           <div className="max-w-5xl mx-auto px-6">
             <div className="mb-10 flex items-end justify-between gap-4">
               <div>
-                <span className="font-mono text-xs tracking-widest uppercase text-lc-purple block mb-3">What we check</span>
-                <h2 className="text-3xl font-semibold text-lc-fg tracking-tight">17 checks. 5 free.</h2>
+                <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">What we check</span>
+                <h2 className="text-3xl font-semibold text-white tracking-tight">17 checks. 5 free.</h2>
               </div>
-              <a href="#pricing" className="font-mono text-xs tracking-wider uppercase text-lc-purple hover:underline hidden sm:block">
+              <a href="#pricing" className="font-mono text-xs tracking-wider uppercase text-green hover:underline hidden sm:block">
                 See pricing →
               </a>
             </div>
@@ -278,13 +278,13 @@ export default function HomePage() {
                 <div
                   key={check.label}
                   className={`flex items-center gap-3 px-4 py-3 border transition-colors ${
-                    check.free ? 'border-lc-border bg-lc-bg' : 'border-lc-border/40 bg-lc-bg/30'
+                    check.free ? 'border-border bg-black' : 'border-border/40 bg-black/30'
                   }`}
                 >
-                  <div className={check.free ? 'text-pass flex-shrink-0' : 'text-lc-border flex-shrink-0'}>
+                  <div className={check.free ? 'text-green-mid flex-shrink-0' : 'text-border flex-shrink-0'}>
                     {check.free ? <PassIcon size={13} /> : <LockIcon size={13} />}
                   </div>
-                  <span className={`text-sm flex-1 ${check.free ? 'text-lc-fg' : 'text-lc-muted/50'}`}>
+                  <span className={`text-sm flex-1 ${check.free ? 'text-white' : 'text-secondary/50'}`}>
                     {check.label}
                   </span>
                   <span className={`font-mono text-[10px] uppercase tracking-wider flex-shrink-0 ${CATEGORY_COLORS[check.category]} ${!check.free ? 'opacity-30' : ''}`}>
@@ -297,50 +297,50 @@ export default function HomePage() {
         </section>
 
         {/* ── Pricing ── */}
-        <section id="pricing" className="grid-bg border-b border-lc-border py-20">
+        <section id="pricing" className="grid-bg border-b border-border py-20">
           <div className="max-w-5xl mx-auto px-6">
             <div className="mb-12 text-center">
-              <span className="font-mono text-xs tracking-widest uppercase text-lc-purple block mb-3">Pricing</span>
-              <h2 className="text-3xl font-semibold text-lc-fg tracking-tight mb-3">Simple, honest pricing.</h2>
-              <p className="text-lc-muted max-w-sm mx-auto">
+              <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">Pricing</span>
+              <h2 className="text-3xl font-semibold text-white tracking-tight mb-3">Simple, honest pricing.</h2>
+              <p className="text-secondary max-w-sm mx-auto">
                 Start free with no account. Upgrade when you need more.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-lc-border mb-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-border mb-16">
 
               {/* Free */}
-              <div className="bg-lc-bg p-10">
+              <div className="bg-black p-10">
                 <div className="mb-8">
-                  <span className="font-mono text-xs tracking-widest uppercase text-lc-muted block mb-3">Free</span>
+                  <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">Free</span>
                   <div className="flex items-baseline gap-2 mb-2">
-                    <span className="font-mono text-5xl font-semibold text-lc-fg">€0</span>
-                    <span className="text-lc-muted text-sm">forever</span>
+                    <span className="font-mono text-5xl font-semibold text-white">€0</span>
+                    <span className="text-secondary text-sm">forever</span>
                   </div>
-                  <p className="text-lc-muted text-sm">No account. No credit card. Just paste and scan.</p>
+                  <p className="text-secondary text-sm">No account. No credit card. Just paste and scan.</p>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {FREE_FEATURES.map((f) => (
                     <li key={f} className="flex items-start gap-3">
-                      <span className="mt-0.5 flex-shrink-0 text-pass"><PassIcon size={13} /></span>
-                      <span className="text-lc-muted text-sm">{f}</span>
+                      <span className="mt-0.5 flex-shrink-0 text-green-mid"><PassIcon size={13} /></span>
+                      <span className="text-secondary text-sm">{f}</span>
                     </li>
                   ))}
                 </ul>
                 <a
                   href="#scan"
-                  className="block text-center font-mono text-sm tracking-wider uppercase border border-lc-border px-6 py-3.5 text-lc-fg hover:border-lc-fg transition-colors"
+                  className="block text-center font-mono text-sm tracking-wider uppercase border border-border px-6 py-3.5 text-white hover:border-white transition-colors"
                 >
                   Start scanning →
                 </a>
               </div>
 
               {/* Pro */}
-              <div className="corner-mark p-10" style={{ backgroundColor: '#0C0B09' }}>
+              <div className="corner-mark p-10" style={{ backgroundColor: 'var(--color-green-dark)' }}>
                 <div className="mb-8">
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="font-mono text-xs tracking-widest uppercase text-lc-purple">Pro</span>
-                    <span className="font-mono text-[10px] bg-lc-purple text-white px-2 py-0.5 uppercase tracking-wider">
+                    <span className="font-mono text-xs tracking-widest uppercase text-green">Pro</span>
+                    <span className="font-mono text-[10px] bg-green text-white px-2 py-0.5 uppercase tracking-wider">
                       Coming soon
                     </span>
                   </div>
@@ -353,7 +353,7 @@ export default function HomePage() {
                 <ul className="space-y-3 mb-8">
                   {PRO_FEATURES.map((f) => (
                     <li key={f} className="flex items-start gap-3">
-                      <span className="mt-0.5 flex-shrink-0 text-lc-purple"><SparkleIcon size={11} /></span>
+                      <span className="mt-0.5 flex-shrink-0 text-green"><SparkleIcon size={11} /></span>
                       <span className="text-white/70 text-sm">{f}</span>
                     </li>
                   ))}
@@ -366,32 +366,32 @@ export default function HomePage() {
         </section>
 
         {/* ── Blog ── */}
-        <section id="blog" className="border-b border-lc-border py-20">
+        <section id="blog" className="border-b border-border py-20">
           <div className="max-w-5xl mx-auto px-6">
 
             <div className="mb-12 flex items-end justify-between gap-4">
               <div>
-                <span className="font-mono text-xs tracking-widest uppercase text-lc-accent block mb-3">From the blog</span>
-                <h2 className="text-3xl font-display font-semibold text-lc-fg tracking-tight">Accessibility, SEO & launch guides</h2>
+                <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">From the blog</span>
+                <h2 className="text-3xl font-display font-semibold text-white tracking-tight">Accessibility, SEO & launch guides</h2>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-lc-border">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border">
               {BLOG_POSTS.map((post) => (
-                <article key={post.slug} className="bg-lc-bg p-8 flex flex-col group">
+                <article key={post.slug} className="bg-black p-8 flex flex-col group">
                   <div className="flex items-center justify-between mb-6">
-                    <span className={`font-mono text-xs uppercase tracking-wider ${BLOG_CATEGORY_COLORS[post.category] ?? 'text-lc-muted'}`}>
+                    <span className={`font-mono text-xs uppercase tracking-wider ${BLOG_CATEGORY_COLORS[post.category] ?? 'text-secondary'}`}>
                       {post.category}
                     </span>
-                    <span className="font-mono text-xs text-lc-muted">{post.date}</span>
+                    <span className="font-mono text-xs text-secondary">{post.date}</span>
                   </div>
-                  <h3 className="text-lc-fg font-semibold text-base leading-snug mb-3 group-hover:text-lc-accent transition-colors">
+                  <h3 className="text-white font-semibold text-base leading-snug mb-3 group-hover:text-green transition-colors">
                     {post.title}
                   </h3>
-                  <p className="text-lc-muted text-sm leading-relaxed flex-1 mb-6">
+                  <p className="text-secondary text-sm leading-relaxed flex-1 mb-6">
                     {post.excerpt}
                   </p>
-                  <span className="font-mono text-xs uppercase tracking-wider text-lc-accent mt-auto self-start">
+                  <span className="font-mono text-xs uppercase tracking-wider text-green mt-auto self-start">
                     Read →
                   </span>
                 </article>
@@ -404,20 +404,20 @@ export default function HomePage() {
       </main>
 
       {/* ── Footer ── */}
-      <footer className="border-t border-lc-border px-6 py-6 bg-lc-card">
+      <footer className="border-t border-border px-6 py-6 bg-surface">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="font-mono text-xs text-lc-fg tracking-wider uppercase font-semibold">A11YO</span>
+          <span className="font-mono text-xs text-white tracking-wider uppercase font-semibold">A11YO</span>
           <div className="flex items-center gap-4">
-            <Link href="/tools/alt-text" className="font-mono text-xs text-lc-muted hover:text-lc-fg transition-colors">
+            <Link href="/tools/alt-text" className="font-mono text-xs text-secondary hover:text-white transition-colors">
               Alt Text Tool
             </Link>
-            <a href="#pricing" className="font-mono text-xs text-lc-muted hover:text-lc-fg transition-colors">
+            <a href="#pricing" className="font-mono text-xs text-secondary hover:text-white transition-colors">
               Pricing
             </a>
-            <a href="#blog" className="font-mono text-xs text-lc-muted hover:text-lc-fg transition-colors">
+            <a href="#blog" className="font-mono text-xs text-secondary hover:text-white transition-colors">
               Blog
             </a>
-            <Link href="/accessibility" className="font-mono text-xs text-lc-muted hover:text-lc-fg transition-colors">
+            <Link href="/accessibility" className="font-mono text-xs text-secondary hover:text-white transition-colors">
               Accessibility
             </Link>
           </div>

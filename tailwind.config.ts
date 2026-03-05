@@ -9,26 +9,28 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Design system — dark #0a0a0a + #00ff88 accent
-        lc: {
-          bg:           '#0a0a0a',
-          fg:           '#f0f0f0',
-          accent:       '#00ff88',
-          'accent-dim': 'rgba(0,255,136,0.10)',
-          purple:       '#00ff88', // legacy alias → accent
-          'purple-light': 'rgba(0,255,136,0.08)',
-          muted:        '#888888',
-          border:       '#222222',
-          card:         '#111111',
+        // Brand palette
+        black:      '#0A0A0A',
+        white:      '#F5F4F0',
+        surface:    '#161A16',
+        border:     '#1E2A1E',
+        muted:      '#4A5E4A',
+        secondary:  '#8FA88F',
+        warn:       '#FFB400',
+        fail:       '#FF4D4D',
+        green: {
+          DEFAULT: '#00E96A',
+          mid:     '#00B851',
+          dark:    '#003D1B',
         },
-        pass:  '#22c55e',
-        amber: '#f59e0b',
-        fail:  '#ef4444',
+        // Legacy aliases — do not remove (used in inline styles + report pages)
+        pass:  '#00B851',
+        amber: '#FFB400',
       },
       fontFamily: {
-        display: ['var(--font-syne)',  'sans-serif'],
-        sans:    ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        mono:    ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+        display: ['var(--font-syne)',    'sans-serif'],
+        body:    ['var(--font-dm-sans)', 'sans-serif'],
+        mono:    ['var(--font-dm-mono)', 'monospace'],
       },
       keyframes: {
         'fade-in': { from: { opacity: '0', transform: 'translateY(4px)' }, to: { opacity: '1', transform: 'translateY(0)' } },

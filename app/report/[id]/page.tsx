@@ -46,24 +46,24 @@ export default async function ReportPage({ params }: PageProps) {
   const overallPct = Math.round((totalPassed / totalChecks) * 100);
 
   const scoreColor =
-    overallPct >= 80 ? 'text-pass' : overallPct >= 50 ? 'text-amber' : 'text-fail';
+    overallPct >= 80 ? 'text-green-mid' : overallPct >= 50 ? 'text-warn' : 'text-fail';
 
   const reportUrl = `https://a11yo.vercel.app/report/${params.id}`;
 
   return (
-    <div className="min-h-screen bg-lc-bg grid-bg flex flex-col">
+    <div className="min-h-screen bg-black grid-bg flex flex-col">
       {/* Nav */}
-      <header className="border-b border-lc-border bg-lc-bg/80 backdrop-blur-sm sticky top-0 z-10">
+      <header className="border-b border-border bg-black/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link
             href="/"
-            className="font-mono text-sm tracking-widest uppercase text-lc-fg hover:text-lc-purple transition-colors"
+            className="font-mono text-sm tracking-widest uppercase text-white hover:text-green transition-colors"
           >
             A11YO
           </Link>
           <Link
             href="/"
-            className="font-mono text-xs tracking-wider uppercase text-lc-muted hover:text-lc-fg transition-colors"
+            className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors"
           >
             ← New scan
           </Link>
@@ -74,9 +74,9 @@ export default async function ReportPage({ params }: PageProps) {
         <div className="max-w-2xl mx-auto space-y-4">
 
           {/* Report header card */}
-          <div className="corner-mark border border-lc-border bg-lc-card">
+          <div className="corner-mark border border-border bg-surface">
             <div className="px-6 pt-6 pb-5">
-              <span className="font-mono text-xs tracking-widest uppercase text-lc-purple block mb-4">
+              <span className="font-mono text-xs tracking-widest uppercase text-green block mb-4">
                 Scan Report
               </span>
               <div className="flex items-start justify-between gap-6">
@@ -85,11 +85,11 @@ export default async function ReportPage({ params }: PageProps) {
                     href={scan.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-lc-fg font-semibold hover:text-lc-purple transition-colors break-all block mb-1"
+                    className="text-white font-semibold hover:text-green transition-colors break-all block mb-1"
                   >
                     {scan.url}
                   </a>
-                  <p className="font-mono text-xs text-lc-muted">
+                  <p className="font-mono text-xs text-secondary">
                     {formatDate(scan.created_at)}
                   </p>
                 </div>
@@ -99,7 +99,7 @@ export default async function ReportPage({ params }: PageProps) {
                   <span className={`font-mono text-5xl font-semibold leading-none ${scoreColor}`}>
                     {overallPct}<span className="text-2xl">%</span>
                   </span>
-                  <p className="font-mono text-xs text-lc-muted mt-1">
+                  <p className="font-mono text-xs text-secondary mt-1">
                     {totalPassed}/{totalChecks} free checks
                   </p>
                 </div>
@@ -107,7 +107,7 @@ export default async function ReportPage({ params }: PageProps) {
             </div>
 
             {/* Score gauge bar */}
-            <div className="h-1 bg-lc-border">
+            <div className="h-1 bg-border">
               <div
                 className="h-full transition-all"
                 style={{
@@ -118,7 +118,7 @@ export default async function ReportPage({ params }: PageProps) {
             </div>
 
             <div className="px-6 py-4 flex items-center justify-between gap-4">
-              <p className="font-mono text-xs text-lc-muted">Share this report</p>
+              <p className="font-mono text-xs text-secondary">Share this report</p>
               <CopyButton url={reportUrl} />
             </div>
           </div>
@@ -129,16 +129,16 @@ export default async function ReportPage({ params }: PageProps) {
           <ReportSection title="Launch Readiness" icon="↗" checks={freeLaunch} />
 
           {/* Upgrade CTA */}
-          <div className="corner-mark border border-lc-border" style={{ backgroundColor: '#0C0B09' }}>
-            <div className="h-0.5 w-full" style={{ backgroundColor: '#9177CF' }} />
+          <div className="corner-mark border border-border" style={{ backgroundColor: 'var(--color-green-dark)' }}>
+            <div className="h-0.5 w-full" style={{ backgroundColor: 'var(--color-green)' }} />
             <div className="px-6 py-6">
               <div className="flex items-start justify-between gap-6">
                 <div>
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="font-mono text-xs tracking-widest uppercase text-lc-purple">
+                    <span className="font-mono text-xs tracking-widest uppercase text-green">
                       Pro
                     </span>
-                    <span className="font-mono text-[10px] bg-lc-purple text-white px-2 py-0.5 uppercase tracking-widest">
+                    <span className="font-mono text-[10px] bg-green text-white px-2 py-0.5 uppercase tracking-widest">
                       {lockedCount} checks locked
                     </span>
                   </div>
@@ -149,7 +149,7 @@ export default async function ReportPage({ params }: PageProps) {
                 </div>
                 <a
                   href="mailto:hello@a11yo.io?subject=Pro waitlist"
-                  className="flex-shrink-0 font-mono text-xs tracking-wider uppercase border border-lc-purple px-5 py-2.5 text-lc-purple hover:bg-lc-purple hover:text-white transition-colors whitespace-nowrap mt-1"
+                  className="flex-shrink-0 font-mono text-xs tracking-wider uppercase border border-green px-5 py-2.5 text-green hover:bg-green hover:text-white transition-colors whitespace-nowrap mt-1"
                 >
                   Join waitlist →
                 </a>
@@ -161,9 +161,9 @@ export default async function ReportPage({ params }: PageProps) {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-lc-border px-6 py-5 mt-8">
+      <footer className="border-t border-border px-6 py-5 mt-8">
         <div className="max-w-2xl mx-auto text-center">
-          <span className="font-mono text-xs text-lc-muted tracking-wider">
+          <span className="font-mono text-xs text-secondary tracking-wider">
             Powered by A11YO
           </span>
         </div>

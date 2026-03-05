@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createSupabaseBrowserClient } from '@/lib/supabase-client';
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect') ?? '/dashboard';
@@ -42,21 +42,21 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-lc-bg flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-sm">
         {/* Logo */}
-        <Link href="/" className="block text-center font-display text-xl font-bold text-lc-fg hover:text-lc-accent transition-colors mb-8">
+        <Link href="/" className="block text-center font-display text-xl font-bold text-white hover:text-green transition-colors mb-8">
           A11YO
         </Link>
 
-        <div className="corner-mark border border-lc-border bg-lc-card p-8">
-          <h1 className="text-xl font-display font-semibold text-lc-fg mb-1">Sign in</h1>
-          <p className="text-lc-muted text-sm mb-6">Welcome back.</p>
+        <div className="corner-mark border border-border bg-surface p-8">
+          <h1 className="text-xl font-display font-semibold text-white mb-1">Sign in</h1>
+          <p className="text-secondary text-sm mb-6">Welcome back.</p>
 
           <form onSubmit={handleSubmit} noValidate>
             <div className="space-y-4 mb-4">
               <div>
-                <label htmlFor="email" className="block font-mono text-xs uppercase tracking-wider text-lc-muted mb-1.5">
+                <label htmlFor="email" className="block font-mono text-xs uppercase tracking-wider text-secondary mb-1.5">
                   Email
                 </label>
                 <input
@@ -66,16 +66,16 @@ export default function LoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 bg-lc-bg border border-lc-border text-lc-fg text-sm focus:outline-none focus:border-lc-accent transition-colors"
+                  className="w-full px-4 py-3 bg-black border border-border text-white text-sm focus:outline-none focus:border-green transition-colors"
                   disabled={loading}
                 />
               </div>
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label htmlFor="password" className="font-mono text-xs uppercase tracking-wider text-lc-muted">
+                  <label htmlFor="password" className="font-mono text-xs uppercase tracking-wider text-secondary">
                     Password
                   </label>
-                  <Link href="/auth/forgot-password" className="font-mono text-xs text-lc-muted hover:text-lc-accent transition-colors">
+                  <Link href="/auth/forgot-password" className="font-mono text-xs text-secondary hover:text-green transition-colors">
                     Forgot?
                   </Link>
                 </div>
@@ -86,7 +86,7 @@ export default function LoginPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 bg-lc-bg border border-lc-border text-lc-fg text-sm focus:outline-none focus:border-lc-accent transition-colors"
+                  className="w-full px-4 py-3 bg-black border border-border text-white text-sm focus:outline-none focus:border-green transition-colors"
                   disabled={loading}
                 />
               </div>
@@ -101,35 +101,43 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-lc-accent text-lc-bg font-mono text-sm tracking-wider uppercase font-semibold hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+              className="w-full py-3 bg-green text-black font-mono text-sm tracking-wider uppercase font-semibold hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
             >
               {loading ? 'Signing in…' : 'Sign in →'}
             </button>
           </form>
 
           <div className="flex items-center gap-3 my-5">
-            <div className="flex-1 h-px bg-lc-border" />
-            <span className="font-mono text-xs text-lc-muted">or</span>
-            <div className="flex-1 h-px bg-lc-border" />
+            <div className="flex-1 h-px bg-border" />
+            <span className="font-mono text-xs text-secondary">or</span>
+            <div className="flex-1 h-px bg-border" />
           </div>
 
           <button
             onClick={handleGoogle}
-            className="w-full py-3 border border-lc-border text-lc-fg font-mono text-sm tracking-wider uppercase hover:border-lc-accent transition-colors flex items-center justify-center gap-2"
+            className="w-full py-3 border border-border text-white font-mono text-sm tracking-wider uppercase hover:border-green transition-colors flex items-center justify-center gap-2"
           >
             <GoogleIcon />
             Continue with Google
           </button>
         </div>
 
-        <p className="text-center font-mono text-xs text-lc-muted mt-5">
+        <p className="text-center font-mono text-xs text-secondary mt-5">
           No account?{' '}
-          <Link href="/auth/signup" className="text-lc-accent hover:underline">
+          <Link href="/auth/signup" className="text-green hover:underline">
             Sign up free
           </Link>
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }
 

@@ -22,24 +22,24 @@ export default function ReportSection({ title, icon, checks, defaultOpen = true 
     pct === 100 ? '#16A34A' : pct >= 60 ? '#D97706' : '#DC2626';
 
   const scoreColor =
-    pct === 100 ? 'text-pass' : pct >= 60 ? 'text-amber' : 'text-fail';
+    pct === 100 ? 'text-green-mid' : pct >= 60 ? 'text-warn' : 'text-fail';
 
   return (
-    <div className="corner-mark border border-lc-border bg-lc-card">
+    <div className="corner-mark border border-border bg-surface">
       {/* Coloured accent bar */}
       <div className="h-0.5 w-full" style={{ backgroundColor: barColor }} />
 
       {/* Header */}
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between px-6 py-5 hover:bg-lc-border/20 transition-colors text-left"
+        className="w-full flex items-center justify-between px-6 py-5 hover:bg-border/20 transition-colors text-left"
         aria-expanded={open}
       >
         <div className="flex items-center gap-3">
-          <span className="w-8 h-8 flex items-center justify-center border border-lc-border bg-lc-bg text-sm">
+          <span className="w-8 h-8 flex items-center justify-center border border-border bg-black text-sm">
             {icon}
           </span>
-          <span className="font-semibold text-lc-fg">{title}</span>
+          <span className="font-semibold text-white">{title}</span>
         </div>
 
         <div className="flex items-center gap-4">
@@ -48,19 +48,19 @@ export default function ReportSection({ title, icon, checks, defaultOpen = true 
           </span>
 
           {/* Progress bar */}
-          <div className="w-20 h-1.5 bg-lc-border hidden sm:block">
+          <div className="w-20 h-1.5 bg-border hidden sm:block">
             <div
               className="h-full transition-all"
               style={{ width: `${pct}%`, backgroundColor: barColor }}
             />
           </div>
 
-          <span className="font-mono text-xs text-lc-muted">{open ? '↑' : '↓'}</span>
+          <span className="font-mono text-xs text-secondary">{open ? '↑' : '↓'}</span>
         </div>
       </button>
 
       {open && (
-        <div className="px-6 border-t border-lc-border pb-2">
+        <div className="px-6 border-t border-border pb-2">
           {checks.map((check) => (
             <CheckItem key={check.id} check={check} />
           ))}

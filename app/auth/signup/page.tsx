@@ -48,14 +48,14 @@ export default function SignupPage() {
 
   if (done) {
     return (
-      <div className="min-h-screen bg-lc-bg flex flex-col items-center justify-center px-4">
-        <div className="w-full max-w-sm corner-mark border border-lc-border bg-lc-card p-8 text-center">
-          <div className="w-10 h-10 border border-lc-accent flex items-center justify-center mx-auto mb-4">
-            <span className="text-lc-accent font-mono text-lg">✓</span>
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4">
+        <div className="w-full max-w-sm corner-mark border border-border bg-surface p-8 text-center">
+          <div className="w-10 h-10 border border-green flex items-center justify-center mx-auto mb-4">
+            <span className="text-green font-mono text-lg">✓</span>
           </div>
-          <h1 className="text-xl font-display font-semibold text-lc-fg mb-2">Check your inbox</h1>
-          <p className="text-lc-muted text-sm">
-            We&apos;ve sent a confirmation link to <strong className="text-lc-fg">{email}</strong>.
+          <h1 className="text-xl font-display font-semibold text-white mb-2">Check your inbox</h1>
+          <p className="text-secondary text-sm">
+            We&apos;ve sent a confirmation link to <strong className="text-white">{email}</strong>.
             Click it to activate your account.
           </p>
         </div>
@@ -64,20 +64,20 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-lc-bg flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-sm">
-        <Link href="/" className="block text-center font-display text-xl font-bold text-lc-fg hover:text-lc-accent transition-colors mb-8">
+        <Link href="/" className="block text-center font-display text-xl font-bold text-white hover:text-green transition-colors mb-8">
           A11YO
         </Link>
 
-        <div className="corner-mark border border-lc-border bg-lc-card p-8">
-          <h1 className="text-xl font-display font-semibold text-lc-fg mb-1">Create account</h1>
-          <p className="text-lc-muted text-sm mb-6">Free forever — no card required.</p>
+        <div className="corner-mark border border-border bg-surface p-8">
+          <h1 className="text-xl font-display font-semibold text-white mb-1">Create account</h1>
+          <p className="text-secondary text-sm mb-6">Free forever — no card required.</p>
 
           <form onSubmit={handleSubmit} noValidate>
             <div className="space-y-4 mb-4">
               <div>
-                <label htmlFor="email" className="block font-mono text-xs uppercase tracking-wider text-lc-muted mb-1.5">
+                <label htmlFor="email" className="block font-mono text-xs uppercase tracking-wider text-secondary mb-1.5">
                   Email
                 </label>
                 <input
@@ -87,13 +87,13 @@ export default function SignupPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 bg-lc-bg border border-lc-border text-lc-fg text-sm focus:outline-none focus:border-lc-accent transition-colors"
+                  className="w-full px-4 py-3 bg-black border border-border text-white text-sm focus:outline-none focus:border-green transition-colors"
                   disabled={loading}
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block font-mono text-xs uppercase tracking-wider text-lc-muted mb-1.5">
-                  Password <span className="text-lc-muted/60">(min 8 chars)</span>
+                <label htmlFor="password" className="block font-mono text-xs uppercase tracking-wider text-secondary mb-1.5">
+                  Password <span className="text-secondary/60">(min 8 chars)</span>
                 </label>
                 <input
                   id="password"
@@ -103,7 +103,7 @@ export default function SignupPage() {
                   minLength={8}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 bg-lc-bg border border-lc-border text-lc-fg text-sm focus:outline-none focus:border-lc-accent transition-colors"
+                  className="w-full px-4 py-3 bg-black border border-border text-white text-sm focus:outline-none focus:border-green transition-colors"
                   disabled={loading}
                 />
               </div>
@@ -118,35 +118,35 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-lc-accent text-lc-bg font-mono text-sm tracking-wider uppercase font-semibold hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+              className="w-full py-3 bg-green text-black font-mono text-sm tracking-wider uppercase font-semibold hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
             >
               {loading ? 'Creating account…' : 'Create account →'}
             </button>
           </form>
 
           <div className="flex items-center gap-3 my-5">
-            <div className="flex-1 h-px bg-lc-border" />
-            <span className="font-mono text-xs text-lc-muted">or</span>
-            <div className="flex-1 h-px bg-lc-border" />
+            <div className="flex-1 h-px bg-border" />
+            <span className="font-mono text-xs text-secondary">or</span>
+            <div className="flex-1 h-px bg-border" />
           </div>
 
           <button
             onClick={handleGoogle}
-            className="w-full py-3 border border-lc-border text-lc-fg font-mono text-sm tracking-wider uppercase hover:border-lc-accent transition-colors flex items-center justify-center gap-2"
+            className="w-full py-3 border border-border text-white font-mono text-sm tracking-wider uppercase hover:border-green transition-colors flex items-center justify-center gap-2"
           >
             <GoogleIcon />
             Continue with Google
           </button>
 
-          <p className="font-mono text-xs text-lc-muted text-center mt-5">
+          <p className="font-mono text-xs text-secondary text-center mt-5">
             By signing up you agree to our{' '}
-            <Link href="/accessibility" className="text-lc-accent hover:underline">terms</Link>.
+            <Link href="/accessibility" className="text-green hover:underline">terms</Link>.
           </p>
         </div>
 
-        <p className="text-center font-mono text-xs text-lc-muted mt-5">
+        <p className="text-center font-mono text-xs text-secondary mt-5">
           Already have an account?{' '}
-          <Link href="/auth/login" className="text-lc-accent hover:underline">
+          <Link href="/auth/login" className="text-green hover:underline">
             Sign in
           </Link>
         </p>
