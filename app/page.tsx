@@ -182,8 +182,24 @@ export default function HomePage() {
                     {loading ? 'Scanning…' : 'Audit →'}
                   </button>
                 </div>
-                {error && <p id="hero-error" role="alert" className="mt-3 font-mono text-xs text-fail">{error}</p>}
+                {error && (
+                  <div className="mt-3">
+                    <p id="hero-error" role="alert" className="font-mono text-xs text-fail">{error}</p>
+                    {(error.includes('Sign up') || error.includes('Upgrade')) && (
+                      <div className="flex gap-4 mt-2">
+                        <a href="/auth/signup" className="font-mono text-xs text-green hover:underline">Create free account →</a>
+                        <a href="/auth/login" className="font-mono text-xs text-secondary hover:text-white">Sign in</a>
+                      </div>
+                    )}
+                  </div>
+                )}
               </form>
+
+              <p className="mt-5 font-mono text-xs text-secondary">
+                No account needed to scan.{' '}
+                <a href="/auth/signup" className="text-green hover:underline">Create a free account</a>{' '}
+                to save your scan history.
+              </p>
 
               {loading && (
                 <div className="mt-5 flex items-center gap-3" aria-live="polite">
