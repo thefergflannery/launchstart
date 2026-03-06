@@ -1,37 +1,24 @@
 import { ScanResults } from '@/lib/types';
-import { launchBrowser } from './browser';
+import { fetchPage } from './fetch-page';
 import { runAccessibilityScan } from './accessibility';
 import { runSeoScan } from './seo';
 import { runLaunchScan } from './launch';
 
 export async function runScan(url: string): Promise<ScanResults> {
-  const browser = await launchBrowser();
+  const pageData = await fetchPage(url);
 
-  try {
-    const page = await browser.newPage();
-    await page.setViewport({ width: 1280, height: 800 });
+  // Accessibility and SEO can run in parallel — both read the DOM, no side-effects
+  const [accessibility, seo, launch] = await Promise.all([
+    Promise.resolve(runAccessibilityScan(pageData.$)),
+    Promise.resolve(runSeoScan(pageData.$, pageData.finalUrl)),
+    runLaunchScan(pageData),
+  ]);
 
-    const startTime = Date.now();
-    await page.goto(url, { waitUntil: 'networkidle2', timeout: 20000 });
-    const loadTimeMs = Date.now() - startTime;
-
-    // Accessibility and SEO can run in parallel (both read the DOM, no side-effects)
-    const [accessibility, seo] = await Promise.all([
-      runAccessibilityScan(page),
-      runSeoScan(page, url),
-    ]);
-
-    // Launch scan runs after — it needs the load time and makes outbound fetch calls
-    const launch = await runLaunchScan(page, url, loadTimeMs);
-
-    return {
-      url,
-      scannedAt: new Date().toISOString(),
-      accessibility,
-      seo,
-      launch,
-    };
-  } finally {
-    await browser.close();
-  }
+  return {
+    url,
+    scannedAt: new Date().toISOString(),
+    accessibility,
+    seo,
+    launch,
+  };
 }

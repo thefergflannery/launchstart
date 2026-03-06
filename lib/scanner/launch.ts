@@ -1,5 +1,5 @@
-import { Page } from 'puppeteer-core';
 import { CheckResult } from '@/lib/types';
+import { PageData } from './fetch-page';
 
 async function headCheck(url: string): Promise<boolean> {
   try {
@@ -18,18 +18,17 @@ async function headCheck(url: string): Promise<boolean> {
 }
 
 export async function runLaunchScan(
-  page: Page,
-  url: string,
-  loadTimeMs: number
+  pageData: PageData
 ): Promise<CheckResult[]> {
+  const { $, url, loadTimeMs } = pageData;
   const origin = new URL(url).origin;
 
   // Collect all hrefs from the page
-  const rawHrefs: string[] = await page.evaluate(() =>
-    Array.from(document.querySelectorAll('a[href]'))
-      .map((a) => a.getAttribute('href') ?? '')
-      .filter(Boolean)
-  );
+  const rawHrefs: string[] = [];
+  $('a[href]').each((_, el) => {
+    const href = $(el).attr('href');
+    if (href) rawHrefs.push(href);
+  });
 
   // Resolve and filter to HTTP(S) links only
   const links = rawHrefs
@@ -62,14 +61,11 @@ export async function runLaunchScan(
   const loadStatus: CheckResult['status'] =
     loadTimeMs < 3000 ? 'pass' : loadTimeMs < 6000 ? 'amber' : 'fail';
 
-  const viewportContent: string | null = await page.evaluate(
-    () =>
-      document.querySelector('meta[name="viewport"]')?.getAttribute('content') ?? null
-  );
+  const viewport = $('meta[name="viewport"]').attr('content') ?? null;
   const mobileOk =
-    !!viewportContent &&
-    viewportContent.includes('width=device-width') &&
-    viewportContent.includes('initial-scale=1');
+    !!viewport &&
+    viewport.includes('width=device-width') &&
+    viewport.includes('initial-scale=1');
 
   return [
     {
@@ -78,7 +74,7 @@ export async function runLaunchScan(
       status: robotsOk ? 'pass' : 'amber',
       message: robotsOk
         ? 'robots.txt is accessible'
-        : 'robots.txt not found — search engines won\'t know your crawl rules',
+        : "robots.txt not found — search engines won't know your crawl rules",
       fixHint: 'Create a robots.txt file at the root of your domain',
     },
     {
@@ -100,8 +96,7 @@ export async function runLaunchScan(
     {
       id: 'broken-links',
       label: 'Broken links',
-      status:
-        brokenCount === 0 ? 'pass' : brokenCount <= 2 ? 'amber' : 'fail',
+      status: brokenCount === 0 ? 'pass' : brokenCount <= 2 ? 'amber' : 'fail',
       message:
         brokenCount === 0
           ? `No broken links found (checked ${links.length})`

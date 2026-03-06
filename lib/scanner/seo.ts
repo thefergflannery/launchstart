@@ -1,35 +1,28 @@
-import { Page } from 'puppeteer-core';
+import { CheerioAPI } from 'cheerio';
 import { CheckResult } from '@/lib/types';
 
-export async function runSeoScan(page: Page, url: string): Promise<CheckResult[]> {
-  const data = await page.evaluate(() => {
-    const getMeta = (name: string) =>
-      document.querySelector(`meta[name="${name}"]`)?.getAttribute('content') ?? null;
-    const getOg = (prop: string) =>
-      document.querySelector(`meta[property="${prop}"]`)?.getAttribute('content') ?? null;
-    const viewport =
-      document.querySelector('meta[name="viewport"]')?.getAttribute('content') ?? null;
+export function runSeoScan($: CheerioAPI, url: string): CheckResult[] {
+  const hasMetaDescription =
+    ($('meta[name="description"]').attr('content')?.trim().length ?? 0) > 0;
+  const hasOgImage =
+    ($('meta[property="og:image"]').attr('content')?.trim().length ?? 0) > 0;
+  const hasOgTitle =
+    ($('meta[property="og:title"]').attr('content')?.trim().length ?? 0) > 0;
 
-    return {
-      hasMetaDescription: !!getMeta('description'),
-      hasOgImage: !!getOg('og:image'),
-      hasOgTitle: !!getOg('og:title'),
-      viewport,
-    };
-  });
+  const viewport = $('meta[name="viewport"]').attr('content') ?? null;
+  const viewportOk =
+    !!viewport &&
+    viewport.includes('width=device-width') &&
+    viewport.includes('initial-scale=1');
 
   const isHttps = url.startsWith('https://');
-  const viewportOk =
-    !!data.viewport &&
-    data.viewport.includes('width=device-width') &&
-    data.viewport.includes('initial-scale=1');
 
   return [
     {
       id: 'meta-description',
       label: 'Meta description',
-      status: data.hasMetaDescription ? 'pass' : 'fail',
-      message: data.hasMetaDescription
+      status: hasMetaDescription ? 'pass' : 'fail',
+      message: hasMetaDescription
         ? 'Meta description is present'
         : 'No meta description found',
       fixHint: 'Add <meta name="description" content="…"> to <head>',
@@ -37,8 +30,8 @@ export async function runSeoScan(page: Page, url: string): Promise<CheckResult[]
     {
       id: 'og-image',
       label: 'OG image',
-      status: data.hasOgImage ? 'pass' : 'amber',
-      message: data.hasOgImage
+      status: hasOgImage ? 'pass' : 'amber',
+      message: hasOgImage
         ? 'Open Graph image is set'
         : 'No OG image — links may look bland when shared on social',
       fixHint: 'Add <meta property="og:image" content="…"> to <head>',
@@ -46,8 +39,8 @@ export async function runSeoScan(page: Page, url: string): Promise<CheckResult[]
     {
       id: 'og-title',
       label: 'OG title',
-      status: data.hasOgTitle ? 'pass' : 'amber',
-      message: data.hasOgTitle
+      status: hasOgTitle ? 'pass' : 'amber',
+      message: hasOgTitle
         ? 'Open Graph title is set'
         : 'No OG title — social shares will fall back to the page title',
       fixHint: 'Add <meta property="og:title" content="…"> to <head>',
@@ -58,7 +51,7 @@ export async function runSeoScan(page: Page, url: string): Promise<CheckResult[]
       status: viewportOk ? 'pass' : 'fail',
       message: viewportOk
         ? 'Viewport meta tag is correctly configured'
-        : data.viewport
+        : viewport
           ? 'Viewport meta tag exists but is misconfigured'
           : 'Viewport meta tag is missing',
       fixHint:

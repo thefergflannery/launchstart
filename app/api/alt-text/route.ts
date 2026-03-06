@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
-import { launchBrowser } from '@/lib/scanner/browser';
+import { fetchPage } from '@/lib/scanner/fetch-page';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -27,7 +27,6 @@ function isGenericAlt(alt: string | null): boolean {
 }
 
 async function generateAltText(imageUrl: string): Promise<string> {
-  // Only process http/https images
   if (!imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
     throw new Error('Not a public HTTP image');
   }
@@ -76,40 +75,32 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid URL' }, { status: 400 });
     }
 
-    // Scrape images from the page
-    const browser = await launchBrowser();
-    let rawImages: { src: string; alt: string | null }[] = [];
+    const { $, finalUrl } = await fetchPage(parsedUrl.toString());
+    const origin = new URL(finalUrl).origin;
 
-    try {
-      const page = await browser.newPage();
-      await page.goto(parsedUrl.toString(), { waitUntil: 'networkidle2', timeout: 20000 });
+    const rawImages: { src: string; alt: string | null }[] = [];
+    $('img').each((_, el) => {
+      const src = $(el).attr('src') ?? '';
+      if (!src || src.startsWith('data:')) return;
 
-      rawImages = await page.evaluate((origin) => {
-        return Array.from(document.querySelectorAll('img'))
-          .map((img) => ({
-            src: img.src || img.getAttribute('src') || '',
-            alt: img.getAttribute('alt'),
-          }))
-          .filter((img) => {
-            if (!img.src) return false;
-            // Skip tiny images (icons/spacers) — heuristic: skip data URIs
-            if (img.src.startsWith('data:')) return false;
-            return true;
-          })
-          .map((img) => ({
-            // Resolve relative to origin
-            src: img.src.startsWith('http') ? img.src : origin + img.src,
-            alt: img.alt,
-          }))
-          .slice(0, 30); // cap at 30 images
-      }, parsedUrl.origin);
-    } finally {
-      await browser.close();
-    }
+      // Resolve to absolute URL
+      let absoluteSrc: string;
+      try {
+        absoluteSrc = new URL(src, origin).toString();
+      } catch {
+        return;
+      }
 
-    // Determine which images need alt text
-    const needsAlt = rawImages.filter((img) => isGenericAlt(img.alt));
-    const hasAlt = rawImages.filter((img) => !isGenericAlt(img.alt));
+      rawImages.push({
+        src: absoluteSrc,
+        alt: $(el).attr('alt') ?? null,
+      });
+    });
+
+    // Cap at 30 images
+    const capped = rawImages.slice(0, 30);
+    const needsAlt = capped.filter((img) => isGenericAlt(img.alt));
+    const hasAlt = capped.filter((img) => !isGenericAlt(img.alt));
 
     // Generate alt text in parallel (cap at 10 AI calls to stay within timeout)
     const toGenerate = needsAlt.slice(0, 10);
@@ -150,7 +141,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       url: parsedUrl.toString(),
-      total: rawImages.length,
+      total: capped.length,
       missing: needsAlt.length,
       generated: toGenerate.length,
       results,
