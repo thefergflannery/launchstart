@@ -166,7 +166,15 @@ export default async function ReportPage({ params }: PageProps) {
                   <span className="font-mono text-[10px] text-secondary uppercase tracking-widest">{label}</span>
                 </div>
               ))}
-              <div className="ml-auto">
+              <div className="ml-auto flex items-center gap-3">
+                <a
+                  href={`/report/${params.id}/print`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-xs tracking-wider uppercase bg-green text-black px-4 py-2 hover:bg-green-mid transition-colors whitespace-nowrap"
+                >
+                  Download PDF →
+                </a>
                 <CopyButton url={reportUrl} />
               </div>
             </div>
@@ -253,6 +261,14 @@ export default async function ReportPage({ params }: PageProps) {
                 Forward this report to your developer. Every issue above includes a plain English fix instruction — they have everything they need to get started without any further briefing from you.
               </p>
               <div className="pt-3 border-t border-border flex flex-wrap gap-3">
+                <a
+                  href={`/report/${params.id}/print`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-xs tracking-wider uppercase bg-green text-black px-4 py-2 hover:bg-green-mid transition-colors"
+                >
+                  Download PDF →
+                </a>
                 <CopyButton url={reportUrl} label="Copy report link" />
                 <a
                   href="/"

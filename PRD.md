@@ -227,19 +227,19 @@ Every issue type must have three hand-written, human-reviewed pieces of copy:
 
 | # | ID | Feature | Effort | Status | Notes |
 |---|---|---|---|---|---|
-| 1 | CORE | Plain English issue library (JSON — 17 checks) | QUICK WIN | ⬜ To Do | Write this first. Every other feature depends on it. |
-| 2 | CORE | Report issue card component (web view) | QUICK WIN | ⬜ To Do | The visual card: severity, title, expand, fix instruction |
-| 3 | F-007 | Sample full report page (/sample-report) | QUICK WIN | ⬜ To Do | Static, no auth. Proof of concept + lead gen. |
-| 4 | F-001 | Supabase Auth — signup + login | QUICK WIN | ✅ Done | Auth pages exist |
-| 5 | F-001 | Create test account hello@fergflannery.com (admin role) | QUICK WIN | ⬜ To Do | Manual Supabase step |
-| 6 | F-003 | Scan limit enforcement (3 free scans) | QUICK WIN | ⬜ To Do | Track in Supabase, modal on limit hit |
-| 7 | F-004 | Early access code input + redemption | QUICK WIN | ⬜ To Do | Single code, 25 slots |
-| 8 | F-004 | Early access signup page (/early-access) | QUICK WIN | ⬜ To Do | Show slots remaining, input form |
-| 9 | F-002 | User dashboard | SHORT | ⬜ To Do | Scan history, status, CTAs |
-| 10 | CORE | Full report view (/report/:scanId) | SHORT | ⬜ To Do | All issue cards, score, next steps section |
+| 1 | CORE | Plain English issue library (JSON — 17 checks) | QUICK WIN | ✅ Done | lib/issue-library.ts — 17 checks with severity, means, fix, WCAG |
+| 2 | CORE | Report issue card component (web view) | QUICK WIN | ✅ Done | components/IssueCard.tsx — expandable, severity badge, WCAG toggle, checkbox |
+| 3 | F-007 | Sample full report page (/sample-report) | QUICK WIN | ✅ Done | Static fictional Irish business (Keogh's Hardware, Athlone) |
+| 4 | F-001 | Supabase Auth — signup + login | QUICK WIN | ✅ Done | Auth pages + Supabase SSR client |
+| 5 | F-001 | Create test account hello@fergflannery.com (admin role) | QUICK WIN | ✅ Done | Auto-promote trigger in Supabase migration |
+| 6 | F-003 | Scan limit enforcement (3 free scans) | QUICK WIN | ✅ Done | check_and_increment_rate_limit RPC, FREE_LIMIT=3 |
+| 7 | F-004 | Early access code input + redemption | QUICK WIN | ✅ Done | POST /api/early-access, EARLY_ACCESS_CODE env var set in Vercel |
+| 8 | F-004 | Early access signup page (/early-access) | QUICK WIN | ✅ Done | /early-access — slots counter, code form, success state |
+| 9 | F-002 | User dashboard | SHORT | ✅ Done | Scan counter, limit banner, early access + pro CTAs |
+| 10 | CORE | Full report view (/report/:scanId) | SHORT | ✅ Done | 7-section layout, weighted score, IssueCard, next steps |
 | 11 | CORE | PDF export of full report | SHORT | ⬜ To Do | Printable checklist format for developer handoff |
-| 12 | F-006 | Admin dashboard (/admin) | SHORT | ⬜ To Do | Users, tiers, early access stats |
-| 13 | F-008 | Why Choose A11YO (/why-a11yo) | SHORT | ⬜ To Do | Footer link only, EAA content |
+| 12 | F-006 | Admin dashboard (/admin) | SHORT | ✅ Done | Users table, early access progress bar, platform stats |
+| 13 | F-008 | Why Choose A11YO (/why-a11yo) | SHORT | ✅ Done | EAA explainer, stats grid, footer link |
 | 14 | F-005 | Stripe €10/month + paid signup flow | MEDIUM | ⬜ To Do | Only needed once 25 early access slots fill |
 | 15 | EXT | Chrome extension — popup UI + scan results | MEDIUM | ⬜ To Do | Manifest V3, popup states 1–4 |
 | 16 | EXT | Chrome extension — plain English issue cards in popup | MEDIUM | ⬜ To Do | Uses same issue library JSON as web report |
