@@ -22,6 +22,12 @@ export default function SiteFooter({ maxWidth = 'max-w-5xl' }: SiteFooterProps) 
           <Link href="/blog" className="font-mono text-xs text-secondary hover:text-white transition-colors hidden sm:inline">
             Blog
           </Link>
+          <Link href="/sample-report" className="font-mono text-xs text-secondary hover:text-white transition-colors hidden sm:inline">
+            Sample report
+          </Link>
+          <Link href="/why-a11yo" className="font-mono text-xs text-secondary hover:text-white transition-colors hidden sm:inline">
+            Why A11YO
+          </Link>
           <Link href="/accessibility" className="font-mono text-xs text-secondary hover:text-white transition-colors hidden sm:inline">
             Accessibility
           </Link>

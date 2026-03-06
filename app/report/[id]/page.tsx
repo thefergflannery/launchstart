@@ -1,11 +1,10 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
-import { ScanRecord } from '@/lib/types';
-import ReportSection from '@/components/ReportSection';
+import { ScanRecord, CheckResult } from '@/lib/types';
+import { getIssue, IssueSeverity } from '@/lib/issue-library';
+import IssueCard from '@/components/IssueCard';
 import CopyButton from '@/components/CopyButton';
-
-const FREE_CHECK_IDS = new Set(['image-alt', 'color-contrast', 'meta-description', 'https', 'load-time']);
 
 interface PageProps {
   params: { id: string };
@@ -16,11 +15,35 @@ export const revalidate = 0;
 function formatDate(iso: string) {
   return new Date(iso).toLocaleString('en-GB', {
     day: 'numeric',
-    month: 'short',
+    month: 'long',
     year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
   });
+}
+
+interface EnrichedCheck {
+  check: CheckResult;
+  severity: IssueSeverity;
+  isQuickWin: boolean;
+}
+
+function getSeverity(check: CheckResult): IssueSeverity {
+  const entry = getIssue(check.id);
+  if (entry) return entry.severity;
+  if (check.status === 'fail') return 'critical';
+  if (check.status === 'amber') return 'should-fix';
+  return 'nice-to-have';
+}
+
+function calcScore(allChecks: CheckResult[]): number {
+  const WEIGHTS: Record<IssueSeverity, number> = { critical: 3, 'should-fix': 2, 'nice-to-have': 1 };
+  let total = 0;
+  let passedWeight = 0;
+  for (const c of allChecks) {
+    const w = WEIGHTS[getSeverity(c)];
+    total += w;
+    if (c.status === 'pass') passedWeight += w;
+  }
+  return total === 0 ? 100 : Math.round((passedWeight / total) * 100);
 }
 
 export default async function ReportPage({ params }: PageProps) {
@@ -33,141 +56,238 @@ export default async function ReportPage({ params }: PageProps) {
   if (error || !data) notFound();
 
   const scan = data as ScanRecord;
-  const { results } = scan;
+  const allChecks: CheckResult[] = [
+    ...scan.results.accessibility,
+    ...scan.results.seo,
+    ...scan.results.launch,
+  ];
 
-  const freeAccessibility = results.accessibility.filter((c) => FREE_CHECK_IDS.has(c.id));
-  const freeSeo = results.seo.filter((c) => FREE_CHECK_IDS.has(c.id));
-  const freeLaunch = results.launch.filter((c) => FREE_CHECK_IDS.has(c.id));
-  const freeChecks = [...freeAccessibility, ...freeSeo, ...freeLaunch];
-  const lockedCount = results.accessibility.length + results.seo.length + results.launch.length - freeChecks.length;
+  const issues: EnrichedCheck[] = [];
+  const passed: CheckResult[] = [];
 
-  const totalPassed = freeChecks.filter((c) => c.status === 'pass').length;
-  const totalChecks = freeChecks.length;
-  const overallPct = Math.round((totalPassed / totalChecks) * 100);
+  for (const check of allChecks) {
+    if (check.status === 'pass') {
+      passed.push(check);
+    } else {
+      const entry = getIssue(check.id);
+      issues.push({
+        check,
+        severity: getSeverity(check),
+        isQuickWin: entry?.quickWin ?? false,
+      });
+    }
+  }
 
-  const scoreColor =
-    overallPct >= 80 ? 'text-green-mid' : overallPct >= 50 ? 'text-warn' : 'text-fail';
+  const criticalIssues = issues.filter((i) => i.severity === 'critical');
+  const shouldFixIssues = issues.filter((i) => i.severity === 'should-fix');
+  const niceToHaveIssues = issues.filter((i) => i.severity === 'nice-to-have');
+  const quickWins = issues.filter((i) => i.isQuickWin);
 
-  const reportUrl = `https://a11yo.vercel.app/report/${params.id}`;
+  const score = calcScore(allChecks);
+  const scoreColor = score >= 80 ? 'text-green-mid' : score >= 50 ? 'text-warn' : 'text-fail';
+  const scoreBarColor = score >= 80 ? '#16A34A' : score >= 50 ? '#D97706' : '#DC2626';
+
+  const reportUrl = `https://a11yo.io/report/${params.id}`;
+
+  const nextStepsText =
+    criticalIssues.length > 0
+      ? `Start with the ${criticalIssues.length} Critical issue${criticalIssues.length > 1 ? 's' : ''}. These block users entirely and carry legal risk under the EAA — fix them first.${shouldFixIssues.length > 0 ? ` Then work through the ${shouldFixIssues.length} Should Fix item${shouldFixIssues.length > 1 ? 's' : ''} to reach full EAA compliance.` : ' Once those are done, your site will meet the EAA baseline.'}`
+      : shouldFixIssues.length > 0
+        ? `No critical issues — well done. Work through the ${shouldFixIssues.length} Should Fix item${shouldFixIssues.length > 1 ? 's' : ''} to reach full EAA compliance.`
+        : 'No critical or required issues found. Your site is in excellent shape for EAA compliance. Consider the nice-to-have improvements to further enhance the experience for all users.';
 
   return (
-    <div className="min-h-screen bg-black grid-bg flex flex-col">
+    <div className="min-h-screen bg-black flex flex-col">
+
       {/* Nav */}
-      <header className="border-b border-border bg-black/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link
-            href="/"
-            className="font-mono text-sm tracking-widest uppercase text-white hover:text-green transition-colors"
-          >
+      <header className="border-b border-border bg-black/90 backdrop-blur-sm sticky top-0 z-10">
+        <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
+          <Link href="/" className="font-mono text-sm tracking-widest uppercase text-white hover:text-green transition-colors">
             A11YO
           </Link>
-          <Link
-            href="/"
-            className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors"
-          >
+          <Link href="/" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors">
             ← New scan
           </Link>
         </div>
       </header>
 
-      <main className="flex-1 py-12 px-6">
-        <div className="max-w-2xl mx-auto space-y-4">
+      <main id="main-content" className="flex-1 py-12 px-6">
+        <div className="max-w-3xl mx-auto space-y-6">
 
-          {/* Report header card */}
+          {/* ── 1. COVER SUMMARY ── */}
           <div className="corner-mark border border-border bg-surface">
-            <div className="px-6 pt-6 pb-5">
+            <div className="px-6 pt-6 pb-4">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-4">
-                Scan Report
+                Accessibility Report
               </span>
-              <div className="flex items-start justify-between gap-6">
+              <p className="text-secondary text-xs leading-relaxed mb-6 border-l-2 border-border pl-4">
+                Generated by A11YO on {formatDate(scan.created_at)} for{' '}
+                <span className="text-white font-semibold">{scan.url}</span>.{' '}
+                Share this with your developer — every issue below includes a plain English fix instruction.
+                Tick each item as it is resolved.
+              </p>
+
+              <div className="flex items-start justify-between gap-6 flex-wrap">
                 <div className="min-w-0 flex-1">
                   <a
                     href={scan.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white font-semibold hover:text-green transition-colors break-all block mb-1"
+                    className="text-white font-semibold hover:text-green transition-colors break-all block mb-1 text-lg"
                   >
                     {scan.url}
                   </a>
-                  <p className="font-mono text-xs text-secondary">
-                    {formatDate(scan.created_at)}
-                  </p>
+                  <p className="font-mono text-xs text-secondary">{formatDate(scan.created_at)}</p>
                 </div>
-
-                {/* Score */}
                 <div className="flex-shrink-0 text-right">
-                  <span className={`font-mono text-5xl font-semibold leading-none ${scoreColor}`}>
-                    {overallPct}<span className="text-2xl">%</span>
+                  <span className={`font-display text-6xl font-extrabold leading-none ${scoreColor}`}>
+                    {score}<span className="text-3xl">%</span>
                   </span>
-                  <p className="font-mono text-xs text-secondary mt-1">
-                    {totalPassed}/{totalChecks} free checks
-                  </p>
+                  <p className="font-mono text-xs text-secondary mt-1">compliance score</p>
                 </div>
               </div>
             </div>
 
-            {/* Score gauge bar */}
+            {/* Score bar */}
             <div className="h-1 bg-border">
-              <div
-                className="h-full transition-all"
-                style={{
-                  width: `${overallPct}%`,
-                  backgroundColor: overallPct >= 80 ? '#16A34A' : overallPct >= 50 ? '#D97706' : '#DC2626',
-                }}
-              />
+              <div className="h-full transition-all" style={{ width: `${score}%`, backgroundColor: scoreBarColor }} />
             </div>
 
-            <div className="px-6 py-4 flex items-center justify-between gap-4">
-              <p className="font-mono text-xs text-secondary">Share this report</p>
-              <CopyButton url={reportUrl} />
+            {/* Severity counts */}
+            <div className="px-6 py-4 flex flex-wrap items-center gap-x-8 gap-y-3">
+              {[
+                { count: criticalIssues.length, label: 'Critical', cls: 'text-fail' },
+                { count: shouldFixIssues.length, label: 'Should Fix', cls: 'text-warn' },
+                { count: niceToHaveIssues.length, label: 'Nice to Have', cls: 'text-blue-400' },
+                { count: passed.length, label: 'Passed', cls: 'text-green-mid' },
+              ].map(({ count, label, cls }) => (
+                <div key={label} className="flex items-baseline gap-1.5">
+                  <span className={`font-mono text-2xl font-bold ${cls}`}>{count}</span>
+                  <span className="font-mono text-[10px] text-secondary uppercase tracking-widest">{label}</span>
+                </div>
+              ))}
+              <div className="ml-auto">
+                <CopyButton url={reportUrl} />
+              </div>
             </div>
           </div>
 
-          {/* Sections */}
-          <ReportSection title="Accessibility" icon="♿" checks={freeAccessibility} />
-          <ReportSection title="SEO Basics" icon="◎" checks={freeSeo} />
-          <ReportSection title="Launch Readiness" icon="↗" checks={freeLaunch} />
+          {/* ── 2. QUICK WINS ── */}
+          {quickWins.length > 0 && (
+            <section aria-labelledby="quick-wins-heading">
+              <SectionHeader id="quick-wins-heading" color="text-green" title="Quick Wins" subtitle="easy fixes — do these first regardless of severity" />
+              <div className="space-y-2">
+                {quickWins.map(({ check }) => {
+                  const entry = getIssue(check.id);
+                  return entry ? <IssueCard key={check.id} entry={entry} /> : null;
+                })}
+              </div>
+            </section>
+          )}
 
-          {/* Upgrade CTA */}
-          <div className="corner-mark border border-border" style={{ backgroundColor: 'var(--color-green-dark)' }}>
-            <div className="h-0.5 w-full" style={{ backgroundColor: 'var(--color-green)' }} />
-            <div className="px-6 py-6">
-              <div className="flex items-start justify-between gap-6">
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="font-mono text-xs tracking-widest uppercase text-green">
-                      Pro
-                    </span>
-                    <span className="font-mono text-[10px] bg-green text-white px-2 py-0.5 uppercase tracking-widest">
-                      {lockedCount} checks locked
-                    </span>
-                  </div>
-                  <p className="text-white font-semibold mb-1">Unlock the full report</p>
-                  <p className="text-white/80 text-sm leading-relaxed">
-                    All 17 checks, multi-page crawls, scheduled scans, and PDF exports.
-                  </p>
-                </div>
+          {/* ── 3. CRITICAL ── */}
+          {criticalIssues.length > 0 && (
+            <section aria-labelledby="critical-heading">
+              <SectionHeader id="critical-heading" color="text-fail" title="Critical" subtitle="must fix before EAA deadline — legal risk" />
+              <div className="space-y-2">
+                {criticalIssues.map(({ check }) => {
+                  const entry = getIssue(check.id);
+                  return entry ? <IssueCard key={check.id} entry={entry} defaultOpen={criticalIssues.length === 1} /> : null;
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* ── 4. SHOULD FIX ── */}
+          {shouldFixIssues.length > 0 && (
+            <section aria-labelledby="should-fix-heading">
+              <SectionHeader id="should-fix-heading" color="text-warn" title="Should Fix" subtitle="required for full EAA compliance" />
+              <div className="space-y-2">
+                {shouldFixIssues.map(({ check }) => {
+                  const entry = getIssue(check.id);
+                  return entry ? <IssueCard key={check.id} entry={entry} /> : null;
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* ── 5. NICE TO HAVE (collapsed by default) ── */}
+          {niceToHaveIssues.length > 0 && (
+            <section aria-labelledby="nice-to-have-heading">
+              <SectionHeader id="nice-to-have-heading" color="text-blue-400" title="Nice to Have" subtitle="best practice — not legally required" />
+              <div className="space-y-2">
+                {niceToHaveIssues.map(({ check }) => {
+                  const entry = getIssue(check.id);
+                  return entry ? <IssueCard key={check.id} entry={entry} /> : null;
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* ── 6. WHAT PASSED ── */}
+          {passed.length > 0 && (
+            <section aria-labelledby="passed-heading">
+              <SectionHeader id="passed-heading" color="text-green" title="What Passed" subtitle={`${passed.length} check${passed.length > 1 ? 's' : ''} passed`} />
+              <div className="corner-mark border border-border bg-surface divide-y divide-border">
+                {passed.map((check) => {
+                  const entry = getIssue(check.id);
+                  return (
+                    <div key={check.id} className="px-5 py-3 flex items-center gap-3">
+                      <span className="text-green-mid text-sm flex-shrink-0" aria-hidden="true">✓</span>
+                      <span className="text-secondary text-sm">
+                        {entry?.passTitle ?? check.message}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* ── 7. NEXT STEPS ── */}
+          <section aria-labelledby="next-steps-heading">
+            <SectionHeader id="next-steps-heading" color="text-green" title="Next Steps" subtitle="your plain English action plan" />
+            <div className="corner-mark border border-border bg-surface px-6 py-5 space-y-3">
+              <p className="text-secondary text-sm leading-relaxed">{nextStepsText}</p>
+              <p className="text-secondary text-sm leading-relaxed">
+                Forward this report to your developer. Every issue above includes a plain English fix instruction — they have everything they need to get started without any further briefing from you.
+              </p>
+              <div className="pt-3 border-t border-border flex flex-wrap gap-3">
+                <CopyButton url={reportUrl} label="Copy report link" />
                 <a
-                  href="mailto:hello@a11yo.io?subject=Pro waitlist"
-                  className="flex-shrink-0 font-mono text-xs tracking-wider uppercase border border-green px-5 py-2.5 text-green hover:bg-green hover:text-white transition-colors whitespace-nowrap mt-1"
+                  href="/"
+                  className="font-mono text-xs tracking-wider uppercase border border-border px-4 py-2 text-secondary hover:text-white hover:border-white transition-colors"
                 >
-                  Join waitlist →
+                  Scan another page →
                 </a>
               </div>
             </div>
-          </div>
+          </section>
 
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border px-6 py-5 mt-8">
-        <div className="max-w-2xl mx-auto text-center">
-          <span className="font-mono text-xs text-secondary tracking-wider">
-            Powered by A11YO
+      <footer className="border-t border-border px-6 py-5">
+        <div className="max-w-3xl mx-auto flex items-center justify-between gap-4 flex-wrap">
+          <span className="font-mono text-xs text-secondary">
+            Generated by{' '}
+            <Link href="/" className="text-green hover:underline">A11YO</Link>{' '}
+            · {formatDate(scan.created_at)}
           </span>
+          <Link href="/sample-report" className="font-mono text-xs text-secondary hover:text-white transition-colors">
+            View sample report →
+          </Link>
         </div>
       </footer>
+    </div>
+  );
+}
+
+function SectionHeader({ id, color, title, subtitle }: { id: string; color: string; title: string; subtitle: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-3">
+      <h2 id={id} className={`font-mono text-xs uppercase tracking-widest ${color}`}>{title}</h2>
+      <span className="font-mono text-[10px] text-muted">— {subtitle}</span>
     </div>
   );
 }

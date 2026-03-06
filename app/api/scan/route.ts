@@ -6,8 +6,9 @@ import crypto from 'crypto';
 export const runtime = 'nodejs';
 export const maxDuration = 30;
 
-const ANON_LIMIT = 1;  // per day for unauthenticated
-const FREE_LIMIT = 5;  // per day for free users
+const ANON_LIMIT = 1;           // per day for unauthenticated
+const FREE_LIMIT = 3;           // per day for free users (PRD §F-003)
+const EARLY_ACCESS_LIMIT = 20;  // per day for early access users
 const PRO_LIMIT = 50;
 
 function ipHash(request: NextRequest): string {
@@ -56,7 +57,11 @@ export async function POST(request: NextRequest) {
         .single();
 
       const plan = profile?.plan ?? 'free';
-      const maxPerDay = plan === 'agency' ? 9999 : plan === 'pro' ? PRO_LIMIT : FREE_LIMIT;
+      const maxPerDay =
+        plan === 'agency' ? 9999
+        : plan === 'pro' ? PRO_LIMIT
+        : plan === 'early_access' ? EARLY_ACCESS_LIMIT
+        : FREE_LIMIT;
 
       const { data: allowed } = await supabase.rpc('check_and_increment_rate_limit', {
         p_ip_hash: `user:${user.id}`,
