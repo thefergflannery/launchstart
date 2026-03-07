@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A11YO</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+  <!-- ── State: loading ── -->
+  <div id="screen-loading" class="screen active">
+    <div class="loading-wrap">
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+  <!-- ── State 1: not signed in ── -->
+  <div id="screen-auth" class="screen">
+    <div class="header">
+      <span class="logo">A11<span>YO</span></span>
+      <span style="font-size:10px;color:var(--secondary)">Accessibility Checker</span>
+    </div>
+    <div class="body">
+      <p class="auth-title">Sign in to scan this page</p>
+      <p class="auth-sub">Check any website for WCAG accessibility issues — explained in plain English.</p>
+      <div id="auth-error" class="error-msg"></div>
+      <div class="field">
+        <label for="auth-email">Email</label>
+        <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="auth-password">Password</label>
+        <input type="password" id="auth-password" autocomplete="current-password">
+      </div>
+      <button id="auth-submit" class="btn btn-primary">Sign in →</button>
+    </div>
+    <div class="auth-footer">
+      No account?
+      <a href="https://a11yo.io/auth/signup" target="_blank">Create one free →</a>
+    </div>
+  </div>
+
+  <!-- ── State 2: signed in, ready to scan ── -->
+  <div id="screen-ready" class="screen">
+    <div class="header">
+      <span class="logo">A11<span>YO</span></span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span id="ready-email" class="user-email"></span>
+        <button id="sign-out-btn" class="sign-out-btn">Sign out</button>
+      </div>
+    </div>
+    <div class="body">
+      <p class="current-url">Current page</p>
+      <div id="ready-url" class="url-value"></div>
+      <button id="scan-btn" class="btn btn-primary">Scan this page →</button>
+    </div>
+  </div>
+
+  <!-- ── State 3: scanning ── -->
+  <div id="screen-scanning" class="screen">
+    <div class="header">
+      <span class="logo">A11<span>YO</span></span>
+      <span style="font-size:10px;color:var(--secondary)">Scanning…</span>
+    </div>
+    <div class="scanning-wrap">
+      <div class="spinner"></div>
+      <p id="scan-msg" class="scan-msg">Loading page…</p>
+    </div>
+  </div>
+
+  <!-- ── State 4: results ── -->
+  <div id="screen-results" class="screen">
+    <div class="header">
+      <span class="logo">A11<span>YO</span></span>
+      <span id="results-url-header" style="font-size:10px;color:var(--secondary);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+    </div>
+    <div class="body">
+      <!-- Score + counts -->
+      <div class="score-wrap">
+        <div>
+          <div id="results-score" class="score-num">—</div>
+          <div class="score-label">compliance score</div>
+        </div>
+        <div class="counts">
+          <div class="count-item">
+            <span id="count-critical" class="count-num c-critical">0</span>
+            <span class="count-lbl">Critical</span>
+          </div>
+          <div class="count-item">
+            <span id="count-should" class="count-num c-should">0</span>
+            <span class="count-lbl">Should Fix</span>
+          </div>
+          <div class="count-item">
+            <span id="count-nice" class="count-num c-nice">0</span>
+            <span class="count-lbl">Nice to Have</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Issue cards -->
+      <div id="issues-list" class="issues-list"></div>
+
+      <!-- Passed -->
+      <div id="passed-section" class="passed-section" style="display:none">
+        <p class="passed-title">What passed</p>
+        <div id="passed-list"></div>
+      </div>
+    </div>
+
+    <div class="results-footer">
+      <a id="view-report-link" href="#" target="_blank" class="view-report">View full report →</a>
+      <button id="scan-again-btn" class="scan-again">Scan again</button>
+    </div>
+  </div>
+
+  <!-- ── State: error ── -->
+  <div id="screen-error" class="screen">
+    <div class="header">
+      <span class="logo">A11<span>YO</span></span>
+    </div>
+    <div class="body">
+      <p style="color:var(--fail);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">Error</p>
+      <p id="error-msg" style="font-size:12px;color:#ccc;line-height:1.5;margin-bottom:14px"></p>
+      <button id="error-retry" class="btn btn-outline">Try again</button>
+    </div>
+  </div>
+
+  <script src="issue-library.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

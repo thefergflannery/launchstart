@@ -237,14 +237,14 @@ Every issue type must have three hand-written, human-reviewed pieces of copy:
 | 8 | F-004 | Early access signup page (/early-access) | QUICK WIN | ✅ Done | /early-access — slots counter, code form, success state |
 | 9 | F-002 | User dashboard | SHORT | ✅ Done | Scan counter, limit banner, early access + pro CTAs |
 | 10 | CORE | Full report view (/report/:scanId) | SHORT | ✅ Done | 7-section layout, weighted score, IssueCard, next steps |
-| 11 | CORE | PDF export of full report | SHORT | ⬜ To Do | Printable checklist format for developer handoff |
+| 11 | CORE | PDF export of full report | SHORT | ✅ Done | /report/:id/print — white-background, auto-triggers window.print() |
 | 12 | F-006 | Admin dashboard (/admin) | SHORT | ✅ Done | Users table, early access progress bar, platform stats |
 | 13 | F-008 | Why Choose A11YO (/why-a11yo) | SHORT | ✅ Done | EAA explainer, stats grid, footer link |
 | 14 | F-005 | Stripe €10/month + paid signup flow | MEDIUM | ⬜ To Do | Only needed once 25 early access slots fill |
-| 15 | EXT | Chrome extension — popup UI + scan results | MEDIUM | ⬜ To Do | Manifest V3, popup states 1–4 |
-| 16 | EXT | Chrome extension — plain English issue cards in popup | MEDIUM | ⬜ To Do | Uses same issue library JSON as web report |
-| 17 | EXT | Chrome extension — 'show technical detail' toggle | MEDIUM | ⬜ To Do | Hidden WCAG refs + DOM selectors for devs |
-| 18 | EXT | Chrome extension — 'View full report' link to A11YO | MEDIUM | ⬜ To Do | Opens /report/:scanId in new tab |
+| 15 | EXT | Chrome extension — popup UI + scan results | MEDIUM | ✅ Done | extension/ — 4 states, Supabase auth, scan API |
+| 16 | EXT | Chrome extension — plain English issue cards in popup | MEDIUM | ✅ Done | issue-library.js, expandable cards with means + fix |
+| 17 | EXT | Chrome extension — 'show technical detail' toggle | MEDIUM | ✅ Done | WCAG toggle per card, hidden by default |
+| 18 | EXT | Chrome extension — 'View full report' link to A11YO | MEDIUM | ✅ Done | Footer 'View full report →' opens a11yo.io/report/:id |
 
 ---
 
