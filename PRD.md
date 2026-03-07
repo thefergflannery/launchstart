@@ -48,9 +48,10 @@ A11YO sits between the automated scanner and the human expert. It runs the same 
 
 ### 1.5 Business Model
 
-- **Free tier:** up to 3 scans, summary results only
+- **Free tier:** 3 scans/day, no account required, guest Chrome extension scan (1 per 30 min)
 - **Early Access:** 25 users, full report access free with a code, valid 12 months
-- **Paid:** €10/month — full reports, scan history, PDF export
+- **Pro:** €5/month — 20 scans/day, all 17 checks, scan history, PDF export, Chrome extension
+- **Full Site:** €15/month — 50-page crawl, 50 scans/day, site-wide compliance score
 - **Trigger:** when 25 early access slots are filled, paid model activates
 
 ### 1.6 Tech Stack
@@ -132,7 +133,9 @@ A user is browsing their own website — or a client's website. They click the A
 
 **State 1: Not logged in**
 - Show: A11YO logo, one-line description
-- CTA: 'Sign in to A11YO' → opens a11yo.io/login in a new tab
+- Guest scan option: one free scan per 30 minutes, no account needed (cooldown stored in `chrome.storage.local`)
+- Sign in form: email + password inline in popup
+- 'Create one free →' link → opens a11yo.io/auth/signup in a new tab
 
 **State 2: Logged in, no scan run yet**
 - Show: current URL, user email (small, top right)
@@ -150,11 +153,15 @@ A user is browsing their own website — or a client's website. They click the A
 ### 3.3 Extension Technical Requirements
 
 - Manifest V3 (Chrome and Chromium-based browsers only)
-- Calls A11YO scan API endpoint, authenticated via stored JWT (Supabase session)
-- Stores JWT in `chrome.storage.local`
+- Authenticated scans via `Authorization: Bearer <jwt>` → `/api/ext/scan`
+- Guest scans (no auth) via public `/api/scan` → CORS and IP rate limit apply
+- Stores JWT + refresh token in `chrome.storage.local`; auto-refreshes on expiry
+- Guest scan cooldown (30 min) stored in `chrome.storage.local`
 - Popup dimensions: 380px wide, max 600px height with scroll
-- Issue explanations stored as local JSON map — loads instantly
+- Issue explanations stored as local `issue-library.js` — loads instantly
 - 'View full report' link opens: `a11yo.io/report/:scanId`
+- Guest upsell panel shown after guest scan with link to create free account
+- Scans saved to user dashboard when logged in; guest scans are ephemeral
 
 ### 3.4 The Plain English Issue Library
 
@@ -193,9 +200,10 @@ Every issue type must have three hand-written, human-reviewed pieces of copy:
 - Show remaining slots on `/early-access` page
 - Admin dashboard shows live redemption count
 
-### F-005 Paid Signup — Stripe €10/month
-- Stripe Checkout at `/upgrade` — €10.00/month recurring
-- Webhook updates user tier to 'paid' in Supabase on payment success
+### F-005 Paid Signup — Stripe recurring
+- **Pro:** €5/month — Stripe Checkout at `/upgrade` or `/pricing`
+- **Full Site:** €15/month — 50-page crawl tier
+- Webhook updates user tier to `pro` or `agency` in Supabase on payment success
 - Stripe Customer Portal for self-service billing management
 - User retains access until end of billing period on cancellation
 
@@ -240,11 +248,15 @@ Every issue type must have three hand-written, human-reviewed pieces of copy:
 | 11 | CORE | PDF export of full report | SHORT | ✅ Done | /report/:id/print — white-background, auto-triggers window.print() |
 | 12 | F-006 | Admin dashboard (/admin) | SHORT | ✅ Done | Users table, early access progress bar, platform stats |
 | 13 | F-008 | Why Choose A11YO (/why-a11yo) | SHORT | ✅ Done | EAA explainer, stats grid, footer link |
-| 14 | F-005 | Stripe €10/month + paid signup flow | MEDIUM | ⬜ To Do | Only needed once 25 early access slots fill |
+| 14 | F-005 | Stripe €5/month (Pro) + €15/month (Full Site) | MEDIUM | ⬜ To Do | Update Stripe price IDs in Vercel env; only needed once early access fills |
 | 15 | EXT | Chrome extension — popup UI + scan results | MEDIUM | ✅ Done | extension/ — 4 states, Supabase auth, scan API |
 | 16 | EXT | Chrome extension — plain English issue cards in popup | MEDIUM | ✅ Done | issue-library.js, expandable cards with means + fix |
 | 17 | EXT | Chrome extension — 'show technical detail' toggle | MEDIUM | ✅ Done | WCAG toggle per card, hidden by default |
 | 18 | EXT | Chrome extension — 'View full report' link to A11YO | MEDIUM | ✅ Done | Footer 'View full report →' opens a11yo.io/report/:id |
+| 19 | EXT | Chrome extension — guest scan mode (no account) | MEDIUM | ✅ Done | 1 scan per 30 min via /api/scan; cooldown in chrome.storage.local |
+| 20 | EXT | Chrome extension — inline sign in + create account | MEDIUM | ✅ Done | Sign-in form in popup; create account link → a11yo.io/auth/signup |
+| 21 | CORE | Homepage inline registration panel | QUICK WIN | ✅ Done | SignupPanel component — email/password + Google, embedded in homepage |
+| 22 | CORE | Pricing update — €5/month Pro + €15/month Full Site | QUICK WIN | ✅ Done | Updated /pricing page and homepage pricing section |
 
 ---
 

@@ -6,6 +6,7 @@ import { PassIcon, LockIcon, SparkleIcon } from '@/components/Icons';
 import WaitlistForm from '@/components/WaitlistForm';
 import Nav, { HOME_NAV_LINKS } from '@/components/Nav';
 import SiteFooter from '@/components/SiteFooter';
+import SignupPanel from '@/components/SignupPanel';
 
 const SCAN_MESSAGES = [
   'Loading page…',
@@ -88,12 +89,19 @@ const FREE_FEATURES = [
 
 const PRO_FEATURES = [
   'All 17 checks',
-  'Multi-page crawl — up to 50 pages',
-  'Multi-site comparison reports',
-  'AI Alt Text Generator',
-  'Scheduled weekly scans + email diff',
+  '20 scans / day',
+  'Scan history saved to dashboard',
   'PDF export for client delivery',
-  'White-label report branding',
+  'Chrome extension access',
+  'Shareable report URL',
+];
+
+const FULL_SITE_FEATURES = [
+  'Everything in Pro',
+  '50-page full site crawl',
+  '50 scans / day',
+  'Site-wide compliance score',
+  'Priority support',
 ];
 
 export default function HomePage() {
@@ -213,6 +221,17 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── Signup panel ── */}
+        <section className="border-b border-border bg-surface">
+          <div className="max-w-5xl mx-auto px-6 py-10">
+            <div className="mb-5">
+              <span className="font-mono text-xs tracking-widest uppercase text-green block mb-1">Free account</span>
+              <p className="text-white font-semibold text-sm">Save your results and scan more pages</p>
+            </div>
+            <SignupPanel />
+          </div>
+        </section>
+
         {/* ── Stats bar ── */}
         <section className="border-b border-border bg-surface">
           <div className="max-w-5xl mx-auto px-6">
@@ -319,14 +338,14 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-border mb-16">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border mb-16">
 
               {/* Free */}
-              <div className="bg-black p-10">
-                <div className="mb-8">
+              <div className="bg-black p-8">
+                <div className="mb-6">
                   <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">Free</span>
                   <div className="flex items-baseline gap-2 mb-2">
-                    <span className="font-mono text-5xl font-semibold text-white">€0</span>
+                    <span className="font-mono text-4xl font-semibold text-white">€0</span>
                     <span className="text-secondary text-sm">forever</span>
                   </div>
                   <p className="text-secondary text-sm">No account. No credit card. Just paste and scan.</p>
@@ -341,26 +360,26 @@ export default function HomePage() {
                 </ul>
                 <a
                   href="#scan"
-                  className="block text-center font-mono text-sm tracking-wider uppercase border border-border px-6 py-3.5 text-white hover:border-white transition-colors"
+                  className="block text-center font-mono text-sm tracking-wider uppercase border border-border px-6 py-3 text-white hover:border-white transition-colors"
                 >
                   Start scanning →
                 </a>
               </div>
 
               {/* Pro */}
-              <div className="relative corner-mark p-10 bg-black border border-green/20" style={{ boxShadow: '0 0 40px -8px rgba(0,233,106,0.12)' }}>
-                <div className="mb-8">
+              <div className="relative corner-mark p-8 bg-black border border-green/20" style={{ boxShadow: '0 0 40px -8px rgba(0,233,106,0.12)' }}>
+                <div className="mb-6">
                   <div className="flex items-center gap-3 mb-3">
                     <span className="font-mono text-xs tracking-widest uppercase text-green">Pro</span>
                     <span className="font-mono text-[10px] border border-green/30 text-green px-2 py-0.5 uppercase tracking-wider">
-                      One-time report
+                      Most popular
                     </span>
                   </div>
                   <div className="flex items-baseline gap-2 mb-2">
-                    <span className="font-mono text-5xl font-semibold text-white">€29</span>
-                    <span className="text-secondary text-sm">/ report</span>
+                    <span className="font-mono text-4xl font-semibold text-white">€5</span>
+                    <span className="text-secondary text-sm">/ month</span>
                   </div>
-                  <p className="text-secondary text-sm">Pay once, get a full 17-check audit with a shareable PDF report.</p>
+                  <p className="text-secondary text-sm">Single-page scans with history and Chrome extension.</p>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {PRO_FEATURES.map((f) => (
@@ -370,7 +389,38 @@ export default function HomePage() {
                     </li>
                   ))}
                 </ul>
-                <WaitlistForm />
+                <a
+                  href="/pricing"
+                  className="block text-center font-mono text-sm tracking-wider uppercase bg-green text-black px-6 py-3 hover:bg-green-mid transition-colors"
+                >
+                  Get Pro — €5/month →
+                </a>
+              </div>
+
+              {/* Full Site */}
+              <div className="bg-black p-8">
+                <div className="mb-6">
+                  <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">Full Site</span>
+                  <div className="flex items-baseline gap-2 mb-2">
+                    <span className="font-mono text-4xl font-semibold text-white">€15</span>
+                    <span className="text-secondary text-sm">/ month</span>
+                  </div>
+                  <p className="text-secondary text-sm">Full site crawl — audit every page at once.</p>
+                </div>
+                <ul className="space-y-3 mb-8">
+                  {FULL_SITE_FEATURES.map((f) => (
+                    <li key={f} className="flex items-start gap-3">
+                      <span className="mt-0.5 flex-shrink-0 text-green"><SparkleIcon size={11} /></span>
+                      <span className="text-secondary text-sm">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href="/pricing"
+                  className="block text-center font-mono text-sm tracking-wider uppercase border border-border px-6 py-3 text-white hover:border-white transition-colors"
+                >
+                  Get Full Site — €15/month →
+                </a>
               </div>
 
             </div>

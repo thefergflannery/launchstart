@@ -7,46 +7,46 @@ import SiteFooter from '@/components/SiteFooter';
 export const metadata: Metadata = { title: 'Pricing — A11YO' };
 
 const FREE_FEATURES = [
-  'Single-page scan only',
-  '5 checks (accessibility, SEO, load time)',
+  '3 scans per day, no account needed',
+  'All 17 accessibility, SEO & launch checks',
+  'Plain English report with fix instructions',
   'Shareable report URL',
-  'Pass / amber / fail with fix hints',
+  'PDF export',
 ];
 
 const PRO_FEATURES = [
   'Everything in Free',
-  'All 17 checks per scan',
-  'Up to 50 pages per scan (crawl)',
-  'AI Alt Text Generator',
-  'Scheduled weekly scans + email diff',
-  'PDF export for client delivery',
+  '20 single-page scans per day',
+  'Scan history — all reports saved',
+  'Plain English issue cards with WCAG refs',
+  'PDF export for developer handoff',
+  'Chrome extension access',
 ];
 
 const AGENCY_FEATURES = [
   'Everything in Pro',
-  'Unlimited scans per day',
-  'Multi-site comparison reports',
-  'White-label report branding',
-  'Priority scan queue',
-  'Team seats (coming soon)',
+  'Full site crawl — up to 50 pages per scan',
+  '50 scans per day',
+  'Multi-page compliance score',
+  'Priority support',
 ];
 
 const FAQ = [
   {
-    q: 'Do I need a credit card for Free?',
-    a: 'No. Single-page scans are free forever — no account or card required.',
+    q: 'Do I need an account to scan?',
+    a: 'No. You can run up to 3 scans per day without an account. Create a free account and upgrade to save your history and run more scans.',
   },
   {
-    q: 'What does a Pro report include?',
-    a: 'A one-time payment gives you all 17 checks, multi-page crawl, AI alt text generator, and a PDF export for client delivery.',
+    q: 'What is the difference between Pro and Full Site?',
+    a: 'Pro scans a single page at a time — perfect for checking specific pages or ongoing monitoring. Full Site crawls up to 50 pages in one go and gives you a site-wide compliance score.',
   },
   {
-    q: 'Is it a subscription?',
-    a: 'No. Pro is a one-off payment per report — no recurring charges, no cancellation needed.',
+    q: 'Can I use the Chrome extension?',
+    a: 'Yes — the Chrome extension is included with a Pro or Full Site subscription. It lets you scan any page you are browsing without leaving the tab.',
   },
   {
     q: 'Is there a money-back guarantee?',
-    a: 'Yes. If your report fails to generate we\'ll refund you in full, no questions asked.',
+    a: 'Yes. If you are not satisfied in the first 7 days, contact us and we will refund you in full, no questions asked.',
   },
 ];
 
@@ -67,7 +67,7 @@ export default function PricingPage() {
               Simple, honest pricing.
             </h1>
             <p className="text-secondary text-lg max-w-md mx-auto">
-              Start free. Upgrade when you need all 17 checks, multi-page crawls, and AI tools.
+              Start free — no account needed. Upgrade for scan history, the Chrome extension, and full-site crawls.
             </p>
           </div>
 
@@ -83,7 +83,7 @@ export default function PricingPage() {
                   <span className="text-secondary text-sm">forever</span>
                 </div>
                 <p className="text-secondary text-sm mb-6">
-                  No account required. Paste and scan instantly.
+                  No account required. Paste any URL and scan instantly.
                 </p>
                 <ul className="space-y-3">
                   {FREE_FEATURES.map((f) => (
@@ -108,15 +108,15 @@ export default function PricingPage() {
                 <div className="flex items-center gap-3 mb-3">
                   <span className="font-mono text-xs tracking-widest uppercase text-green block">Pro</span>
                   <span className="font-mono text-[10px] border border-green/30 text-green px-2 py-0.5 uppercase tracking-wider">
-                    One-time report
+                    Most popular
                   </span>
                 </div>
                 <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-4xl font-display font-semibold text-white">€29</span>
-                  <span className="text-secondary text-sm">/ report</span>
+                  <span className="text-4xl font-display font-semibold text-white">€5</span>
+                  <span className="text-secondary text-sm">/ month</span>
                 </div>
                 <p className="text-secondary text-sm mb-6">
-                  Pay once. Full 17-check audit with shareable PDF report — no subscription.
+                  Single-page scans with full history, PDF export, and Chrome extension.
                 </p>
                 <ul className="space-y-3">
                   {PRO_FEATURES.map((f) => (
@@ -127,19 +127,19 @@ export default function PricingPage() {
                   ))}
                 </ul>
               </div>
-              <CheckoutButton plan="pro" label="Upgrade to Pro →" />
+              <CheckoutButton plan="pro" label="Get Pro — €5/month →" />
             </div>
 
-            {/* Agency */}
+            {/* Full Site */}
             <div className="bg-black p-8 flex flex-col">
               <div className="mb-8 flex-1">
-                <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">Agency</span>
+                <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">Full Site</span>
                 <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-4xl font-display font-semibold text-white">€79</span>
+                  <span className="text-4xl font-display font-semibold text-white">€15</span>
                   <span className="text-secondary text-sm">/ month</span>
                 </div>
                 <p className="text-secondary text-sm mb-6">
-                  For teams with multiple clients and high scan volume.
+                  Crawl your entire site and get a single compliance score across all pages.
                 </p>
                 <ul className="space-y-3">
                   {AGENCY_FEATURES.map((f) => (
@@ -150,7 +150,7 @@ export default function PricingPage() {
                   ))}
                 </ul>
               </div>
-              <CheckoutButton plan="agency" label="Upgrade to Agency →" />
+              <CheckoutButton plan="agency" label="Get Full Site — €15/month →" />
             </div>
 
           </div>

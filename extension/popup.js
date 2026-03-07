@@ -4,6 +4,7 @@
 const SUPABASE_URL = 'https://zvmyjfwkcrnpbudvclko.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_zJTYramyu5uaKoUc7hV6FA_saOZGaiw';
 const API_BASE = 'https://a11yo.io';
+const GUEST_COOLDOWN_MS = 30 * 60 * 1000; // 30 minutes
 
 const SCAN_MESSAGES = [
   'Loading page…',
@@ -37,6 +38,45 @@ let scanMsgInterval = null;
 function showScreen(name) {
   Object.values(screens).forEach((s) => s.classList.remove('active'));
   screens[name].classList.add('active');
+}
+
+// ── Guest scan helpers ────────────────────────────────────────────────────────
+
+let isGuestScan = false;
+
+async function getLastGuestScan() {
+  return new Promise((resolve) => {
+    chrome.storage.local.get(['lastGuestScan'], (r) => resolve(r.lastGuestScan ?? 0));
+  });
+}
+
+async function recordGuestScan() {
+  return new Promise((resolve) => {
+    chrome.storage.local.set({ lastGuestScan: Date.now() }, resolve);
+  });
+}
+
+function formatCooldown(ms) {
+  const mins = Math.ceil(ms / 60000);
+  return `${mins} minute${mins !== 1 ? 's' : ''}`;
+}
+
+async function updateGuestCooldownUI() {
+  const last = await getLastGuestScan();
+  const elapsed = Date.now() - last;
+  const remaining = GUEST_COOLDOWN_MS - elapsed;
+  const btn = document.getElementById('guest-scan-btn');
+  const msg = document.getElementById('guest-cooldown-msg');
+
+  if (remaining > 0) {
+    btn.disabled = true;
+    btn.textContent = 'Scan this page (guest) →';
+    msg.style.display = 'block';
+    msg.textContent = `Guest scan available again in ${formatCooldown(remaining)}. Sign in to scan any time.`;
+  } else {
+    btn.disabled = false;
+    msg.style.display = 'none';
+  }
 }
 
 // ── Storage helpers ───────────────────────────────────────────────────────────
@@ -121,6 +161,17 @@ async function runScan(url, token) {
   const data = await res.json();
   if (!res.ok) throw new Error(data.error ?? 'Scan failed. Please try again.');
   return data; // { id, results: { accessibility, seo, launch } }
+}
+
+async function runGuestScan(url) {
+  const res = await fetch(`${API_BASE}/api/scan`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error ?? 'Scan failed. Please try again.');
+  return data;
 }
 
 // ── Score calculation ─────────────────────────────────────────────────────────
@@ -251,6 +302,10 @@ function renderResults(scanData) {
     issuesList.appendChild(card);
   }
 
+  // Guest upsell
+  const upsell = document.getElementById('guest-upsell');
+  if (upsell) upsell.style.display = isGuestScan ? 'block' : 'none';
+
   // Passed section
   if (passed.length > 0) {
     const passedSection = document.getElementById('passed-section');
@@ -321,10 +376,41 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
       await clearSession();
       currentSession = null;
+      await updateGuestCooldownUI();
       showScreen('auth');
     }
   } else {
+    await updateGuestCooldownUI();
     showScreen('auth');
+  }
+});
+
+// ── Guest scan button ─────────────────────────────────────────────────────────
+
+document.getElementById('guest-scan-btn').addEventListener('click', async () => {
+  if (!currentTabUrl || currentTabUrl.startsWith('chrome://') || currentTabUrl.startsWith('chrome-extension://')) {
+    showErrorScreen('Cannot scan browser pages. Please navigate to a website first.');
+    return;
+  }
+
+  const last = await getLastGuestScan();
+  if (Date.now() - last < GUEST_COOLDOWN_MS) {
+    await updateGuestCooldownUI();
+    return;
+  }
+
+  isGuestScan = true;
+  showScreen('scanning');
+  startScanProgress();
+
+  try {
+    await recordGuestScan();
+    const data = await runGuestScan(currentTabUrl);
+    stopScanProgress();
+    renderResults(data);
+  } catch (err) {
+    stopScanProgress();
+    showErrorScreen(err.message);
   }
 });
 
@@ -349,6 +435,7 @@ document.getElementById('auth-submit').addEventListener('click', async () => {
   try {
     const session = await signIn(email, password);
     currentSession = session;
+    isGuestScan = false;
     await saveSession(session);
     document.getElementById('ready-email').textContent = session.user?.email ?? email;
     document.getElementById('ready-url').textContent = currentTabUrl || '(no URL)';
