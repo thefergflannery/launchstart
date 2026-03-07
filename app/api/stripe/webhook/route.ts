@@ -40,6 +40,16 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  if (event.type === 'customer.subscription.updated') {
+    const sub = event.data.object as Stripe.Subscription;
+    const userId = sub.metadata?.supabase_user_id;
+    const plan = sub.metadata?.plan;
+    const active = sub.status === 'active' || sub.status === 'trialing';
+    if (userId && plan && active) {
+      await updateProfile(userId, plan, sub.id);
+    }
+  }
+
   if (event.type === 'customer.subscription.deleted') {
     const sub = event.data.object as Stripe.Subscription;
     const userId = sub.metadata?.supabase_user_id;

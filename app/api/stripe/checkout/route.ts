@@ -41,14 +41,14 @@ export async function POST(request: NextRequest) {
       .eq('id', user.id);
   }
 
-  // One-time payment — not a subscription
   const params: Stripe.Checkout.SessionCreateParams = {
     customer: customerId,
-    mode: 'payment',
+    mode: 'subscription',
     line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${baseUrl}/dashboard?upgraded=1`,
     cancel_url: `${baseUrl}/pricing`,
     metadata: { supabase_user_id: user.id, plan: plan ?? '' },
+    subscription_data: { metadata: { supabase_user_id: user.id, plan: plan ?? '' } },
   };
   const session = await stripe.checkout.sessions.create(params);
 
