@@ -77,14 +77,16 @@ export const HOME_NAV_LINKS: NavLink[] = [
   { href: '#how-it-works', label: 'How it works', isAnchor: true, hideBelow: 'sm' },
   { href: '#checks',       label: 'Checks',        isAnchor: true, hideBelow: 'sm' },
   { href: '#pricing',      label: 'Pricing',        isAnchor: true, hideBelow: 'sm' },
+  { href: '/extension',    label: 'Extension',      hideBelow: 'md' },
   { href: '/tools',        label: 'Tools',          hideBelow: 'md' },
   { href: '/auth/login',   label: 'Sign in',        hideBelow: 'sm' },
 ];
 
 export const PAGE_NAV_LINKS: NavLink[] = [
-  { href: '/tools',       label: 'Tools',   hideBelow: 'sm' },
-  { href: '/pricing',     label: 'Pricing', hideBelow: 'sm' },
-  { href: '/auth/login',  label: 'Sign in', hideBelow: 'sm' },
+  { href: '/extension',   label: 'Extension', hideBelow: 'md' },
+  { href: '/tools',       label: 'Tools',     hideBelow: 'sm' },
+  { href: '/pricing',     label: 'Pricing',   hideBelow: 'sm' },
+  { href: '/auth/login',  label: 'Sign in',   hideBelow: 'sm' },
 ];
 
 export const TOOLS_NAV_LINKS: NavLink[] = [

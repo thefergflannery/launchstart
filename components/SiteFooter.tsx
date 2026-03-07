@@ -13,6 +13,9 @@ export default function SiteFooter({ maxWidth = 'max-w-5xl' }: SiteFooterProps) 
       <div className={`${maxWidth} mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3`}>
         <div className="flex items-center gap-5">
           <span className="font-mono text-xs text-white tracking-wider uppercase font-semibold">A11YO</span>
+          <Link href="/extension" className="font-mono text-xs text-secondary hover:text-white transition-colors">
+            Extension
+          </Link>
           <Link href="/tools" className="font-mono text-xs text-secondary hover:text-white transition-colors">
             Tools
           </Link>

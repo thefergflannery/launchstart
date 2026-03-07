@@ -430,27 +430,27 @@ export default function HomePage() {
         {/* ── Chrome Extension ── */}
         <section className="border-b border-border py-20 bg-surface">
           <div className="max-w-5xl mx-auto px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
 
               {/* Copy */}
               <div>
                 <div className="flex items-center gap-3 mb-5">
-                  <span className="font-mono text-xs tracking-widest uppercase text-green">Coming soon</span>
-                  <span className="font-mono text-[10px] border border-green/30 text-green/60 px-2 py-0.5 uppercase tracking-wider">Chrome Extension</span>
+                  <span className="font-mono text-xs tracking-widest uppercase text-green">Chrome Extension</span>
+                  <span className="font-mono text-[10px] border border-green/30 text-green/60 px-2 py-0.5 uppercase tracking-wider">Beta</span>
                 </div>
                 <h2 className="text-4xl font-display font-bold text-white tracking-tight leading-tight mb-5">
                   Audit any page,<br />right from your browser.
                 </h2>
                 <p className="text-secondary leading-relaxed mb-8">
-                  No copy-pasting URLs. The A11YO Chrome extension runs a full accessibility and launch-readiness audit on whatever page you&apos;re viewing — staging, production, or a client&apos;s live site. Results in your browser, shareable report link in one click.
+                  Click the A11YO icon while you&apos;re on any page — staging, production, or a client&apos;s live site. A full accessibility audit runs in seconds. Plain English results. Shareable report in one click.
                 </p>
 
                 <ul className="space-y-3 mb-10">
                   {[
-                    'One-click audit on any page you\'re viewing',
-                    'Instant pass / warn / fail overlay on the page',
-                    'Shareable report link synced to your dashboard',
-                    'Works on local dev servers and staging URLs',
+                    'One click — no copy-pasting URLs',
+                    'Guest scan: free, no account needed',
+                    'Shareable report link saved to your dashboard',
+                    'Works on localhost and staging URLs',
                   ].map((f) => (
                     <li key={f} className="flex items-start gap-3">
                       <span className="mt-1.5 w-1.5 h-1.5 bg-green flex-shrink-0" />
@@ -459,60 +459,58 @@ export default function HomePage() {
                   ))}
                 </ul>
 
-                <div className="flex items-center gap-4">
-                  <WaitlistForm placeholder="Get notified at launch" />
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a
+                    href="/extension"
+                    className="font-mono text-xs tracking-wider uppercase bg-green text-black px-6 py-3 hover:bg-green-mid transition-colors text-center"
+                  >
+                    Learn more →
+                  </a>
+                  <div className="flex-1">
+                    <WaitlistForm placeholder="Notify me at launch" />
+                  </div>
                 </div>
               </div>
 
-              {/* Visual */}
-              <div className="relative">
-                <div className="border border-border bg-black p-1">
-                  {/* Browser chrome mockup */}
-                  <div className="bg-surface border-b border-border px-4 py-3 flex items-center gap-3">
-                    <div className="flex gap-1.5">
-                      <span className="w-2.5 h-2.5 rounded-full bg-border" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-border" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-border" />
+              {/* Popup mockup */}
+              <div className="relative flex justify-center lg:justify-end">
+                <div className="border border-border bg-black" style={{ width: 300 }}>
+                  <div className="border-b border-border px-4 py-3 flex items-center justify-between">
+                    <span className="font-mono text-sm font-bold text-white">A11<span className="text-green">YO</span></span>
+                    <span className="font-mono text-[10px] text-green uppercase tracking-wider">Scan complete</span>
+                  </div>
+                  <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+                    <div>
+                      <div className="font-mono text-2xl font-bold text-green">78</div>
+                      <div className="font-mono text-[9px] text-secondary uppercase tracking-wider">compliance score</div>
                     </div>
-                    <div className="flex-1 bg-black border border-border px-3 py-1.5 flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-green-mid flex-shrink-0" />
-                      <span className="font-mono text-xs text-secondary truncate">https://yourclient.com</span>
-                    </div>
-                    <div className="w-6 h-6 border border-green/40 flex items-center justify-center flex-shrink-0" title="A11YO extension">
-                      <span className="font-display text-[8px] font-bold text-green">A</span>
+                    <div className="flex gap-3 text-right">
+                      <div><div className="font-mono text-base font-bold text-red-400">2</div><div className="font-mono text-[9px] text-secondary">Critical</div></div>
+                      <div><div className="font-mono text-base font-bold text-amber-400">3</div><div className="font-mono text-[9px] text-secondary">Should fix</div></div>
+                      <div><div className="font-mono text-base font-bold text-secondary">1</div><div className="font-mono text-[9px] text-secondary">Nice to have</div></div>
                     </div>
                   </div>
-                  {/* Popup panel */}
-                  <div className="p-6 space-y-3">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="font-display font-bold text-sm text-white">A11YO</span>
-                      <span className="font-mono text-[10px] text-green uppercase tracking-wider">Scan complete</span>
-                    </div>
+                  <div className="divide-y divide-border">
                     {[
-                      { label: 'Images alt text',  status: 'pass' },
-                      { label: 'Colour contrast',  status: 'fail' },
-                      { label: 'Meta description', status: 'pass' },
-                      { label: 'Form labels',      status: 'warn' },
-                      { label: 'HTTPS enforced',   status: 'pass' },
+                      { label: 'Images have no text description', sev: 'CRITICAL', cls: 'text-red-400 bg-red-400/10' },
+                      { label: 'Form fields have no labels', sev: 'CRITICAL', cls: 'text-red-400 bg-red-400/10' },
+                      { label: 'Text may be hard to read', sev: 'SHOULD FIX', cls: 'text-amber-400 bg-amber-400/10' },
+                      { label: 'No meta description found', sev: 'SHOULD FIX', cls: 'text-amber-400 bg-amber-400/10' },
                     ].map((item) => (
-                      <div key={item.label} className="flex items-center justify-between py-2 border-b border-border last:border-0">
-                        <span className="font-mono text-xs text-secondary">{item.label}</span>
-                        <span className={`font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 ${
-                          item.status === 'pass' ? 'text-green bg-green/10' :
-                          item.status === 'fail' ? 'text-fail bg-fail/10' :
-                          'text-warn bg-warn/10'
-                        }`}>
-                          {item.status}
+                      <div key={item.label} className="px-4 py-2.5 flex items-center justify-between gap-3">
+                        <span className="font-mono text-xs text-white leading-snug flex-1">{item.label}</span>
+                        <span className={`font-mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 whitespace-nowrap flex-shrink-0 ${item.cls}`}>
+                          {item.sev}
                         </span>
                       </div>
                     ))}
-                    <button className="w-full mt-3 font-mono text-xs uppercase tracking-wider bg-green text-black py-2.5 font-semibold">
-                      View full report →
-                    </button>
+                  </div>
+                  <div className="border-t border-border px-4 py-3 flex items-center justify-between">
+                    <span className="font-mono text-[10px] text-green">View full report →</span>
+                    <span className="font-mono text-[10px] text-secondary">Scan again</span>
                   </div>
                 </div>
-                {/* Glow */}
-                <div className="absolute -inset-px bg-green/5 -z-10 blur-xl" aria-hidden="true" />
+                <div className="absolute -inset-px bg-green/5 -z-10 blur-2xl pointer-events-none" aria-hidden="true" />
               </div>
 
             </div>
