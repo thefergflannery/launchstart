@@ -257,6 +257,11 @@ Every issue type must have three hand-written, human-reviewed pieces of copy:
 | 20 | EXT | Chrome extension — inline sign in + create account | MEDIUM | ✅ Done | Sign-in form in popup; create account link → a11yo.com/auth/signup |
 | 21 | CORE | Homepage inline registration panel | QUICK WIN | ✅ Done | SignupPanel component — email/password + Google, embedded in homepage |
 | 22 | CORE | Pricing update — €5/month Pro + €15/month Full Site | QUICK WIN | ✅ Done | Updated /pricing page and homepage pricing section |
+| 23 | F-005 | Stripe recurring subscriptions live | QUICK WIN | ✅ Done | Products + prices created in Stripe; webhook at a11yo.com/api/stripe/webhook |
+| 24 | ADM | Superadmin dashboard (/admin) — full user management | SHORT | ✅ Done | Inline plan/role editing, delete users, MRR/ARR stats, waitlist count, quick links |
+| 25 | ADM | Admin API (/api/admin/user) | SHORT | ✅ Done | PATCH plan/role + DELETE via admin RLS policies (no service role key needed) |
+| 26 | INFRA | All URLs migrated from a11yo.io → a11yo.com | QUICK WIN | ✅ Done | Code, Stripe webhook, Vercel NEXT_PUBLIC_BASE_URL |
+| 27 | EXT | Chrome extension — colour contrast checker | MEDIUM | ✅ Done | Scans all text/bg colour pairs, WCAG AA/AAA rating, EyeDropper cursor picker |
 
 ---
 
