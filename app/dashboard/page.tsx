@@ -2,6 +2,8 @@
  * F-002 — User Dashboard (/dashboard)
  * PRD ref: §F-002
  */
+export const dynamic = 'force-dynamic';
+
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
