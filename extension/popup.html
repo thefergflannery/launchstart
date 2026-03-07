@@ -67,6 +67,10 @@
         <button id="sign-out-btn" class="sign-out-btn">Sign out</button>
       </div>
     </div>
+    <nav class="tab-bar">
+      <button class="tab active" data-tab="scan">Accessibility</button>
+      <button class="tab" data-tab="contrast">Colour Contrast</button>
+    </nav>
     <div class="body">
       <p class="current-url">Current page</p>
       <div id="ready-url" class="url-value"></div>
@@ -90,8 +94,15 @@
   <div id="screen-contrast" class="screen">
     <div class="header">
       <span class="logo">A11<span>YO</span></span>
-      <span style="font-size:10px;color:var(--secondary)">Colour Contrast</span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span id="contrast-email" class="user-email"></span>
+        <button id="contrast-sign-out-btn" class="sign-out-btn" style="display:none">Sign out</button>
+      </div>
     </div>
+    <nav class="tab-bar">
+      <button class="tab" data-tab="scan">Accessibility</button>
+      <button class="tab active" data-tab="contrast">Colour Contrast</button>
+    </nav>
     <div class="body">
       <div style="display:flex;gap:8px;margin-bottom:12px">
         <button id="contrast-scan-btn" class="btn btn-primary" style="flex:1">Scan page colours →</button>
@@ -111,17 +122,18 @@
         <span id="contrast-pass-count" style="color:var(--green);font-weight:700"></span> passing
       </div>
     </div>
-    <div class="results-footer" style="justify-content:flex-start">
-      <button id="contrast-back-btn" class="scan-again">← Back to scan</button>
-    </div>
   </div>
 
   <!-- ── State 4: results ── -->
   <div id="screen-results" class="screen">
     <div class="header">
       <span class="logo">A11<span>YO</span></span>
-      <span id="results-url-header" style="font-size:10px;color:var(--secondary);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+      <span id="results-url-header" style="font-size:10px;color:var(--secondary);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
     </div>
+    <nav class="tab-bar">
+      <button class="tab active" data-tab="scan">Accessibility</button>
+      <button class="tab" data-tab="contrast">Colour Contrast</button>
+    </nav>
     <div class="body">
       <!-- Score + counts -->
       <div class="score-wrap">
@@ -164,7 +176,6 @@
 
     <div class="results-footer">
       <a id="view-report-link" href="#" target="_blank" class="view-report">View full report →</a>
-      <button id="contrast-checker-btn" class="scan-again" title="Check colour contrast">Contrast</button>
       <button id="scan-again-btn" class="scan-again">Scan again</button>
     </div>
   </div>

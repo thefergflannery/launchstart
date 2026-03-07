@@ -38,6 +38,10 @@ let scanMsgInterval = null;
 function showScreen(name) {
   Object.values(screens).forEach((s) => s.classList.remove('active'));
   screens[name].classList.add('active');
+  // Sync tab bar active state
+  const isContrast = name === 'contrast';
+  document.querySelectorAll('.tab[data-tab="contrast"]').forEach((t) => t.classList.toggle('active', isContrast));
+  document.querySelectorAll('.tab[data-tab="scan"]').forEach((t) => t.classList.toggle('active', !isContrast));
 }
 
 // ── Guest scan helpers ────────────────────────────────────────────────────────
@@ -517,15 +521,41 @@ document.getElementById('error-retry').addEventListener('click', () => {
   }
 });
 
+// ── Tab bar navigation ────────────────────────────────────────────────────────
+// Track which scan-based screen was active before switching to contrast
+let previousScanScreen = 'ready';
+
+document.querySelectorAll('.tab').forEach((tab) => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+    if (target === 'contrast') {
+      // Sync user info to contrast header
+      const email = document.getElementById('ready-email')?.textContent;
+      const contrastEmail = document.getElementById('contrast-email');
+      const contrastSignOut = document.getElementById('contrast-sign-out-btn');
+      if (email && contrastEmail) contrastEmail.textContent = email;
+      if (contrastSignOut) contrastSignOut.style.display = currentSession ? 'block' : 'none';
+      // Remember where we came from
+      const active = document.querySelector('.screen.active');
+      if (active && active.id !== 'screen-contrast') {
+        previousScanScreen = active.id.replace('screen-', '');
+      }
+      showScreen('contrast');
+    } else {
+      showScreen(previousScanScreen);
+    }
+  });
+});
+
+// Sign out from contrast screen
+document.getElementById('contrast-sign-out-btn').addEventListener('click', async () => {
+  await clearSession();
+  currentSession = null;
+  previousScanScreen = 'ready';
+  showScreen('auth');
+});
+
 // ── Colour Contrast Checker ───────────────────────────────────────────────────
-
-document.getElementById('contrast-checker-btn').addEventListener('click', () => {
-  showScreen('contrast');
-});
-
-document.getElementById('contrast-back-btn').addEventListener('click', () => {
-  showScreen('results');
-});
 
 document.getElementById('contrast-scan-btn').addEventListener('click', async () => {
   const loading = document.getElementById('contrast-loading');
