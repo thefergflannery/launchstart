@@ -135,7 +135,7 @@ A user is browsing their own website — or a client's website. They click the A
 - Show: A11YO logo, one-line description
 - Guest scan option: one free scan per 30 minutes, no account needed (cooldown stored in `chrome.storage.local`)
 - Sign in form: email + password inline in popup
-- 'Create one free →' link → opens a11yo.io/auth/signup in a new tab
+- 'Create one free →' link → opens a11yo.com/auth/signup in a new tab
 
 **State 2: Logged in, no scan run yet**
 - Show: current URL, user email (small, top right)
@@ -159,7 +159,7 @@ A user is browsing their own website — or a client's website. They click the A
 - Guest scan cooldown (30 min) stored in `chrome.storage.local`
 - Popup dimensions: 380px wide, max 600px height with scroll
 - Issue explanations stored as local `issue-library.js` — loads instantly
-- 'View full report' link opens: `a11yo.io/report/:scanId`
+- 'View full report' link opens: `a11yo.com/report/:scanId`
 - Guest upsell panel shown after guest scan with link to create free account
 - Scans saved to user dashboard when logged in; guest scans are ephemeral
 
@@ -252,9 +252,9 @@ Every issue type must have three hand-written, human-reviewed pieces of copy:
 | 15 | EXT | Chrome extension — popup UI + scan results | MEDIUM | ✅ Done | extension/ — 4 states, Supabase auth, scan API |
 | 16 | EXT | Chrome extension — plain English issue cards in popup | MEDIUM | ✅ Done | issue-library.js, expandable cards with means + fix |
 | 17 | EXT | Chrome extension — 'show technical detail' toggle | MEDIUM | ✅ Done | WCAG toggle per card, hidden by default |
-| 18 | EXT | Chrome extension — 'View full report' link to A11YO | MEDIUM | ✅ Done | Footer 'View full report →' opens a11yo.io/report/:id |
+| 18 | EXT | Chrome extension — 'View full report' link to A11YO | MEDIUM | ✅ Done | Footer 'View full report →' opens a11yo.com/report/:id |
 | 19 | EXT | Chrome extension — guest scan mode (no account) | MEDIUM | ✅ Done | 1 scan per 30 min via /api/scan; cooldown in chrome.storage.local |
-| 20 | EXT | Chrome extension — inline sign in + create account | MEDIUM | ✅ Done | Sign-in form in popup; create account link → a11yo.io/auth/signup |
+| 20 | EXT | Chrome extension — inline sign in + create account | MEDIUM | ✅ Done | Sign-in form in popup; create account link → a11yo.com/auth/signup |
 | 21 | CORE | Homepage inline registration panel | QUICK WIN | ✅ Done | SignupPanel component — email/password + Google, embedded in homepage |
 | 22 | CORE | Pricing update — €5/month Pro + €15/month Full Site | QUICK WIN | ✅ Done | Updated /pricing page and homepage pricing section |
 

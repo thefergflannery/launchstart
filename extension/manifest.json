@@ -5,10 +5,11 @@
   "description": "Plain English accessibility report for any website. Find WCAG issues explained for real people.",
   "permissions": [
     "storage",
-    "activeTab"
+    "activeTab",
+    "scripting"
   ],
   "host_permissions": [
-    "https://a11yo.io/*",
+    "https://a11yo.com/*",
     "https://*.supabase.co/*"
   ],
   "action": {

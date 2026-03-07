@@ -92,10 +92,10 @@ export default function AccessibilityPage() {
               <p>
                 If you experience any accessibility barriers on A11YO, please contact us at{' '}
                 <a
-                  href="mailto:a11y@a11yo.io"
+                  href="mailto:a11y@a11yo.com"
                   className="text-green underline underline-offset-2 hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green rounded-sm"
                 >
-                  a11y@a11yo.io
+                  a11y@a11yo.com
                 </a>
                 . We aim to respond within 2 business days.
               </p>

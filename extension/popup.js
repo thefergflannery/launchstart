@@ -3,7 +3,7 @@
 
 const SUPABASE_URL = 'https://zvmyjfwkcrnpbudvclko.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_zJTYramyu5uaKoUc7hV6FA_saOZGaiw';
-const API_BASE = 'https://a11yo.io';
+const API_BASE = 'https://a11yo.com';
 const GUEST_COOLDOWN_MS = 30 * 60 * 1000; // 30 minutes
 
 const SCAN_MESSAGES = [
@@ -514,5 +514,105 @@ document.getElementById('error-retry').addEventListener('click', () => {
     showScreen('ready');
   } else {
     showScreen('auth');
+  }
+});
+
+// ── Colour Contrast Checker ───────────────────────────────────────────────────
+
+document.getElementById('contrast-checker-btn').addEventListener('click', () => {
+  showScreen('contrast');
+});
+
+document.getElementById('contrast-back-btn').addEventListener('click', () => {
+  showScreen('results');
+});
+
+document.getElementById('contrast-scan-btn').addEventListener('click', async () => {
+  const loading = document.getElementById('contrast-loading');
+  const resultsEl = document.getElementById('contrast-results');
+  const summary = document.getElementById('contrast-summary');
+
+  loading.style.display = 'block';
+  resultsEl.innerHTML = '';
+  summary.style.display = 'none';
+
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const [{ result }] = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ['contrast.js'],
+    });
+
+    loading.style.display = 'none';
+
+    if (!result || result.length === 0) {
+      resultsEl.innerHTML = '<p style="font-size:11px;color:var(--secondary);padding:12px 0">No colour pairs found on this page.</p>';
+      return;
+    }
+
+    const failures = result.filter((r) => !r.wcagAA).length;
+    const passes = result.length - failures;
+
+    document.getElementById('contrast-fail-count').textContent = failures;
+    document.getElementById('contrast-pass-count').textContent = passes;
+    summary.style.display = 'block';
+
+    resultsEl.innerHTML = result.map((r) => `
+      <div class="contrast-row">
+        <div class="contrast-swatch" style="background:${r.fg}">
+          <div class="contrast-swatch-bg" style="background:${r.bg}"></div>
+        </div>
+        <div class="contrast-info">
+          <div class="contrast-hex">${r.fg} on ${r.bg}</div>
+          <div class="contrast-selector" title="${r.selector}">${r.selector}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div class="contrast-ratio ${r.wcagAA ? 'pass' : 'fail'}">${r.ratio}:1</div>
+          <span class="contrast-badge ${r.wcagAA ? 'pass' : 'fail'}">${r.wcagAA ? 'AA ✓' : 'AA ✗'}</span>
+          ${r.wcagAAA ? '<span class="contrast-badge pass" style="margin-left:2px">AAA ✓</span>' : ''}
+        </div>
+      </div>
+    `).join('');
+  } catch (err) {
+    loading.style.display = 'none';
+    resultsEl.innerHTML = `<p style="font-size:11px;color:var(--fail);padding:12px 0">Error: ${err.message}</p>`;
+  }
+});
+
+// ── EyeDropper (cursor colour picker) ────────────────────────────────────────
+
+document.getElementById('eyedropper-btn').addEventListener('click', async () => {
+  const resultEl = document.getElementById('eyedropper-result');
+  const hexEl = document.getElementById('eyedropper-hex');
+  const swatchEl = document.getElementById('eyedropper-swatch');
+
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    // Run EyeDropper in the page context (it requires a user gesture & page context)
+    const [{ result }] = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: async () => {
+        if (!window.EyeDropper) return null;
+        try {
+          const dropper = new EyeDropper();
+          const { sRGBHex } = await dropper.open();
+          return sRGBHex;
+        } catch {
+          return null;
+        }
+      },
+    });
+
+    if (result) {
+      swatchEl.style.background = result;
+      hexEl.textContent = result.toUpperCase();
+      resultEl.style.display = 'block';
+    }
+  } catch (err) {
+    // EyeDropper may not be supported on all pages
+    const resultEl = document.getElementById('eyedropper-result');
+    document.getElementById('eyedropper-hex').textContent = 'Not supported on this page';
+    document.getElementById('eyedropper-swatch').style.background = 'transparent';
+    resultEl.style.display = 'block';
   }
 });

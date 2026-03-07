@@ -153,7 +153,7 @@ export default function EarlyAccessPage() {
 
               <p className="font-mono text-xs text-secondary">
                 Don&apos;t have a code?{' '}
-                <a href="mailto:hello@a11yo.io" className="text-green hover:underline">
+                <a href="mailto:hello@a11yo.com" className="text-green hover:underline">
                   Get in touch
                 </a>{' '}
                 or{' '}

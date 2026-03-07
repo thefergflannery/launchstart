@@ -87,7 +87,7 @@ export default async function ReportPage({ params }: PageProps) {
   const scoreColor = score >= 80 ? 'text-green-mid' : score >= 50 ? 'text-warn' : 'text-fail';
   const scoreBarColor = score >= 80 ? '#16A34A' : score >= 50 ? '#D97706' : '#DC2626';
 
-  const reportUrl = `https://a11yo.io/report/${params.id}`;
+  const reportUrl = `https://a11yo.com/report/${params.id}`;
 
   const nextStepsText =
     criticalIssues.length > 0

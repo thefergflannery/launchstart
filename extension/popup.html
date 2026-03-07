@@ -52,9 +52,9 @@
     </div>
     <div class="auth-footer">
       No account?
-      <a href="https://a11yo.io/auth/signup" target="_blank">Create one free →</a>
+      <a href="https://a11yo.com/auth/signup" target="_blank">Create one free →</a>
       &nbsp;·&nbsp;
-      <a href="https://a11yo.io/pricing" target="_blank">See plans</a>
+      <a href="https://a11yo.com/pricing" target="_blank">See plans</a>
     </div>
   </div>
 
@@ -83,6 +83,36 @@
     <div class="scanning-wrap">
       <div class="spinner"></div>
       <p id="scan-msg" class="scan-msg">Loading page…</p>
+    </div>
+  </div>
+
+  <!-- ── State: contrast checker ── -->
+  <div id="screen-contrast" class="screen">
+    <div class="header">
+      <span class="logo">A11<span>YO</span></span>
+      <span style="font-size:10px;color:var(--secondary)">Colour Contrast</span>
+    </div>
+    <div class="body">
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <button id="contrast-scan-btn" class="btn btn-primary" style="flex:1">Scan page colours →</button>
+        <button id="eyedropper-btn" class="btn btn-outline" title="Pick a colour from the page" style="padding:0 12px;font-size:16px">&#x1F4A7;</button>
+      </div>
+      <div id="eyedropper-result" style="display:none;margin-bottom:10px;padding:8px 10px;border:1px solid var(--border);background:var(--surface);font-size:11px;font-family:monospace">
+        <span id="eyedropper-swatch" style="display:inline-block;width:14px;height:14px;border:1px solid #555;vertical-align:middle;margin-right:6px;border-radius:2px"></span>
+        <span id="eyedropper-hex"></span>
+      </div>
+      <div id="contrast-loading" style="display:none;text-align:center;padding:20px 0">
+        <div class="spinner"></div>
+        <p style="font-size:11px;color:var(--secondary);margin-top:8px">Scanning colours…</p>
+      </div>
+      <div id="contrast-results"></div>
+      <div id="contrast-summary" style="display:none;margin-bottom:10px;padding:6px 10px;font-size:11px;font-family:monospace;border:1px solid var(--border);background:var(--surface)">
+        <span id="contrast-fail-count" style="color:var(--fail);font-weight:700"></span> failing &nbsp;·&nbsp;
+        <span id="contrast-pass-count" style="color:var(--green);font-weight:700"></span> passing
+      </div>
+    </div>
+    <div class="results-footer" style="justify-content:flex-start">
+      <button id="contrast-back-btn" class="scan-again">← Back to scan</button>
     </div>
   </div>
 
@@ -128,12 +158,13 @@
       <div id="guest-upsell" style="display:none;margin-top:14px;padding:12px;border:1px solid var(--border);background:var(--surface)">
         <p style="font-size:11px;color:var(--green);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px">Save your results</p>
         <p style="font-size:11px;color:#ccc;margin-bottom:8px;line-height:1.5">Create a free account to save this report and scan more pages.</p>
-        <a href="https://a11yo.io/auth/signup" target="_blank" style="display:block;text-align:center;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#000;background:var(--green);padding:8px;text-decoration:none">Create free account →</a>
+        <a href="https://a11yo.com/auth/signup" target="_blank" style="display:block;text-align:center;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#000;background:var(--green);padding:8px;text-decoration:none">Create free account →</a>
       </div>
     </div>
 
     <div class="results-footer">
       <a id="view-report-link" href="#" target="_blank" class="view-report">View full report →</a>
+      <button id="contrast-checker-btn" class="scan-again" title="Check colour contrast">Contrast</button>
       <button id="scan-again-btn" class="scan-again">Scan again</button>
     </div>
   </div>

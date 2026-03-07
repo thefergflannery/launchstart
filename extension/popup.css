@@ -353,3 +353,54 @@ body {
   justify-content: center;
   padding: 32px;
 }
+
+/* ── Contrast checker ── */
+.contrast-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+}
+.contrast-row:last-child { border-bottom: none; }
+.contrast-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  border: 1px solid #444;
+  flex-shrink: 0;
+  position: relative;
+}
+.contrast-swatch-bg {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  border: 1px solid #333;
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+}
+.contrast-info { flex: 1; min-width: 0; }
+.contrast-hex { font-family: monospace; font-size: 10px; color: var(--secondary); }
+.contrast-ratio { font-weight: 700; font-size: 12px; }
+.contrast-ratio.fail { color: var(--fail); }
+.contrast-ratio.pass { color: var(--green); }
+.contrast-badge {
+  font-size: 9px;
+  font-family: monospace;
+  letter-spacing: 0.06em;
+  padding: 2px 5px;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+.contrast-badge.pass { background: rgba(0,255,136,0.12); color: var(--green); }
+.contrast-badge.fail { background: rgba(255,76,76,0.12); color: var(--fail); }
+.contrast-selector {
+  font-family: monospace;
+  font-size: 10px;
+  color: var(--secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
