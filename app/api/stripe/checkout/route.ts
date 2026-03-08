@@ -41,15 +41,26 @@ export async function POST(request: NextRequest) {
       .eq('id', user.id);
   }
 
-  const params: Stripe.Checkout.SessionCreateParams = {
-    customer: customerId,
-    mode: 'subscription',
-    line_items: [{ price: priceId, quantity: 1 }],
-    success_url: `${baseUrl}/dashboard?upgraded=1`,
-    cancel_url: `${baseUrl}/pricing`,
-    metadata: { supabase_user_id: user.id, plan: plan ?? '' },
-    subscription_data: { metadata: { supabase_user_id: user.id, plan: plan ?? '' } },
-  };
+  // agency = one-time payment; pro = recurring subscription
+  const isOneTime = plan === 'agency';
+  const params: Stripe.Checkout.SessionCreateParams = isOneTime
+    ? {
+        customer: customerId,
+        mode: 'payment',
+        line_items: [{ price: priceId, quantity: 1 }],
+        success_url: `${baseUrl}/dashboard?upgraded=1`,
+        cancel_url: `${baseUrl}/pricing`,
+        metadata: { supabase_user_id: user.id, plan: plan ?? '' },
+      }
+    : {
+        customer: customerId,
+        mode: 'subscription',
+        line_items: [{ price: priceId, quantity: 1 }],
+        success_url: `${baseUrl}/dashboard?upgraded=1`,
+        cancel_url: `${baseUrl}/pricing`,
+        metadata: { supabase_user_id: user.id, plan: plan ?? '' },
+        subscription_data: { metadata: { supabase_user_id: user.id, plan: plan ?? '' } },
+      };
   const session = await stripe.checkout.sessions.create(params);
 
   return NextResponse.json({ url: session.url });

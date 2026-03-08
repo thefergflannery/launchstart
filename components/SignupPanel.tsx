@@ -1,8 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createSupabaseBrowserClient } from '@/lib/supabase-client';
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? '';
 
 export default function SignupPanel() {
   const router = useRouter();
@@ -11,8 +13,17 @@ export default function SignupPanel() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [done, setDone] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
 
   const supabase = createSupabaseBrowserClient();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUserEmail(session?.user?.email ?? null);
+      setAuthChecked(true);
+    });
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -23,7 +34,7 @@ export default function SignupPanel() {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: `${location.origin}/auth/callback` },
+      options: { emailRedirectTo: `${BASE_URL || location.origin}/auth/callback` },
     });
 
     if (error) { setError(error.message); setLoading(false); return; }
@@ -41,8 +52,30 @@ export default function SignupPanel() {
   async function handleGoogle() {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${location.origin}/auth/callback` },
+      options: { redirectTo: `${BASE_URL || location.origin}/auth/callback` },
     });
+  }
+
+  if (!authChecked) return null;
+
+  // Logged in — show dashboard CTA
+  if (userEmail) {
+    return (
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <p className="text-white text-sm font-semibold mb-0.5">
+            Signed in as <span className="text-green">{userEmail}</span>
+          </p>
+          <p className="text-secondary text-xs font-mono">Your scan history and reports are saved.</p>
+        </div>
+        <a
+          href="/dashboard"
+          className="font-mono text-xs tracking-wider uppercase bg-green text-black px-6 py-3 hover:opacity-90 transition-opacity whitespace-nowrap"
+        >
+          Go to dashboard →
+        </a>
+      </div>
+    );
   }
 
   if (done) {
@@ -84,9 +117,9 @@ export default function SignupPanel() {
         <button
           type="submit"
           disabled={loading || !email.trim() || !password.trim()}
-          className="font-mono text-xs tracking-wider uppercase bg-green text-black px-6 py-3 hover:bg-green-mid transition-colors disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
+          className="font-mono text-xs tracking-wider uppercase bg-green text-black px-6 py-3 hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
         >
-          {loading ? 'Creating…' : 'Create account →'}
+          {loading ? 'Creating…' : 'Create free account →'}
         </button>
       </div>
       {error && <p className="font-mono text-xs text-fail mb-3">{error}</p>}
@@ -99,7 +132,7 @@ export default function SignupPanel() {
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" fill="currentColor" />
           </svg>
-          Continue with Google
+          Sign up with Google
         </button>
         <p className="font-mono text-xs text-secondary">
           Already have an account?{' '}

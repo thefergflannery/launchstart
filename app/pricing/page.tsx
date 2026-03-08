@@ -42,7 +42,7 @@ const FAQ = [
   },
   {
     q: 'Can I use the Chrome extension?',
-    a: 'Yes — the Chrome extension is included with a Pro or Full Site subscription. It lets you scan any page you are browsing without leaving the tab.',
+    a: 'Yes — the Chrome extension is included with Pro. Full Site is a one-time audit purchase.',
   },
   {
     q: 'Is there a money-back guarantee?',
@@ -136,10 +136,10 @@ export default function PricingPage() {
                 <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">Full Site</span>
                 <div className="flex items-baseline gap-2 mb-2">
                   <span className="text-4xl font-display font-semibold text-white">€15</span>
-                  <span className="text-secondary text-sm">/ month</span>
+                  <span className="text-secondary text-sm">one-time</span>
                 </div>
                 <p className="text-secondary text-sm mb-6">
-                  Crawl your entire site and get a single compliance score across all pages.
+                  One payment. Crawl your entire site and get a single compliance score across all pages.
                 </p>
                 <ul className="space-y-3">
                   {AGENCY_FEATURES.map((f) => (
@@ -150,7 +150,7 @@ export default function PricingPage() {
                   ))}
                 </ul>
               </div>
-              <CheckoutButton plan="agency" label="Get Full Site — €15/month →" />
+              <CheckoutButton plan="agency" label="Get Full Site — €15 one-time →" />
             </div>
 
           </div>

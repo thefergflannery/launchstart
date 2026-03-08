@@ -194,10 +194,10 @@ export default function HomePage() {
                 {error && (
                   <div className="mt-3">
                     <p id="hero-error" role="alert" className="font-mono text-xs text-fail">{error}</p>
-                    {(error.includes('Sign up') || error.includes('Upgrade')) && (
+                    {(error.includes('Sign up') || error.includes('Upgrade') || error.includes('limit')) && (
                       <div className="flex gap-4 mt-2">
-                        <a href="/auth/signup" className="font-mono text-xs text-green hover:underline">Create free account →</a>
-                        <a href="/auth/login" className="font-mono text-xs text-secondary hover:text-white">Sign in</a>
+                        <a href="/auth/signup" className="font-mono text-xs text-green hover:underline font-semibold">Create free account →</a>
+                        <a href="/auth/login" className="font-mono text-xs text-secondary hover:text-white">Already have an account?</a>
                       </div>
                     )}
                   </div>
@@ -205,9 +205,9 @@ export default function HomePage() {
               </form>
 
               <p className="mt-5 font-mono text-xs text-secondary">
-                No account needed to scan.{' '}
-                <a href="/auth/signup" className="text-green hover:underline">Create a free account</a>{' '}
-                to save your scan history.
+                No account needed for a quick scan.{' '}
+                <a href="/auth/signup" className="text-green hover:underline font-semibold">Create a free account</a>{' '}
+                to save history and run unlimited reports.
               </p>
 
               {loading && (
@@ -404,9 +404,9 @@ export default function HomePage() {
                   <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">Full Site</span>
                   <div className="flex items-baseline gap-2 mb-2">
                     <span className="font-mono text-4xl font-semibold text-white">€15</span>
-                    <span className="text-secondary text-sm">/ month</span>
+                    <span className="text-secondary text-sm">one-time</span>
                   </div>
-                  <p className="text-secondary text-sm">Full site crawl — audit every page at once.</p>
+                  <p className="text-secondary text-sm">One payment. Full site crawl — audit every page at once.</p>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {FULL_SITE_FEATURES.map((f) => (
@@ -420,7 +420,7 @@ export default function HomePage() {
                   href="/pricing"
                   className="block text-center font-mono text-sm tracking-wider uppercase border border-border px-6 py-3 text-white hover:border-white transition-colors"
                 >
-                  Get Full Site — €15/month →
+                  Get Full Site — €15 one-time →
                 </a>
               </div>
 
