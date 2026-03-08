@@ -34,50 +34,29 @@ export async function POST(request: NextRequest) {
 
   const supabase = createSupabaseServerClient();
 
-  // Check if user already has early access or better
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('plan')
-    .eq('id', user.id)
-    .single();
+  // Atomic redemption via DB function (prevents race condition on slot counter)
+  const { data, error: rpcError } = await supabase.rpc('redeem_early_access', {
+    p_user_id: user.id,
+    p_max_slots: MAX_SLOTS,
+  });
 
-  if (profile?.plan && ['early_access', 'pro', 'agency'].includes(profile.plan)) {
+  if (rpcError) {
+    console.error('Early access RPC error:', rpcError);
+    return NextResponse.json({ error: 'Something went wrong. Please try again.' }, { status: 500 });
+  }
+
+  if (data?.error === 'already_upgraded') {
     return NextResponse.json({ error: 'Your account already has full access.' }, { status: 400 });
   }
 
-  // Check remaining slots
-  const { data: redemption } = await supabase
-    .from('early_access_redemptions')
-    .select('count')
-    .eq('id', 1)
-    .single();
-
-  const currentCount = redemption?.count ?? 0;
-
-  if (currentCount >= MAX_SLOTS) {
+  if (data?.error === 'slots_exhausted') {
     return NextResponse.json({
       error: 'All early access slots have been filled. Upgrade to Pro for full access.',
       exhausted: true,
     }, { status: 409 });
   }
 
-  // Upgrade user plan
-  const { error: updateError } = await supabase
-    .from('profiles')
-    .update({ plan: 'early_access' })
-    .eq('id', user.id);
-
-  if (updateError) {
-    console.error('Early access upgrade error:', updateError);
-    return NextResponse.json({ error: 'Something went wrong. Please try again.' }, { status: 500 });
-  }
-
-  // Increment redemption count
-  await supabase
-    .from('early_access_redemptions')
-    .upsert({ id: 1, count: currentCount + 1 });
-
-  const remaining = MAX_SLOTS - currentCount - 1;
+  const remaining = data?.remaining ?? 0;
 
   return NextResponse.json({
     success: true,

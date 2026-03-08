@@ -56,6 +56,22 @@ async function generateAltText(imageUrl: string): Promise<string> {
   return block.text.trim();
 }
 
+function isInternalHost(hostname: string): boolean {
+  const h = hostname.toLowerCase();
+  if (h === 'localhost' || h === '::1') return true;
+  const ipv4 = h.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
+  if (ipv4) {
+    const [a, b] = [Number(ipv4[1]), Number(ipv4[2])];
+    if (a === 127) return true;                          // loopback
+    if (a === 10) return true;                           // RFC1918
+    if (a === 172 && b >= 16 && b <= 31) return true;   // RFC1918
+    if (a === 192 && b === 168) return true;             // RFC1918
+    if (a === 169 && b === 254) return true;             // link-local / AWS metadata
+    if (a === 0) return true;                            // 0.0.0.0
+  }
+  return false;
+}
+
 export async function POST(request: NextRequest) {
   if (!process.env.ANTHROPIC_API_KEY) {
     return NextResponse.json(
@@ -72,6 +88,13 @@ export async function POST(request: NextRequest) {
     try {
       parsedUrl = new URL(url);
     } catch {
+      return NextResponse.json({ error: 'Invalid URL' }, { status: 400 });
+    }
+
+    if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+      return NextResponse.json({ error: 'Invalid URL' }, { status: 400 });
+    }
+    if (isInternalHost(parsedUrl.hostname)) {
       return NextResponse.json({ error: 'Invalid URL' }, { status: 400 });
     }
 
