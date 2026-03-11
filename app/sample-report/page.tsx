@@ -8,6 +8,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ISSUE_LIBRARY, SEVERITY_CONFIG } from '@/lib/issue-library';
 import IssueCard from '@/components/IssueCard';
+import Logo from '@/components/Logo';
 
 export const metadata: Metadata = {
   title: 'Sample Accessibility Report — A11YO',
@@ -63,8 +64,8 @@ export default function SampleReportPage() {
       {/* Nav */}
       <header className="border-b border-border bg-black/90 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="font-mono text-sm tracking-widest uppercase text-white hover:text-green transition-colors">
-            A11YO
+          <Link href="/" className="text-white hover:text-green transition-colors" aria-label="A11YO home">
+            <Logo size={28} />
           </Link>
           <Link href="/" className="font-mono text-xs tracking-wider uppercase text-secondary hover:text-white transition-colors">
             ← Get your own report

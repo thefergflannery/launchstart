@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Logo from './Logo';
 
 export interface NavLink {
   href: string;
@@ -23,7 +24,8 @@ export default function Nav({ links, cta = DEFAULT_CTA, maxWidth = 'max-w-5xl' }
           href="/"
           className="font-mono text-sm tracking-widest uppercase text-white font-semibold hover:text-green transition-colors"
         >
-          A11YO
+          <Logo size={28} />
+          <span className="sr-only">A11YO</span>
         </Link>
 
         {links && links.length > 0 && (

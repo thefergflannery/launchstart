@@ -9,23 +9,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Brand palette
-        black:      '#0A0A0A',
-        white:      '#F5F4F0',
-        surface:    '#161A16',
-        border:     '#1E2A1E',
-        muted:      '#4A5E4A',
-        secondary:  '#8FA88F',
-        warn:       '#FFB400',
-        fail:       '#FF4D4D',
+        // Theme-aware palette — driven by CSS custom properties so dark/light
+        // modes switch automatically. The <alpha-value> placeholder keeps
+        // Tailwind opacity modifiers (bg-black/90, border-border/60, etc.) working.
+        black:     'rgb(var(--color-black-rgb) / <alpha-value>)',
+        white:     'rgb(var(--color-white-rgb) / <alpha-value>)',
+        surface:   'rgb(var(--color-surface-rgb) / <alpha-value>)',
+        border:    'rgb(var(--color-border-rgb) / <alpha-value>)',
+        muted:     'rgb(var(--color-muted-rgb) / <alpha-value>)',
+        secondary: 'rgb(var(--color-secondary-rgb) / <alpha-value>)',
+        warn:      'rgb(var(--color-warn-rgb) / <alpha-value>)',
+        fail:      'rgb(var(--color-fail-rgb) / <alpha-value>)',
         green: {
-          DEFAULT: '#00E96A',
-          mid:     '#00B851',
-          dark:    '#003D1B',
+          DEFAULT: 'rgb(var(--color-green-rgb) / <alpha-value>)',
+          mid:     'rgb(var(--color-green-mid-rgb) / <alpha-value>)',
+          dark:    'rgb(var(--color-green-dark-rgb) / <alpha-value>)',
         },
         // Legacy aliases — do not remove (used in inline styles + report pages)
-        pass:  '#00B851',
-        amber: '#FFB400',
+        pass:  'rgb(var(--color-green-mid-rgb) / <alpha-value>)',
+        amber: 'rgb(var(--color-warn-rgb) / <alpha-value>)',
       },
       fontFamily: {
         display: ['var(--font-syne)',    'sans-serif'],

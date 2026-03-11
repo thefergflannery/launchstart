@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getUser, getProfile, createSupabaseServerClient } from '@/lib/supabase-server';
 import AdminUserTable from '@/components/AdminUserTable';
+import Logo from '@/components/Logo';
 
 export const revalidate = 0;
 
@@ -70,8 +71,8 @@ export default async function AdminPage() {
 
       <header className="border-b border-border bg-black/90 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="font-mono text-sm tracking-widest uppercase text-white hover:text-green transition-colors">
-            A11YO
+          <Link href="/" className="text-white hover:text-green transition-colors" aria-label="A11YO home">
+            <Logo size={28} />
           </Link>
           <div className="flex items-center gap-6">
             <span className="font-mono text-xs text-green uppercase tracking-widest">Superadmin</span>

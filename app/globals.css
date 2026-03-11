@@ -3,9 +3,25 @@
 @tailwind utilities;
 
 /* ── CSS custom properties ───────────────────────────── */
+
+/* Dark mode (default) */
 :root {
   color-scheme: dark;
 
+  /* RGB triplets — used by Tailwind for opacity support (bg-black/90 etc.) */
+  --color-black-rgb:      10 10 10;
+  --color-white-rgb:      245 244 240;
+  --color-surface-rgb:    22 26 22;
+  --color-border-rgb:     30 42 30;
+  --color-muted-rgb:      74 94 74;
+  --color-secondary-rgb:  143 168 143;
+  --color-green-rgb:      0 233 106;
+  --color-green-mid-rgb:  0 184 81;
+  --color-green-dark-rgb: 0 61 27;
+  --color-warn-rgb:       255 180 0;
+  --color-fail-rgb:       255 77 77;
+
+  /* Hex aliases — used in direct CSS (focus ring, skip link, etc.) */
   --color-black:      #0A0A0A;
   --color-white:      #F5F4F0;
   --color-green:      #00E96A;
@@ -17,6 +33,26 @@
   --color-secondary:  #8FA88F;
   --color-warn:       #FFB400;
   --color-fail:       #FF4D4D;
+}
+
+/* Light mode — applied when JS adds class="light" to <html> */
+html.light {
+  color-scheme: light;
+
+  --color-black-rgb:      250 250 248;
+  --color-white-rgb:      15 17 15;
+  --color-surface-rgb:    238 242 238;
+  --color-border-rgb:     204 216 204;
+  --color-muted-rgb:      140 160 140;
+  --color-secondary-rgb:  80 100 80;
+  /* green / warn / fail are brand colours — unchanged in light mode */
+
+  --color-black:      #FAFAF8;
+  --color-white:      #0F110F;
+  --color-surface:    #EEF2EE;
+  --color-border:     #CCD8CC;
+  --color-muted:      #8CA08C;
+  --color-secondary:  #506450;
 }
 
 /* ── Base ─────────────────────────────────────────────── */

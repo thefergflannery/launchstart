@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Logo from '@/components/Logo';
 import { useRouter } from 'next/navigation';
 import { createSupabaseBrowserClient } from '@/lib/supabase-client';
 
@@ -74,8 +75,8 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-sm">
-        <Link href="/" className="block text-center font-display text-xl font-bold text-white hover:text-green transition-colors mb-8">
-          A11YO
+        <Link href="/" className="flex justify-center text-white hover:text-green transition-colors mb-8" aria-label="A11YO home">
+          <Logo size={40} />
         </Link>
 
         <div className="corner-mark border border-border bg-surface p-8">

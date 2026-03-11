@@ -10,6 +10,7 @@ import type { Metadata } from 'next';
 import { getUser, getProfile, createSupabaseServerClient } from '@/lib/supabase-server';
 import LogoutButton from './LogoutButton';
 import NewScanFormClient from './NewScanForm';
+import Logo from '@/components/Logo';
 
 export const metadata: Metadata = { title: 'Dashboard' };
 export const revalidate = 0;
@@ -77,8 +78,8 @@ export default async function DashboardPage() {
       {/* Nav */}
       <header className="border-b border-border bg-black/90 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="font-mono text-sm tracking-widest uppercase text-white hover:text-green transition-colors">
-            A11YO
+          <Link href="/" className="text-white hover:text-green transition-colors" aria-label="A11YO home">
+            <Logo size={28} />
           </Link>
           <div className="flex items-center gap-4">
             <span className={`font-mono text-xs uppercase tracking-wider border px-2 py-0.5 ${planConfig.badgeCls}`}>
