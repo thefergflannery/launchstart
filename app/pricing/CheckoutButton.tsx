@@ -21,14 +21,14 @@ export default function CheckoutButton({ plan, label }: { plan: string; label: s
         router.push(`/auth/login?redirect=/pricing`);
         return;
       }
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.url) {
         setError(data.error ?? 'Could not start checkout.');
         return;
       }
       window.location.href = data.url;
     } catch {
-      setError('Network error. Please try again.');
+      setError('Could not reach the server. Check your connection and try again.');
     } finally {
       setLoading(false);
     }
