@@ -120,7 +120,7 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, [loading]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (!url.trim()) return;
     setLoading(true);
@@ -155,69 +155,180 @@ export default function HomePage() {
       <main className="flex-1">
 
         {/* ── Hero ── */}
-        <section id="scan" className="grid-bg border-b border-border">
-          <div className="max-w-5xl mx-auto px-6 py-28 lg:py-40">
-            <div className="max-w-3xl">
-              <span className="font-mono text-xs tracking-widest uppercase text-green block mb-6">
-                Accessibility · SEO · Launch readiness
-              </span>
-              <h1 className="text-6xl lg:text-8xl font-display font-extrabold text-white leading-none tracking-tight mb-6">
-                Ship sites<br />that work<br /><span className="text-green">for everyone.</span>
-              </h1>
-              <p className="text-secondary text-xl mb-12 leading-relaxed max-w-xl">
-                Paste a URL. Get a full accessibility, SEO, and launch-readiness audit in under 30 seconds — with a shareable report and one-line fixes for every issue.
-              </p>
+        <section id="scan" className="relative border-b border-border overflow-hidden min-h-[92vh] flex items-center">
 
-              <form onSubmit={handleSubmit}>
-                <label htmlFor="hero-url" className="sr-only">Website URL to audit</label>
-                <div className="corner-mark border border-border bg-surface flex items-stretch max-w-xl">
-                  <input
-                    id="hero-url"
-                    type="text"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                    placeholder="https://yoursite.com"
-                    className="flex-1 px-5 py-4 bg-black text-white placeholder-secondary/50 focus:outline-none text-base font-mono"
-                    disabled={loading}
-                    autoFocus
-                    aria-invalid={error ? 'true' : 'false'}
-                    aria-describedby={error ? 'hero-error' : undefined}
-                  />
+          {/* Dashed grid overlay */}
+          <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+            <div className="h-full flex">
+              {[0,1,2,3].map(i => (
+                <div key={i} className="flex-1 border-r border-dashed border-border/40 h-full" />
+              ))}
+            </div>
+            <div className="absolute top-1/2 left-0 right-0 border-t border-dashed border-border/25" />
+          </div>
+
+          {/* Radar rings — centred on right column */}
+          <div className="absolute right-[18%] top-1/2 -translate-y-1/2 pointer-events-none select-none" aria-hidden="true">
+            {[160, 260, 360, 460, 560, 660].map(size => (
+              <div
+                key={size}
+                className="absolute rounded-full border border-dashed border-border/30"
+                style={{ width: size, height: size, top: -size / 2, left: -size / 2 }}
+              />
+            ))}
+            {/* Sweeping arc */}
+            <div
+              className="absolute rounded-full animate-radar"
+              style={{
+                width: 660, height: 660,
+                top: -330, left: -330,
+                background: 'conic-gradient(from 0deg, rgba(0,233,106,0.14) 0deg, rgba(0,233,106,0.04) 55deg, transparent 85deg)',
+              }}
+            />
+            {/* Scanner line */}
+            <div
+              className="absolute w-px origin-bottom animate-radar"
+              style={{
+                height: 330, top: -330, left: 0,
+                background: 'linear-gradient(to top, rgba(0,233,106,0.5), transparent)',
+              }}
+            />
+            {/* Ping dot */}
+            <div className="absolute" style={{ top: -105, left: 55 }}>
+              <span className="absolute inline-flex h-2 w-2 rounded-full bg-green/60 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-green/80" />
+            </div>
+          </div>
+
+          {/* Two-column content */}
+          <div className="relative w-full max-w-6xl mx-auto px-6 py-20 lg:py-28">
+            <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+
+              {/* Left — headline + stats */}
+              <div>
+                <span className="font-mono text-xs tracking-widest uppercase text-green block mb-7">
+                  Accessibility · SEO · Launch readiness
+                </span>
+                <h1
+                  className="text-6xl lg:text-[5.5rem] font-display font-extrabold leading-[0.88] tracking-tight mb-7"
+                  style={{
+                    background: 'linear-gradient(170deg, #F5F4F0 25%, #4A5E4A 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Ship sites<br />that work<br />for everyone.
+                </h1>
+                <p className="text-secondary text-lg leading-relaxed max-w-sm mb-12">
+                  Paste a URL. Get a full accessibility, SEO, and launch-readiness audit in under 30 seconds — with one-line fixes for every issue.
+                </p>
+
+                {/* Stats row */}
+                <div className="flex items-stretch divide-x divide-dashed divide-border/60">
+                  {[
+                    { value: '17',   label: 'Checks run'  },
+                    { value: '<30s', label: 'Per scan'     },
+                    { value: '€0',   label: 'To start'    },
+                  ].map((stat, i) => (
+                    <div key={stat.label} className={`py-2 ${i === 0 ? 'pr-8' : 'px-8'}`}>
+                      <p className="font-mono text-3xl font-semibold text-white mb-0.5">{stat.value}</p>
+                      <p className="font-mono text-[10px] tracking-widest uppercase text-secondary">{stat.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right — scan card */}
+              <div className="relative">
+                <form
+                  onSubmit={handleSubmit}
+                  className="border border-border/70 p-7 space-y-5"
+                  style={{ background: 'rgba(22,26,22,0.85)', backdropFilter: 'blur(24px)' }}
+                >
+                  {/* URL input */}
+                  <div>
+                    <p className="font-mono text-[10px] tracking-widest uppercase text-secondary mb-2">Your website URL</p>
+                    <label htmlFor="hero-url" className="sr-only">Website URL to audit</label>
+                    <div className="flex items-stretch border border-border/60">
+                      <input
+                        id="hero-url"
+                        type="text"
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                        placeholder="yoursite.com"
+                        className="flex-1 px-4 py-3.5 bg-black/50 text-white placeholder-secondary/40 focus:outline-none text-base font-mono"
+                        disabled={loading}
+                        autoFocus
+                        aria-invalid={error ? 'true' : 'false'}
+                        aria-describedby={error ? 'hero-error' : undefined}
+                      />
+                      <div className="border-l border-border/60 px-3 flex items-center">
+                        <span className="font-mono text-[10px] text-green uppercase tracking-widest">URL</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* What runs */}
+                  <div className="border border-border/40 px-4 py-3 flex items-center justify-between bg-black/20">
+                    <span className="font-mono text-xs text-secondary">17 checks · accessibility + SEO + launch</span>
+                    <span className="font-mono text-xs text-green/50" aria-hidden="true">→</span>
+                  </div>
+
+                  {/* You receive */}
+                  <div>
+                    <p className="font-mono text-[10px] tracking-widest uppercase text-secondary mb-2">You receive</p>
+                    <div className="border border-border/40 px-4 py-3.5 bg-black/30">
+                      <span className="font-mono text-sm text-white/50">Full report + shareable link + one-line fixes</span>
+                    </div>
+                  </div>
+
+                  {/* CTA button */}
                   <button
                     type="submit"
                     disabled={loading || !url.trim()}
-                    className="px-7 py-4 bg-white text-black font-mono text-sm tracking-wider uppercase hover:bg-green disabled:opacity-40 disabled:cursor-not-allowed transition-colors border-l border-border whitespace-nowrap"
+                    className="w-full flex items-center justify-between px-6 py-4 bg-green text-black font-mono text-sm tracking-wider uppercase hover:bg-green-mid disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                    style={(!loading && url.trim()) ? { boxShadow: '0 0 24px rgba(0,233,106,0.25)' } : {}}
+                    aria-busy={loading}
                   >
-                    {loading ? 'Scanning…' : 'Audit →'}
-                  </button>
-                </div>
-                {error && (
-                  <div className="mt-3">
-                    <p id="hero-error" role="alert" className="font-mono text-xs text-fail">{error}</p>
-                    {(error.includes('Sign up') || error.includes('Upgrade') || error.includes('limit')) && (
-                      <div className="flex gap-4 mt-2">
-                        <a href="/auth/signup" className="font-mono text-xs text-green hover:underline font-semibold">Create free account →</a>
-                        <a href="/auth/login" className="font-mono text-xs text-secondary hover:text-white">Already have an account?</a>
-                      </div>
+                    <span>{loading ? SCAN_MESSAGES[msgIndex] : 'Audit this site'}</span>
+                    {loading ? (
+                      <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" aria-hidden="true" />
+                    ) : (
+                      <span className="w-6 h-6 rounded-full bg-black/20 flex items-center justify-center text-xs font-bold" aria-hidden="true">→</span>
                     )}
+                  </button>
+
+                  {/* Error */}
+                  {error && (
+                    <div aria-live="polite">
+                      <p id="hero-error" role="alert" className="font-mono text-xs text-fail">{error}</p>
+                      {(error.includes('Sign up') || error.includes('Upgrade') || error.includes('limit')) && (
+                        <div className="flex gap-4 mt-2">
+                          <a href="/auth/signup" className="font-mono text-xs text-green hover:underline font-semibold">Create free account →</a>
+                          <a href="/auth/login" className="font-mono text-xs text-secondary hover:text-white">Already have an account?</a>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Status indicator */}
+                  <div className="flex items-center gap-2.5 pt-0.5">
+                    <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+                      <span className="absolute inline-flex h-full w-full rounded-full bg-green/50 animate-ping" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-green/70" />
+                    </span>
+                    <p className="font-mono text-xs text-secondary">
+                      No account needed.{' '}
+                      <a href="/auth/signup" className="text-green hover:underline">Create free →</a>
+                    </p>
                   </div>
-                )}
-              </form>
+                </form>
 
-              <p className="mt-5 font-mono text-xs text-secondary">
-                No account needed for a quick scan.{' '}
-                <a href="/auth/signup" className="text-green hover:underline font-semibold">Create a free account</a>{' '}
-                to save history and run unlimited reports.
-              </p>
+                {/* Card ambient glow */}
+                <div className="absolute -inset-4 bg-green/4 -z-10 blur-3xl pointer-events-none rounded-full" aria-hidden="true" />
+              </div>
 
-              {loading && (
-                <div className="mt-5 flex items-center gap-3" aria-live="polite">
-                  <span className="w-3 h-3 border border-green border-t-transparent rounded-full animate-spin flex-shrink-0" aria-hidden="true" />
-                  <span className="font-mono text-xs tracking-wider text-secondary uppercase">
-                    {SCAN_MESSAGES[msgIndex]}
-                  </span>
-                </div>
-              )}
             </div>
           </div>
         </section>
