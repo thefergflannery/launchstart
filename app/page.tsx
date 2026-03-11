@@ -201,7 +201,7 @@ export default function HomePage() {
           </div>
 
           {/* Two-column content */}
-          <div className="relative w-full max-w-6xl mx-auto px-6 py-20 lg:py-28">
+          <div className="relative w-full max-w-5xl mx-auto px-6 py-20 lg:py-28">
             <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
 
               {/* Left — headline + stats */}
