@@ -210,7 +210,7 @@ export default function HomePage() {
                   Accessibility · SEO · Launch readiness
                 </span>
                 <h1
-                  className="text-6xl lg:text-[5.5rem] font-display font-extrabold leading-[0.88] tracking-tight mb-7"
+                  className="text-5xl lg:text-[4.5rem] font-display font-extrabold leading-[0.92] tracking-tight mb-7"
                   style={{
                     background: 'linear-gradient(170deg, #F5F4F0 25%, #4A5E4A 100%)',
                     WebkitBackgroundClip: 'text',
