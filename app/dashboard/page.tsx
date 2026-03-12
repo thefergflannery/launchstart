@@ -133,9 +133,9 @@ export default async function DashboardPage() {
             <span className={`font-mono text-xs uppercase tracking-wider border px-2 py-0.5 ${planConfig.badgeCls}`}>
               {planConfig.label}
             </span>
-            <span className="font-mono text-xs text-secondary hidden sm:block truncate max-w-[200px]">
+            <Link href="/account" className="font-mono text-xs text-secondary hidden sm:block truncate max-w-[200px] hover:text-white transition-colors" title="Account settings">
               {user.email}
-            </span>
+            </Link>
             <LogoutButton />
           </div>
         </div>

@@ -308,18 +308,25 @@ Every issue type must have three hand-written, human-reviewed pieces of copy:
 
 | # | ID | Feature | Effort | Priority | Notes |
 |---|---|---|---|---|---|
-| 39 | F-005 | Stripe price IDs in Vercel env | QUICK WIN | 🔴 Blocker | Must use `price_...` IDs (not `prod_...`) from Stripe dashboard. Set STRIPE_PRICE_PRO + STRIPE_PRICE_AGENCY in Vercel. Rotate the secret key that was accidentally exposed. |
-| 40 | F-005 | Stripe Customer Portal | SHORT | 🔴 High | Users need to manage/cancel subscriptions. Add `/api/stripe/portal` route + 'Manage billing' link in dashboard. |
+| 39 | F-005 | Stripe price IDs in Vercel env | QUICK WIN | ✅ Done | Renamed to STRIPE_PRICE_ONCEOFF / RECURRING / AGENCY. Rotate exposed secret key. |
+| 40 | F-005 | Stripe Customer Portal | SHORT | ✅ Done | `/api/stripe/portal` route. 'Manage billing' button in /account for subscription plans. |
+| 44 | F-002 | Account settings page (/account) | SHORT | ✅ Done | /account — change email, change password, billing portal link, delete account. |
 | 41 | F-001 | Google OAuth | SHORT | 🟡 Medium | Button exists in auth pages but OAuth redirect not fully tested in production. Verify and fix. |
 | 42 | EMAIL | Resend email integration | MEDIUM | 🟡 Medium | Welcome email on signup, subscription confirmation, scan-complete notification (optional). Set RESEND_API_KEY in Vercel. |
 | 43 | UI | Mobile hamburger nav | SHORT | 🟡 Medium | All nav links hide below sm/md. Need a drawer/hamburger for small screens. |
-| 44 | F-002 | Account settings page (/account) | SHORT | 🟡 Medium | Change email/password, view current plan, cancel subscription link. |
 | 45 | EXT | Chrome Web Store submission | SHORT | 🟡 Medium | Package extension/, write store listing, submit for review. |
 | 46 | CORE | Full Site plan — multi-page crawl | LARGE | 🟢 Low | 50-page crawl feature for 'agency' plan users. Queue-based scanner, progress indicator. |
 | 47 | SEO | Dynamic OG images per report | SHORT | 🟢 Low | Vercel OG image generation for /report/:id and /blog/:slug. |
 | 48 | SEO | sitemap.xml + robots.txt | QUICK WIN | 🟢 Low | Auto-generated sitemap from Next.js app routes. |
 | 49 | CORE | Scan sharing toggle (public/private) | SHORT | 🟢 Low | Reports default to private; user can toggle to public to share a link. |
 | 50 | CORE | Blog content (3 launch posts) | MEDIUM | 🟢 Low | EAA deadline explainer, how accessibility auditing works, top 5 Irish sites that fail WCAG. |
+
+### Phase 5 — Monitoring & Automation
+
+| # | ID | Feature | Effort | Priority | Notes |
+|---|---|---|---|---|---|
+| 51 | MON | Per-URL scheduled reporting | LARGE | 🟡 Medium | Recurring/Agency users set scan frequency (daily/weekly/monthly) per URL. Requires: `scheduled_scans` DB table, Vercel Cron or Supabase pg_cron, Resend email delivery of reports. UI: calendar/frequency picker in dashboard. |
+| 52 | MON | Scheduled scan email delivery | MEDIUM | 🟡 Medium | Email PDF report on schedule completion. Depends on Resend (item 42) and item 51. |
 
 ---
 
