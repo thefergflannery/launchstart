@@ -7,6 +7,7 @@ import { getIssue, IssueSeverity } from '@/lib/issue-library';
 import IssueCard from '@/components/IssueCard';
 import CopyButton from '@/components/CopyButton';
 import Logo from '@/components/Logo';
+import ScoreChart from '@/components/ScoreChart';
 
 interface PageProps {
   params: { id: string };
@@ -50,6 +51,10 @@ function calcScore(allChecks: CheckResult[]): number {
 
 const PAID_PLANS = new Set(['onceoff', 'recurring', 'agency', 'pro', 'early_access']);
 
+function shortDate(iso: string) {
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+}
+
 export default async function ReportPage({ params }: PageProps) {
   const [{ data, error }, user] = await Promise.all([
     supabase.from('scans').select('*').eq('id', params.id).single(),
@@ -67,6 +72,20 @@ export default async function ReportPage({ params }: PageProps) {
     isPaid = PAID_PLANS.has(profile?.plan ?? 'free');
   }
   const locked = !isPaid;
+
+  // Fetch score history for this URL (oldest first, last 10 scans with a score)
+  const { data: history } = await supabase
+    .from('scans')
+    .select('created_at, score')
+    .eq('url', scan.url)
+    .not('score', 'is', null)
+    .order('created_at', { ascending: true })
+    .limit(10);
+
+  const chartData = (history ?? [])
+    .filter((s) => s.score != null)
+    .map((s) => ({ label: shortDate(s.created_at), score: s.score as number }));
+
   const allChecks: CheckResult[] = [
     ...scan.results.accessibility,
     ...scan.results.seo,
@@ -190,6 +209,11 @@ export default async function ReportPage({ params }: PageProps) {
               </div>
             </div>
           </div>
+
+          {/* ── Score over time ── */}
+          {chartData.length >= 2 && (
+            <ScoreChart data={chartData} url={scan.url} />
+          )}
 
           {/* Upgrade banner for free/anon users */}
           {locked && issues.length > 0 && (
