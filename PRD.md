@@ -1,5 +1,5 @@
 # A11YO — Product Brief, PRD & Roadmap
-**Version 2.0 · March 2026 · Owner: Ferg Flannery**
+**Version 3.0 · March 2026 · Owner: Ferg Flannery**
 
 ---
 
@@ -50,8 +50,8 @@ A11YO sits between the automated scanner and the human expert. It runs the same 
 
 - **Free tier:** 3 scans/day, no account required, guest Chrome extension scan (1 per 30 min)
 - **Early Access:** 25 users, full report access free with a code, valid 12 months
-- **Pro:** €5/month — 20 scans/day, all 17 checks, scan history, PDF export, Chrome extension
-- **Full Site:** €15/month — 50-page crawl, 50 scans/day, site-wide compliance score
+- **Pro:** €5/month recurring — 20 scans/day, all 17 checks, scan history, PDF export, Chrome extension
+- **Full Site:** €15 one-time — 50-page crawl, 50 scans/day, site-wide compliance score
 - **Trigger:** when 25 early access slots are filled, paid model activates
 
 ### 1.6 Tech Stack
@@ -59,8 +59,8 @@ A11YO sits between the automated scanner and the human expert. It runs the same 
 - Frontend: Next.js (App Router) + Tailwind CSS
 - Auth + DB: Supabase (Postgres + Supabase Auth)
 - Hosting: Vercel
-- Payments: Stripe (€10/month)
-- Email: Resend
+- Payments: Stripe (Pro = recurring subscription, Full Site = one-time payment)
+- Email: Resend (not yet integrated)
 - Chrome Extension: Manifest V3
 
 ---
@@ -200,19 +200,19 @@ Every issue type must have three hand-written, human-reviewed pieces of copy:
 - Show remaining slots on `/early-access` page
 - Admin dashboard shows live redemption count
 
-### F-005 Paid Signup — Stripe recurring
-- **Pro:** €5/month — Stripe Checkout at `/upgrade` or `/pricing`
-- **Full Site:** €15/month — 50-page crawl tier
+### F-005 Paid Signup — Stripe
+- **Pro:** €5/month recurring — Stripe Checkout at `/pricing`
+- **Full Site:** €15 one-time — 50-page crawl tier
 - Webhook updates user tier to `pro` or `agency` in Supabase on payment success
-- Stripe Customer Portal for self-service billing management
+- Stripe Customer Portal for self-service billing management (**not yet built**)
 - User retains access until end of billing period on cancellation
 
 ### F-006 Admin Dashboard (/admin)
 - Visible only to `role: admin` users
 - User table: email, tier, scans run, joined date
-- Actions: change tier, reset scan count
+- Actions: change tier, reset scan count, delete user
 - Early access stats: slots used / 25
-- Platform stats: total users, total scans, free-to-paid conversion
+- Platform stats: total users, total scans, MRR, ARR
 
 ### F-007 Sample Full Report (/sample-report)
 - Static page, no auth required
@@ -227,45 +227,135 @@ Every issue type must have three hand-written, human-reviewed pieces of copy:
 - Irish statistics and legal context throughout
 - SEO-optimised: title tag, meta description, heading structure
 
+### F-009 Free Tools Hub (/tools)
+- Hub page linking to all standalone free tools
+- Currently live: Alt-text checker, Accessibility statement generator, Colour contrast checker
+
+### F-010 Alt-Text Checker (/tools/alt-text)
+- Paste a URL → scrapes all images → shows which have missing or weak alt text
+- Free, no account required
+- SEO: targets 'alt text checker' search queries
+
+### F-011 Accessibility Statement Generator (/tools/accessibility-statement)
+- Multi-step form → outputs a WCAG-compliant accessibility statement
+- One-click copy to clipboard
+- Free, no account required
+
+### F-012 Chrome Extension Landing Page (/extension)
+- Marketing page for the extension with popup mockup, how it works, FAQ
+- CTA → Chrome Web Store (not yet submitted)
+
 ---
 
 ## 5. Prioritised Feature Roadmap
 
 > Reference this table when directing Claude Code. Cite the Feature ID. Update Status as you build.
 
+### Phase 1 — Core Product (Complete)
+
 | # | ID | Feature | Effort | Status | Notes |
 |---|---|---|---|---|---|
-| 1 | CORE | Plain English issue library (JSON — 17 checks) | QUICK WIN | ✅ Done | lib/issue-library.ts — 17 checks with severity, means, fix, WCAG |
-| 2 | CORE | Report issue card component (web view) | QUICK WIN | ✅ Done | components/IssueCard.tsx — expandable, severity badge, WCAG toggle, checkbox |
-| 3 | F-007 | Sample full report page (/sample-report) | QUICK WIN | ✅ Done | Static fictional Irish business (Keogh's Hardware, Athlone) |
-| 4 | F-001 | Supabase Auth — signup + login | QUICK WIN | ✅ Done | Auth pages + Supabase SSR client |
-| 5 | F-001 | Create test account hello@fergflannery.com (admin role) | QUICK WIN | ✅ Done | Auto-promote trigger in Supabase migration |
-| 6 | F-003 | Scan limit enforcement (3 free scans) | QUICK WIN | ✅ Done | check_and_increment_rate_limit RPC, FREE_LIMIT=3 |
-| 7 | F-004 | Early access code input + redemption | QUICK WIN | ✅ Done | POST /api/early-access, EARLY_ACCESS_CODE env var set in Vercel |
-| 8 | F-004 | Early access signup page (/early-access) | QUICK WIN | ✅ Done | /early-access — slots counter, code form, success state |
-| 9 | F-002 | User dashboard | SHORT | ✅ Done | Scan counter, limit banner, early access + pro CTAs |
-| 10 | CORE | Full report view (/report/:scanId) | SHORT | ✅ Done | 7-section layout, weighted score, IssueCard, next steps |
-| 11 | CORE | PDF export of full report | SHORT | ✅ Done | /report/:id/print — white-background, auto-triggers window.print() |
-| 12 | F-006 | Admin dashboard (/admin) | SHORT | ✅ Done | Users table, early access progress bar, platform stats |
-| 13 | F-008 | Why Choose A11YO (/why-a11yo) | SHORT | ✅ Done | EAA explainer, stats grid, footer link |
-| 14 | F-005 | Stripe €5/month (Pro) + €15/month (Full Site) | MEDIUM | ⬜ To Do | Update Stripe price IDs in Vercel env; only needed once early access fills |
-| 15 | EXT | Chrome extension — popup UI + scan results | MEDIUM | ✅ Done | extension/ — 4 states, Supabase auth, scan API |
-| 16 | EXT | Chrome extension — plain English issue cards in popup | MEDIUM | ✅ Done | issue-library.js, expandable cards with means + fix |
-| 17 | EXT | Chrome extension — 'show technical detail' toggle | MEDIUM | ✅ Done | WCAG toggle per card, hidden by default |
-| 18 | EXT | Chrome extension — 'View full report' link to A11YO | MEDIUM | ✅ Done | Footer 'View full report →' opens a11yo.com/report/:id |
-| 19 | EXT | Chrome extension — guest scan mode (no account) | MEDIUM | ✅ Done | 1 scan per 30 min via /api/scan; cooldown in chrome.storage.local |
-| 20 | EXT | Chrome extension — inline sign in + create account | MEDIUM | ✅ Done | Sign-in form in popup; create account link → a11yo.com/auth/signup |
-| 21 | CORE | Homepage inline registration panel | QUICK WIN | ✅ Done | SignupPanel component — email/password + Google, embedded in homepage |
-| 22 | CORE | Pricing update — €5/month Pro + €15/month Full Site | QUICK WIN | ✅ Done | Updated /pricing page and homepage pricing section |
-| 23 | F-005 | Stripe recurring subscriptions live | QUICK WIN | ✅ Done | Products + prices created in Stripe; webhook at a11yo.com/api/stripe/webhook |
-| 24 | ADM | Superadmin dashboard (/admin) — full user management | SHORT | ✅ Done | Inline plan/role editing, delete users, MRR/ARR stats, waitlist count, quick links |
-| 25 | ADM | Admin API (/api/admin/user) | SHORT | ✅ Done | PATCH plan/role + DELETE via admin RLS policies (no service role key needed) |
-| 26 | INFRA | All URLs migrated from a11yo.io → a11yo.com | QUICK WIN | ✅ Done | Code, Stripe webhook, Vercel NEXT_PUBLIC_BASE_URL |
-| 27 | EXT | Chrome extension — colour contrast checker | MEDIUM | ✅ Done | Scans all text/bg colour pairs, WCAG AA/AAA rating, EyeDropper cursor picker |
+| 1 | CORE | Plain English issue library (17 checks) | QUICK WIN | ✅ Done | lib/issue-library.ts |
+| 2 | CORE | Report issue card component | QUICK WIN | ✅ Done | components/IssueCard.tsx |
+| 3 | F-007 | Sample full report (/sample-report) | QUICK WIN | ✅ Done | Keogh's Hardware, Athlone |
+| 4 | F-001 | Supabase Auth — signup + login | QUICK WIN | ✅ Done | Email/password, protected routes |
+| 5 | F-001 | Admin test account (hello@fergflannery.com) | QUICK WIN | ✅ Done | Auto-promote trigger in Supabase |
+| 6 | F-003 | Scan limit enforcement (3 free scans/day) | QUICK WIN | ✅ Done | check_and_increment_rate_limit RPC |
+| 7 | F-004 | Early access code redemption | QUICK WIN | ✅ Done | POST /api/early-access |
+| 8 | F-004 | Early access signup page (/early-access) | QUICK WIN | ✅ Done | Slots counter, code form |
+| 9 | F-002 | User dashboard | SHORT | ✅ Done | Scan history, counter, upgrade CTAs |
+| 10 | CORE | Full report view (/report/:scanId) | SHORT | ✅ Done | 7-section layout, weighted score |
+| 11 | CORE | PDF export (print-optimised) | SHORT | ✅ Done | /report/:id/print — auto window.print() |
+| 12 | F-006 | Admin dashboard (/admin) | SHORT | ✅ Done | Users, stats, early access progress |
+| 13 | F-008 | Why Choose A11YO (/why-a11yo) | SHORT | ✅ Done | EAA explainer, footer link |
+
+### Phase 2 — Growth Features (Complete)
+
+| # | ID | Feature | Effort | Status | Notes |
+|---|---|---|---|---|---|
+| 14 | F-005 | Stripe checkout (Pro + Full Site) | MEDIUM | ✅ Done | Checkout route live; price IDs needed in Vercel env |
+| 15 | EXT | Chrome extension — popup UI + scan | MEDIUM | ✅ Done | 4 states, Supabase auth, scan API |
+| 16 | EXT | Chrome extension — plain English cards | MEDIUM | ✅ Done | issue-library.js, expandable cards |
+| 17 | EXT | Chrome extension — WCAG technical toggle | MEDIUM | ✅ Done | Hidden by default per card |
+| 18 | EXT | Chrome extension — 'View full report' link | MEDIUM | ✅ Done | Opens a11yo.com/report/:id |
+| 19 | EXT | Chrome extension — guest scan mode | MEDIUM | ✅ Done | 1/30min via /api/scan, cooldown in storage |
+| 20 | EXT | Chrome extension — inline sign-in | MEDIUM | ✅ Done | Sign-in form in popup |
+| 21 | CORE | Homepage inline registration panel | QUICK WIN | ✅ Done | SignupPanel component |
+| 22 | CORE | Pricing page (€5/month Pro + €15 Full Site) | QUICK WIN | ✅ Done | /pricing page |
+| 23 | F-005 | Stripe recurring subscriptions + webhook | QUICK WIN | ✅ Done | Webhook at /api/stripe/webhook |
+| 24 | ADM | Superadmin — full user management | SHORT | ✅ Done | Plan/role edit, delete, MRR stats |
+| 25 | ADM | Admin API (/api/admin/user) | SHORT | ✅ Done | PATCH + DELETE via RLS policies |
+| 26 | INFRA | URL migration a11yo.io → a11yo.com | QUICK WIN | ✅ Done | Code, Stripe, Vercel env |
+| 27 | EXT | Chrome extension — colour contrast checker | MEDIUM | ✅ Done | WCAG AA/AAA, EyeDropper picker |
+
+### Phase 3 — Polish & Production (Complete)
+
+| # | ID | Feature | Effort | Status | Notes |
+|---|---|---|---|---|---|
+| 28 | INFRA | Security hardening | SHORT | ✅ Done | Open redirect, SSRF, CSP headers, race condition fix, admin guards |
+| 29 | UI | SVG brand logo + dark/light theme | QUICK WIN | ✅ Done | Logo component, ThemeToggle, all pages updated |
+| 30 | UI | Homepage hero redesign | SHORT | ✅ Done | Two-column layout, radar animation, stats row |
+| 31 | UI | Auth-aware nav (login/account icons) | QUICK WIN | ✅ Done | NavUserArea — user icon + green dot when authed |
+| 32 | UI | Consistent page width (max-w-5xl) | QUICK WIN | ✅ Done | All marketing pages standardised |
+| 33 | INFRA | Stripe checkout error handling | QUICK WIN | ✅ Done | try/catch → JSON errors, no more HTML 500s |
+| 34 | F-009 | Free tools hub (/tools) | SHORT | ✅ Done | Hub + alt-text checker + accessibility statement generator |
+| 35 | F-010 | Alt-text checker (/tools/alt-text) | SHORT | ✅ Done | URL scrape → missing/weak alt text report |
+| 36 | F-011 | Accessibility statement generator | SHORT | ✅ Done | /tools/accessibility-statement |
+| 37 | F-012 | Chrome extension landing page | SHORT | ✅ Done | /extension — mockup, how it works, FAQ |
+| 38 | CORE | Blog (/blog + /blog/[slug]) | SHORT | ✅ Done | MDX-ready, listing page, individual post page |
+
+### Phase 4 — Next to Build
+
+| # | ID | Feature | Effort | Priority | Notes |
+|---|---|---|---|---|---|
+| 39 | F-005 | Stripe price IDs in Vercel env | QUICK WIN | 🔴 Blocker | Must use `price_...` IDs (not `prod_...`) from Stripe dashboard. Set STRIPE_PRICE_PRO + STRIPE_PRICE_AGENCY in Vercel. Rotate the secret key that was accidentally exposed. |
+| 40 | F-005 | Stripe Customer Portal | SHORT | 🔴 High | Users need to manage/cancel subscriptions. Add `/api/stripe/portal` route + 'Manage billing' link in dashboard. |
+| 41 | F-001 | Google OAuth | SHORT | 🟡 Medium | Button exists in auth pages but OAuth redirect not fully tested in production. Verify and fix. |
+| 42 | EMAIL | Resend email integration | MEDIUM | 🟡 Medium | Welcome email on signup, subscription confirmation, scan-complete notification (optional). Set RESEND_API_KEY in Vercel. |
+| 43 | UI | Mobile hamburger nav | SHORT | 🟡 Medium | All nav links hide below sm/md. Need a drawer/hamburger for small screens. |
+| 44 | F-002 | Account settings page (/account) | SHORT | 🟡 Medium | Change email/password, view current plan, cancel subscription link. |
+| 45 | EXT | Chrome Web Store submission | SHORT | 🟡 Medium | Package extension/, write store listing, submit for review. |
+| 46 | CORE | Full Site plan — multi-page crawl | LARGE | 🟢 Low | 50-page crawl feature for 'agency' plan users. Queue-based scanner, progress indicator. |
+| 47 | SEO | Dynamic OG images per report | SHORT | 🟢 Low | Vercel OG image generation for /report/:id and /blog/:slug. |
+| 48 | SEO | sitemap.xml + robots.txt | QUICK WIN | 🟢 Low | Auto-generated sitemap from Next.js app routes. |
+| 49 | CORE | Scan sharing toggle (public/private) | SHORT | 🟢 Low | Reports default to private; user can toggle to public to share a link. |
+| 50 | CORE | Blog content (3 launch posts) | MEDIUM | 🟢 Low | EAA deadline explainer, how accessibility auditing works, top 5 Irish sites that fail WCAG. |
 
 ---
 
-## 6. How to Use This Document with Claude Code
+## 6. Current State Summary (March 2026)
+
+### What's live and working
+- Full scan → report pipeline (17 checks, plain English output)
+- Auth (email/password signup, login, password reset, admin role)
+- Dashboard with scan history and daily counter
+- Early access code system (25 slots)
+- Stripe checkout for Pro (€5/month) and Full Site (€15 one-time)
+- Stripe webhook → Supabase plan upgrade
+- Chrome extension (all 4 states, guest mode, colour contrast checker)
+- Admin dashboard (full user management)
+- Free tools: alt-text checker, accessibility statement generator
+- Blog (structure only, no posts yet)
+- SVG brand logo, dark/light theme toggle
+- Auth-aware nav (user icon when logged in)
+- Security hardened (CSP, SSRF protection, admin guards)
+
+### What's broken / needs immediate attention
+1. **Stripe price IDs not set in Vercel** — checkout returns "Invalid plan". Set `STRIPE_PRICE_PRO` and `STRIPE_PRICE_AGENCY` to `price_...` IDs (not `prod_...`).
+2. **Stripe secret key exposed** — was posted in plain text. Rotate immediately at stripe.com/dashboard → Developers → API keys.
+
+### What's not built yet
+- Stripe Customer Portal (billing management/cancellation)
+- Mobile hamburger nav
+- Resend email notifications
+- Account settings page
+- Chrome Web Store submission
+- Multi-page crawl (Full Site plan feature)
+- Blog content
+
+---
+
+## 7. How to Use This Document with Claude Code
 
 **Opening prompt for a new session:**
 > "Read `/PRD.md` in the repo root. The next item on the roadmap is [Feature ID / Name]. Here is the current state of the project: [brief description]. Build it as specified in the PRD."
