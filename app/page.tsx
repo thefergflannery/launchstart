@@ -205,12 +205,12 @@ export default function HomePage() {
             <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
 
               {/* Left — headline + stats */}
-              <div>
+              <div className="min-w-0">
                 <span className="font-mono text-xs tracking-widest uppercase text-green block mb-7">
                   Accessibility · SEO · Launch readiness
                 </span>
                 <h1
-                  className="text-5xl lg:text-[4.5rem] font-display font-extrabold leading-[0.92] tracking-tight mb-7"
+                  className="text-5xl lg:text-[3.25rem] font-display font-extrabold leading-[0.92] tracking-tight mb-7"
                   style={{
                     background: 'linear-gradient(170deg, #F5F4F0 25%, #4A5E4A 100%)',
                     WebkitBackgroundClip: 'text',

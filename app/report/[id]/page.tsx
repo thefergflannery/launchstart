@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import { getUser, getProfile } from '@/lib/supabase-server';
 import { ScanRecord, CheckResult } from '@/lib/types';
 import { getIssue, IssueSeverity } from '@/lib/issue-library';
 import IssueCard from '@/components/IssueCard';
@@ -47,16 +48,25 @@ function calcScore(allChecks: CheckResult[]): number {
   return total === 0 ? 100 : Math.round((passedWeight / total) * 100);
 }
 
+const PAID_PLANS = new Set(['onceoff', 'recurring', 'agency', 'pro', 'early_access']);
+
 export default async function ReportPage({ params }: PageProps) {
-  const { data, error } = await supabase
-    .from('scans')
-    .select('*')
-    .eq('id', params.id)
-    .single();
+  const [{ data, error }, user] = await Promise.all([
+    supabase.from('scans').select('*').eq('id', params.id).single(),
+    getUser(),
+  ]);
 
   if (error || !data) notFound();
 
   const scan = data as ScanRecord;
+
+  // Determine if fix details should be locked (free/anon users)
+  let isPaid = false;
+  if (user) {
+    const profile = await getProfile(user.id);
+    isPaid = PAID_PLANS.has(profile?.plan ?? 'free');
+  }
+  const locked = !isPaid;
   const allChecks: CheckResult[] = [
     ...scan.results.accessibility,
     ...scan.results.seo,
@@ -181,6 +191,22 @@ export default async function ReportPage({ params }: PageProps) {
             </div>
           </div>
 
+          {/* Upgrade banner for free/anon users */}
+          {locked && issues.length > 0 && (
+            <div className="border border-green/20 bg-green/5 px-5 py-4 flex items-center justify-between gap-4 flex-wrap">
+              <p className="font-mono text-xs text-white">
+                <span className="text-green font-semibold">Fix details are locked.</span>{' '}
+                Upgrade to see plain English fix instructions for every issue.
+              </p>
+              <a
+                href="/pricing"
+                className="font-mono text-xs uppercase tracking-wider bg-green text-black px-4 py-2 hover:bg-green-mid transition-colors whitespace-nowrap flex-shrink-0"
+              >
+                Upgrade — from €10 →
+              </a>
+            </div>
+          )}
+
           {/* ── 2. QUICK WINS ── */}
           {quickWins.length > 0 && (
             <section aria-labelledby="quick-wins-heading">
@@ -188,7 +214,7 @@ export default async function ReportPage({ params }: PageProps) {
               <div className="space-y-2">
                 {quickWins.map(({ check }) => {
                   const entry = getIssue(check.id);
-                  return entry ? <IssueCard key={check.id} entry={entry} /> : null;
+                  return entry ? <IssueCard key={check.id} entry={entry} locked={locked} /> : null;
                 })}
               </div>
             </section>
@@ -201,7 +227,7 @@ export default async function ReportPage({ params }: PageProps) {
               <div className="space-y-2">
                 {criticalIssues.map(({ check }) => {
                   const entry = getIssue(check.id);
-                  return entry ? <IssueCard key={check.id} entry={entry} defaultOpen={criticalIssues.length === 1} /> : null;
+                  return entry ? <IssueCard key={check.id} entry={entry} defaultOpen={!locked && criticalIssues.length === 1} locked={locked} /> : null;
                 })}
               </div>
             </section>
@@ -214,7 +240,7 @@ export default async function ReportPage({ params }: PageProps) {
               <div className="space-y-2">
                 {shouldFixIssues.map(({ check }) => {
                   const entry = getIssue(check.id);
-                  return entry ? <IssueCard key={check.id} entry={entry} /> : null;
+                  return entry ? <IssueCard key={check.id} entry={entry} locked={locked} /> : null;
                 })}
               </div>
             </section>
@@ -227,7 +253,7 @@ export default async function ReportPage({ params }: PageProps) {
               <div className="space-y-2">
                 {niceToHaveIssues.map(({ check }) => {
                   const entry = getIssue(check.id);
-                  return entry ? <IssueCard key={check.id} entry={entry} /> : null;
+                  return entry ? <IssueCard key={check.id} entry={entry} locked={locked} /> : null;
                 })}
               </div>
             </section>

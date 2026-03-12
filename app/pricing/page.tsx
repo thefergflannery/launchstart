@@ -7,26 +7,31 @@ import SiteFooter from '@/components/SiteFooter';
 export const metadata: Metadata = { title: 'Pricing — A11YO' };
 
 const FREE_FEATURES = [
-  '3 scans per day, no account needed',
-  'All 17 accessibility, SEO & launch checks',
+  '1 scan per day, no account needed',
+  'All accessibility, SEO & launch checks',
   'Plain English report with fix instructions',
   'Shareable report URL',
-  'PDF export',
 ];
 
-const PRO_FEATURES = [
+const ONCEOFF_FEATURES = [
   'Everything in Free',
-  '20 single-page scans per day',
-  'Scan history — all reports saved',
-  'Plain English issue cards with WCAG refs',
+  '10 scans per day',
+  'Scan history — reports saved to dashboard',
   'PDF export for developer handoff',
+];
+
+const RECURRING_FEATURES = [
+  'Everything in One-Off',
+  '20 scans per day',
+  'Score trend chart — track progress over time',
   'Chrome extension access',
+  'Delta badge — see improvement scan-to-scan',
 ];
 
 const AGENCY_FEATURES = [
-  'Everything in Pro',
+  'Everything in Recurring',
+  'Unlimited scans per day',
   'Full site crawl — up to 50 pages per scan',
-  '50 scans per day',
   'Multi-page compliance score',
   'Priority support',
 ];
@@ -34,15 +39,15 @@ const AGENCY_FEATURES = [
 const FAQ = [
   {
     q: 'Do I need an account to scan?',
-    a: 'No. You can run up to 3 scans per day without an account. Create a free account and upgrade to save your history and run more scans.',
+    a: 'No. You can run 1 scan per day without an account. Create a free account and upgrade to save your history and run more scans.',
   },
   {
-    q: 'What is the difference between Pro and Full Site?',
-    a: 'Pro scans a single page at a time — perfect for checking specific pages or ongoing monitoring. Full Site crawls up to 50 pages in one go and gives you a site-wide compliance score.',
+    q: 'What is the One-Off plan?',
+    a: 'A one-time €10 payment that gives you 10 scans per day and full scan history saved to your dashboard. No subscription required.',
   },
   {
-    q: 'Can I use the Chrome extension?',
-    a: 'Yes — the Chrome extension is included with Pro. Full Site is a one-time audit purchase.',
+    q: 'What is the difference between Recurring and Agency?',
+    a: 'Recurring is for developers and site owners monitoring a handful of pages. Agency unlocks unlimited scans and a full site crawl that audits up to 50 pages in one go.',
   },
   {
     q: 'Is there a money-back guarantee?',
@@ -53,7 +58,7 @@ const FAQ = [
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-black flex flex-col">
-      <Nav links={PAGE_NAV_LINKS} cta={{ href: '/', label: 'Full audit →' }} />
+      <Nav links={PAGE_NAV_LINKS} cta={{ href: '/', label: 'Audit →' }} />
 
       <main id="main-content" className="flex-1 py-20 px-6">
         <div className="max-w-5xl mx-auto">
@@ -67,19 +72,19 @@ export default function PricingPage() {
               Simple, honest pricing.
             </h1>
             <p className="text-secondary text-lg max-w-md mx-auto">
-              Start free — no account needed. Upgrade for scan history, the Chrome extension, and full-site crawls.
+              Start free — no account needed. Upgrade for scan history, score trends, and full-site crawls.
             </p>
           </div>
 
           {/* Tier cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border mb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-px bg-border mb-20">
 
             {/* Free */}
-            <div className="bg-black p-8 flex flex-col">
+            <div className="bg-black p-7 flex flex-col">
               <div className="mb-8 flex-1">
                 <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">Free</span>
                 <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-4xl font-display font-semibold text-white">€0</span>
+                  <span className="text-3xl font-display font-semibold text-white">€0</span>
                   <span className="text-secondary text-sm">forever</span>
                 </div>
                 <p className="text-secondary text-sm mb-6">
@@ -87,8 +92,8 @@ export default function PricingPage() {
                 </p>
                 <ul className="space-y-3">
                   {FREE_FEATURES.map((f) => (
-                    <li key={f} className="flex items-start gap-3">
-                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-green-mid flex-shrink-0" />
+                    <li key={f} className="flex items-start gap-2.5">
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-border flex-shrink-0" />
                       <span className="text-secondary text-sm">{f}</span>
                     </li>
                   ))}
@@ -96,61 +101,84 @@ export default function PricingPage() {
               </div>
               <Link
                 href="/"
-                className="block text-center font-mono text-sm tracking-wider uppercase border border-border px-6 py-3 text-white hover:border-white transition-colors"
+                className="block text-center font-mono text-xs tracking-wider uppercase border border-border px-4 py-3 text-white hover:border-white transition-colors"
               >
                 Start scanning →
               </Link>
             </div>
 
-            {/* Pro */}
-            <div className="bg-black p-8 flex flex-col border border-green/20" style={{ boxShadow: '0 0 40px -8px rgba(0,233,106,0.12)' }}>
+            {/* One-Off */}
+            <div className="bg-black p-7 flex flex-col">
+              <div className="mb-8 flex-1">
+                <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">One-Off</span>
+                <div className="flex items-baseline gap-2 mb-2">
+                  <span className="text-3xl font-display font-semibold text-white">€10</span>
+                  <span className="text-secondary text-sm">one-time</span>
+                </div>
+                <p className="text-secondary text-sm mb-6">
+                  One payment. Scan history saved forever.
+                </p>
+                <ul className="space-y-3">
+                  {ONCEOFF_FEATURES.map((f) => (
+                    <li key={f} className="flex items-start gap-2.5">
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-green-mid flex-shrink-0" />
+                      <span className="text-secondary text-sm">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <CheckoutButton plan="onceoff" label="Get One-Off — €10 →" />
+            </div>
+
+            {/* Recurring */}
+            <div className="bg-black p-7 flex flex-col border border-green/20" style={{ boxShadow: '0 0 40px -8px rgba(0,233,106,0.12)' }}>
               <div className="mb-8 flex-1">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="font-mono text-xs tracking-widest uppercase text-green block">Pro</span>
+                  <span className="font-mono text-xs tracking-widest uppercase text-green block">Recurring</span>
                   <span className="font-mono text-[10px] border border-green/30 text-green px-2 py-0.5 uppercase tracking-wider">
-                    Most popular
+                    Popular
                   </span>
                 </div>
                 <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-4xl font-display font-semibold text-white">€5</span>
+                  <span className="text-3xl font-display font-semibold text-white">€29</span>
                   <span className="text-secondary text-sm">/ month</span>
                 </div>
                 <p className="text-secondary text-sm mb-6">
-                  Single-page scans with full history, PDF export, and Chrome extension.
+                  Ongoing monitoring with score trends and Chrome extension.
                 </p>
                 <ul className="space-y-3">
-                  {PRO_FEATURES.map((f) => (
-                    <li key={f} className="flex items-start gap-3">
+                  {RECURRING_FEATURES.map((f) => (
+                    <li key={f} className="flex items-start gap-2.5">
                       <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-green flex-shrink-0" />
                       <span className="text-secondary text-sm">{f}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-              <CheckoutButton plan="pro" label="Get Pro — €5/month →" />
+              <CheckoutButton plan="recurring" label="Get Recurring — €29/mo →" />
             </div>
 
-            {/* Full Site */}
-            <div className="bg-black p-8 flex flex-col">
+            {/* Agency */}
+            <div className="bg-black p-7 flex flex-col">
               <div className="mb-8 flex-1">
-                <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">Full Site</span>
+                <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">Agency</span>
                 <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-4xl font-display font-semibold text-white">€15</span>
-                  <span className="text-secondary text-sm">one-time</span>
+                  <span className="text-3xl font-display font-semibold text-white">€99</span>
+                  <span className="text-secondary text-sm">/ month</span>
                 </div>
                 <p className="text-secondary text-sm mb-6">
-                  One payment. Crawl your entire site and get a single compliance score across all pages.
+                  Full site crawls and unlimited scans for agencies.
                 </p>
                 <ul className="space-y-3">
                   {AGENCY_FEATURES.map((f) => (
-                    <li key={f} className="flex items-start gap-3">
+                    <li key={f} className="flex items-start gap-2.5">
                       <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />
                       <span className="text-secondary text-sm">{f}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-              <CheckoutButton plan="agency" label="Get Full Site — €15 one-time →" />
+              <CheckoutButton plan="agency" label="Get Agency — €99/mo →" />
             </div>
 
           </div>

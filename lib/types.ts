@@ -21,4 +21,8 @@ export interface ScanRecord {
   url: string;
   results: ScanResults;
   created_at: string;
+  score?: number;
+  critical_count?: number;
+  should_fix_count?: number;
+  nice_to_have_count?: number;
 }

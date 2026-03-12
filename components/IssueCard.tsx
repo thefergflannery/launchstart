@@ -7,9 +7,10 @@ interface IssueCardProps {
   entry: IssueEntry;
   count?: number;       // instances found (e.g. 14 images missing alt text)
   defaultOpen?: boolean;
+  locked?: boolean;     // blur fix details, show upgrade CTA
 }
 
-export default function IssueCard({ entry, count, defaultOpen = false }: IssueCardProps) {
+export default function IssueCard({ entry, count, defaultOpen = false, locked = false }: IssueCardProps) {
   const [open, setOpen] = useState(defaultOpen);
   const [showTechnical, setShowTechnical] = useState(false);
   const [fixed, setFixed] = useState(false);
@@ -24,8 +25,8 @@ export default function IssueCard({ entry, count, defaultOpen = false }: IssueCa
       {/* Card header — always visible */}
       <button
         className="w-full text-left px-5 py-4 flex items-start gap-4 group"
-        onClick={() => setOpen((o) => !o)}
-        aria-expanded={open}
+        onClick={() => !locked && setOpen((o) => !o)}
+        aria-expanded={locked ? undefined : open}
       >
         {/* Severity badge */}
         <span
@@ -39,17 +40,48 @@ export default function IssueCard({ entry, count, defaultOpen = false }: IssueCa
           {entry.title}
         </span>
 
-        {/* Expand chevron */}
-        <span
-          className={`flex-shrink-0 text-secondary text-xs mt-0.5 transition-transform ${open ? 'rotate-180' : ''}`}
-          aria-hidden="true"
-        >
-          ▾
-        </span>
+        {/* Lock icon or expand chevron */}
+        {locked ? (
+          <span className="flex-shrink-0 text-secondary text-xs mt-0.5" aria-hidden="true">🔒</span>
+        ) : (
+          <span
+            className={`flex-shrink-0 text-secondary text-xs mt-0.5 transition-transform ${open ? 'rotate-180' : ''}`}
+            aria-hidden="true"
+          >
+            ▾
+          </span>
+        )}
       </button>
 
-      {/* Expanded content */}
-      {open && (
+      {/* Locked state — blurred preview + upgrade CTA */}
+      {locked && (
+        <div className="relative px-5 pb-5 border-t border-border pt-4">
+          {/* Blurred content preview */}
+          <div className="space-y-3 select-none" style={{ filter: 'blur(4px)', pointerEvents: 'none' }} aria-hidden="true">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1.5">What this means</p>
+              <p className="text-secondary text-sm">Upgrade to see the full explanation and fix instructions for this issue.</p>
+            </div>
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1.5">What needs to happen</p>
+              <p className="text-secondary text-sm">Step-by-step fix instructions are available with a paid plan.</p>
+            </div>
+          </div>
+          {/* Upgrade overlay */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-6">
+            <p className="font-mono text-xs text-white text-center">Unlock fix instructions</p>
+            <a
+              href="/pricing"
+              className="font-mono text-xs uppercase tracking-wider bg-green text-black px-5 py-2 hover:bg-green-mid transition-colors"
+            >
+              Upgrade — from €10 →
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* Expanded content (unlocked) */}
+      {!locked && open && (
         <div className="px-5 pb-5 space-y-4 border-t border-border pt-4">
 
           {/* What this means */}

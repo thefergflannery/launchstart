@@ -11,20 +11,23 @@ import { getUser, getProfile, createSupabaseServerClient } from '@/lib/supabase-
 import LogoutButton from './LogoutButton';
 import NewScanFormClient from './NewScanForm';
 import Logo from '@/components/Logo';
+import ScoreChart from '@/components/ScoreChart';
 
 export const metadata: Metadata = { title: 'Dashboard' };
 export const revalidate = 0;
 
-const FREE_DAILY_LIMIT = 3;
-const EARLY_ACCESS_LIMIT = 20;
-const PRO_LIMIT = 50;
-
 const PLAN_CONFIG: Record<string, { label: string; badgeCls: string; limit: number }> = {
-  free:         { label: 'Free',         badgeCls: 'text-secondary border-border', limit: FREE_DAILY_LIMIT },
-  early_access: { label: 'Early Access', badgeCls: 'text-green border-green',      limit: EARLY_ACCESS_LIMIT },
-  pro:          { label: 'Pro',          badgeCls: 'text-green border-green',       limit: PRO_LIMIT },
-  agency:       { label: 'Agency',       badgeCls: 'text-green border-green',       limit: 9999 },
+  free:         { label: 'Free',      badgeCls: 'text-secondary border-border', limit: 1 },
+  onceoff:      { label: 'One-Off',   badgeCls: 'text-green border-green',      limit: 10 },
+  recurring:    { label: 'Recurring', badgeCls: 'text-green border-green',      limit: 20 },
+  agency:       { label: 'Agency',    badgeCls: 'text-green border-green',      limit: 9999 },
+  // legacy
+  early_access: { label: 'Pro',       badgeCls: 'text-green border-green',      limit: 20 },
+  pro:          { label: 'Pro',       badgeCls: 'text-green border-green',      limit: 20 },
 };
+
+const PAID_PLANS = new Set(['onceoff', 'recurring', 'agency', 'pro', 'early_access']);
+const CHART_PLANS = new Set(['recurring', 'agency']);
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-GB', {
@@ -32,13 +35,15 @@ function formatDate(iso: string) {
   });
 }
 
-function scoreFromSummary(summary: string | null): number | null {
-  if (!summary) return null;
-  const match = summary.match(/^(\d+)\/(\d+)/);
-  if (!match) return null;
-  const passed = parseInt(match[1]);
-  const total = parseInt(match[2]);
-  return total > 0 ? Math.round((passed / total) * 100) : null;
+function shortDate(iso: string) {
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+}
+
+function scoreColor(score: number | null) {
+  if (score === null) return 'text-secondary';
+  if (score >= 80) return 'text-green';
+  if (score >= 50) return 'text-warn';
+  return 'text-fail';
 }
 
 export default async function DashboardPage() {
@@ -48,10 +53,11 @@ export default async function DashboardPage() {
   const profile = await getProfile(user.id);
   const plan = profile?.plan ?? 'free';
   const planConfig = PLAN_CONFIG[plan] ?? PLAN_CONFIG.free;
+  const isPaid = PAID_PLANS.has(plan);
+  const showChart = CHART_PLANS.has(plan);
 
   const supabase = createSupabaseServerClient();
 
-  // Today's scan count
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
 
@@ -63,15 +69,57 @@ export default async function DashboardPage() {
       .gte('created_at', todayStart.toISOString()),
     supabase
       .from('scans')
-      .select('id, url, summary, created_at')
+      .select('id, url, summary, score, created_at')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
-      .limit(20),
+      .limit(50),
   ]);
 
   const scansToday = usedToday ?? 0;
   const dailyLimit = planConfig.limit;
-  const limitReached = plan === 'free' && scansToday >= dailyLimit;
+  const limitReached = !isPaid && scansToday >= dailyLimit;
+
+  // Build delta map: for each scan, find the previous scan of the same URL
+  const urlHistory: Record<string, number[]> = {};
+  // scans are newest-first; reverse to build history oldest-first
+  const scansAsc = [...(scans ?? [])].reverse();
+  for (const s of scansAsc) {
+    if (s.score == null) continue;
+    if (!urlHistory[s.url]) urlHistory[s.url] = [];
+    urlHistory[s.url].push(s.score);
+  }
+
+  // Delta: current score minus previous score for same URL
+  const urlScanIndex: Record<string, number> = {};
+  const deltaMap: Record<string, number | null> = {};
+  for (const s of scansAsc) {
+    const idx = urlScanIndex[s.url] ?? 0;
+    urlScanIndex[s.url] = idx + 1;
+    if (s.score == null || idx === 0) {
+      deltaMap[s.id] = null;
+    } else {
+      const hist = urlHistory[s.url];
+      deltaMap[s.id] = s.score - hist[idx - 1];
+    }
+  }
+
+  // For ScoreChart: pick the URL with the most scans
+  let chartUrl = '';
+  let chartData: { label: string; score: number }[] = [];
+  if (showChart && scans && scans.length >= 2) {
+    const urlCounts: Record<string, typeof scans> = {};
+    for (const s of scansAsc) {
+      if (!urlCounts[s.url]) urlCounts[s.url] = [];
+      if (s.score != null) urlCounts[s.url].push(s);
+    }
+    const topUrl = Object.entries(urlCounts).sort((a, b) => b[1].length - a[1].length)[0];
+    if (topUrl && topUrl[1].length >= 2) {
+      chartUrl = topUrl[0];
+      chartData = topUrl[1].map((s) => ({ label: shortDate(s.created_at), score: s.score! }));
+    }
+  }
+
+  const displayScans = (scans ?? []).slice(0, 20);
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
@@ -102,8 +150,13 @@ export default async function DashboardPage() {
             <h1 className="text-3xl font-display font-extrabold text-white">Your audits</h1>
           </div>
 
-          {/* Scan counter (free plan) */}
-          {plan === 'free' && (
+          {/* Score trend chart (recurring/agency with enough data) */}
+          {showChart && chartData.length >= 2 && (
+            <ScoreChart data={chartData} url={chartUrl} />
+          )}
+
+          {/* Scan counter */}
+          {planConfig.limit < 9999 && (
             <div className="corner-mark border border-border bg-surface px-6 py-5">
               <div className="flex items-center justify-between mb-3">
                 <div>
@@ -135,7 +188,7 @@ export default async function DashboardPage() {
             <div className="corner-mark border border-fail/30 bg-fail/5 px-6 py-5">
               <p className="font-mono text-xs uppercase tracking-widest text-fail mb-1">Daily limit reached</p>
               <p className="text-white font-semibold mb-1">You&apos;ve used all {dailyLimit} free scans today.</p>
-              <p className="text-secondary text-sm">Resets at midnight. Get more scans below.</p>
+              <p className="text-secondary text-sm">Resets at midnight. Upgrade for more scans.</p>
             </div>
           ) : (
             <div>
@@ -144,35 +197,20 @@ export default async function DashboardPage() {
             </div>
           )}
 
-          {/* Upgrade CTAs (free users only) */}
-          {plan === 'free' && (
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="corner-mark border border-border bg-surface px-6 py-5">
-                <p className="font-mono text-xs uppercase tracking-widest text-green mb-2">Have an access code?</p>
-                <p className="text-white font-semibold mb-1">Unlock early access — free</p>
-                <p className="text-secondary text-sm mb-4">
-                  Full 17-check reports, PDF exports, and {EARLY_ACCESS_LIMIT} scans/day for 12 months. No card needed.
-                </p>
-                <Link
-                  href="/early-access"
-                  className="inline-block font-mono text-xs tracking-wider uppercase bg-green text-black px-5 py-2.5 hover:bg-green-mid transition-colors"
-                >
-                  Redeem code →
-                </Link>
+          {/* Upgrade CTA (free users only) */}
+          {!isPaid && (
+            <div className="corner-mark border border-border bg-surface px-6 py-5 flex items-center justify-between gap-6 flex-wrap">
+              <div>
+                <p className="font-mono text-xs uppercase tracking-widest text-green mb-1">Unlock fix details</p>
+                <p className="text-white font-semibold mb-1">See exactly how to fix every issue</p>
+                <p className="text-secondary text-sm">One-off €10 · Recurring €29/mo · Agency €99/mo</p>
               </div>
-              <div className="corner-mark border border-border bg-surface px-6 py-5">
-                <p className="font-mono text-xs uppercase tracking-widest text-secondary mb-2">Pro plan</p>
-                <p className="text-white font-semibold mb-1">€10 / month</p>
-                <p className="text-secondary text-sm mb-4">
-                  {PRO_LIMIT} scans/day, all 17 checks, PDF exports, scan history, and priority support.
-                </p>
-                <Link
-                  href="/pricing"
-                  className="inline-block font-mono text-xs tracking-wider uppercase border border-border text-secondary px-5 py-2.5 hover:text-white hover:border-white transition-colors"
-                >
-                  See pricing →
-                </Link>
-              </div>
+              <Link
+                href="/pricing"
+                className="font-mono text-xs tracking-wider uppercase bg-green text-black px-5 py-2.5 hover:bg-green-mid transition-colors whitespace-nowrap"
+              >
+                See plans →
+              </Link>
             </div>
           )}
 
@@ -182,34 +220,42 @@ export default async function DashboardPage() {
               Recent scans
             </h2>
 
-            {!scans || scans.length === 0 ? (
+            {displayScans.length === 0 ? (
               <div className="corner-mark border border-border bg-surface p-12 text-center">
                 <p className="text-white font-semibold mb-1">No scans yet</p>
                 <p className="text-secondary text-sm">Run your first audit above to see results here.</p>
               </div>
             ) : (
               <div className="corner-mark border border-border bg-surface divide-y divide-border overflow-x-auto">
-                <div className="grid grid-cols-[1fr_auto_auto_auto] gap-4 px-5 py-3">
+                <div className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-4 px-5 py-3">
                   <span className="font-mono text-[10px] uppercase tracking-widest text-secondary">URL</span>
                   <span className="font-mono text-[10px] uppercase tracking-widest text-secondary hidden sm:block">Score</span>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-secondary hidden sm:block">Delta</span>
                   <span className="font-mono text-[10px] uppercase tracking-widest text-secondary hidden sm:block">Date</span>
                   <span className="sr-only">Actions</span>
                 </div>
-                {scans.map((scan) => {
-                  const pct = scoreFromSummary(scan.summary);
+                {displayScans.map((scan) => {
+                  const score = scan.score ?? null;
+                  const delta = deltaMap[scan.id] ?? null;
                   return (
                     <div
                       key={scan.id}
-                      className="grid grid-cols-[1fr_auto_auto_auto] gap-4 px-5 py-4 items-center hover:bg-white/[0.02] transition-colors"
+                      className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-4 px-5 py-4 items-center hover:bg-white/[0.02] transition-colors"
                     >
-                      <span className="text-white text-sm truncate font-mono" title={scan.url}>{scan.url}</span>
-                      <span className={`font-mono text-sm font-semibold hidden sm:block ${
-                        pct === null ? 'text-secondary'
-                        : pct >= 80 ? 'text-green'
-                        : pct >= 50 ? 'text-warn'
-                        : 'text-fail'
-                      }`}>
-                        {pct !== null ? `${pct}%` : '—'}
+                      <span className="text-white text-sm truncate font-mono min-w-0" title={scan.url}>{scan.url}</span>
+                      <span className={`font-mono text-sm font-semibold hidden sm:block ${scoreColor(score)}`}>
+                        {score !== null ? `${score}%` : '—'}
+                      </span>
+                      <span className="font-mono text-xs hidden sm:block w-12 text-right">
+                        {delta === null ? (
+                          <span className="text-secondary">—</span>
+                        ) : delta > 0 ? (
+                          <span className="text-green">+{delta}</span>
+                        ) : delta < 0 ? (
+                          <span className="text-fail">{delta}</span>
+                        ) : (
+                          <span className="text-secondary">±0</span>
+                        )}
                       </span>
                       <span className="font-mono text-xs text-secondary hidden sm:block">{formatDate(scan.created_at)}</span>
                       <Link

@@ -4,9 +4,12 @@ import { getUser, getProfile, createSupabaseServerClient } from '@/lib/supabase-
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' });
 
+// Plans: onceoff = €10 one-time | recurring = €29/month | agency = €99/month
+// Set these price IDs (price_...) in Vercel environment variables.
 const PRICE_IDS: Record<string, string> = {
-  pro:    process.env.STRIPE_PRICE_PRO!,
-  agency: process.env.STRIPE_PRICE_AGENCY!,
+  onceoff:   process.env.STRIPE_PRICE_ONCEOFF!,
+  recurring: process.env.STRIPE_PRICE_RECURRING!,
+  agency:    process.env.STRIPE_PRICE_AGENCY!,
 };
 
 export async function POST(request: NextRequest) {
@@ -42,8 +45,8 @@ export async function POST(request: NextRequest) {
         .eq('id', user.id);
     }
 
-    // agency = one-time payment; pro = recurring subscription
-    const isOneTime = plan === 'agency';
+    // onceoff = one-time payment; recurring + agency = monthly subscription
+    const isOneTime = plan === 'onceoff';
     const params: Stripe.Checkout.SessionCreateParams = isOneTime
       ? {
           customer: customerId,
@@ -51,7 +54,7 @@ export async function POST(request: NextRequest) {
           line_items: [{ price: priceId, quantity: 1 }],
           success_url: `${baseUrl}/dashboard?upgraded=1`,
           cancel_url: `${baseUrl}/pricing`,
-          metadata: { supabase_user_id: user.id, plan: plan ?? '' },
+          metadata: { supabase_user_id: user.id, plan: plan! },
         }
       : {
           customer: customerId,
@@ -59,11 +62,11 @@ export async function POST(request: NextRequest) {
           line_items: [{ price: priceId, quantity: 1 }],
           success_url: `${baseUrl}/dashboard?upgraded=1`,
           cancel_url: `${baseUrl}/pricing`,
-          metadata: { supabase_user_id: user.id, plan: plan ?? '' },
-          subscription_data: { metadata: { supabase_user_id: user.id, plan: plan ?? '' } },
+          metadata: { supabase_user_id: user.id, plan: plan! },
+          subscription_data: { metadata: { supabase_user_id: user.id, plan: plan! } },
         };
-    const session = await stripe.checkout.sessions.create(params);
 
+    const session = await stripe.checkout.sessions.create(params);
     return NextResponse.json({ url: session.url });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Checkout failed';

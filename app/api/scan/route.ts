@@ -1,15 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { runScan } from '@/lib/scanner';
 import { getUser, createSupabaseServerClient } from '@/lib/supabase-server';
+import { calcScore, calcCounts } from '@/lib/score';
 import crypto from 'crypto';
 
 export const runtime = 'nodejs';
 export const maxDuration = 30;
 
-const ANON_LIMIT = 1;           // per day for unauthenticated
-const FREE_LIMIT = 3;           // per day for free users (PRD §F-003)
-const EARLY_ACCESS_LIMIT = 20;  // per day for early access users
-const PRO_LIMIT = 50;
+const ANON_LIMIT = 1;
+const FREE_LIMIT = 1;
+const ONCEOFF_LIMIT = 10;
+const RECURRING_LIMIT = 20;
+const AGENCY_LIMIT = 9999;
+
+function planLimit(plan: string): number {
+  if (plan === 'agency') return AGENCY_LIMIT;
+  if (plan === 'recurring') return RECURRING_LIMIT;
+  if (plan === 'onceoff') return ONCEOFF_LIMIT;
+  // legacy plan names
+  if (plan === 'pro' || plan === 'early_access') return RECURRING_LIMIT;
+  return FREE_LIMIT;
+}
 
 function ipHash(request: NextRequest): string {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
@@ -44,12 +55,10 @@ export async function POST(request: NextRequest) {
     const user = await getUser();
     const supabase = createSupabaseServerClient();
 
-    // Rate limiting
     const hash = ipHash(request);
     const endpoint = 'scan';
 
     if (user) {
-      // Authenticated: check per-user limit based on plan
       const { data: profile } = await supabase
         .from('profiles')
         .select('plan')
@@ -57,11 +66,7 @@ export async function POST(request: NextRequest) {
         .single();
 
       const plan = profile?.plan ?? 'free';
-      const maxPerDay =
-        plan === 'agency' ? 9999
-        : plan === 'pro' ? PRO_LIMIT
-        : plan === 'early_access' ? EARLY_ACCESS_LIMIT
-        : FREE_LIMIT;
+      const maxPerDay = planLimit(plan);
 
       const { data: allowed } = await supabase.rpc('check_and_increment_rate_limit', {
         p_ip_hash: `user:${user.id}`,
@@ -71,12 +76,11 @@ export async function POST(request: NextRequest) {
 
       if (!allowed) {
         return NextResponse.json(
-          { error: `Daily scan limit reached. Upgrade for more scans.` },
+          { error: 'Daily scan limit reached. Upgrade for more scans.' },
           { status: 429 }
         );
       }
     } else {
-      // Unauthenticated: strict IP-based rate limiting
       const { data: allowed } = await supabase.rpc('check_and_increment_rate_limit', {
         p_ip_hash: hash,
         p_endpoint: endpoint,
@@ -91,12 +95,13 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Run the scan
     const results = await runScan(parsedUrl.toString());
 
     const allChecks = [...results.accessibility, ...results.seo, ...results.launch];
     const passed = allChecks.filter((c) => c.status === 'pass').length;
     const summary = `${passed}/${allChecks.length} checks passed`;
+    const score = calcScore(allChecks);
+    const counts = calcCounts(allChecks);
 
     const { data, error } = await supabase
       .from('scans')
@@ -104,6 +109,10 @@ export async function POST(request: NextRequest) {
         url: parsedUrl.toString(),
         results,
         summary,
+        score,
+        critical_count: counts.critical,
+        should_fix_count: counts.should_fix,
+        nice_to_have_count: counts.nice_to_have,
         ...(user ? { user_id: user.id } : {}),
       })
       .select('id')

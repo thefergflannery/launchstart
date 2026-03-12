@@ -7,13 +7,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { runScan } from '@/lib/scanner';
+import { calcScore, calcCounts } from '@/lib/score';
 
 export const runtime = 'nodejs';
 export const maxDuration = 30;
 
-const FREE_LIMIT = 3;
-const EARLY_ACCESS_LIMIT = 20;
-const PRO_LIMIT = 50;
+const FREE_LIMIT = 1;
+const ONCEOFF_LIMIT = 10;
+const RECURRING_LIMIT = 20;
+const AGENCY_LIMIT = 9999;
+
+function planLimit(plan: string): number {
+  if (plan === 'agency') return AGENCY_LIMIT;
+  if (plan === 'recurring') return RECURRING_LIMIT;
+  if (plan === 'onceoff') return ONCEOFF_LIMIT;
+  if (plan === 'pro' || plan === 'early_access') return RECURRING_LIMIT;
+  return FREE_LIMIT;
+}
 
 // CORS headers — required for extension requests
 const CORS = {
@@ -27,9 +37,6 @@ export async function OPTIONS() {
 }
 
 export async function POST(request: NextRequest) {
-  // CORS preflight passthrough
-  const origin = request.headers.get('origin') ?? '';
-
   try {
     // Extract Bearer token
     const authHeader = request.headers.get('authorization') ?? '';
@@ -79,12 +86,7 @@ export async function POST(request: NextRequest) {
     const plan = profile?.plan ?? 'free';
     const isAdmin = profile?.role === 'admin';
 
-    const maxPerDay =
-      isAdmin ? 9999
-      : plan === 'agency' ? 9999
-      : plan === 'pro' ? PRO_LIMIT
-      : plan === 'early_access' ? EARLY_ACCESS_LIMIT
-      : FREE_LIMIT;
+    const maxPerDay = isAdmin ? 9999 : planLimit(plan);
 
     if (!isAdmin) {
       const { data: allowed } = await supabase.rpc('check_and_increment_rate_limit', {
@@ -106,10 +108,21 @@ export async function POST(request: NextRequest) {
     const allChecks = [...results.accessibility, ...results.seo, ...results.launch];
     const passed = allChecks.filter((c) => c.status === 'pass').length;
     const summary = `${passed}/${allChecks.length} checks passed`;
+    const score = calcScore(allChecks);
+    const counts = calcCounts(allChecks);
 
     const { data, error: insertError } = await supabase
       .from('scans')
-      .insert({ url: parsedUrl.toString(), results, summary, user_id: user.id })
+      .insert({
+        url: parsedUrl.toString(),
+        results,
+        summary,
+        user_id: user.id,
+        score,
+        critical_count: counts.critical,
+        should_fix_count: counts.should_fix,
+        nice_to_have_count: counts.nice_to_have,
+      })
       .select('id')
       .single();
 
