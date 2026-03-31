@@ -58,7 +58,7 @@ export default function ToolsPage() {
   return (
     <div className="min-h-screen bg-black flex flex-col">
 
-      <Nav links={PAGE_NAV_LINKS} cta={{ href: '/', label: 'Audit →' }} />
+      <Nav links={PAGE_NAV_LINKS} />
 
       <main id="main-content" className="flex-1">
 

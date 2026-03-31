@@ -79,13 +79,7 @@ const FAQ = [
 export default function ExtensionPage() {
   return (
     <div className="min-h-screen bg-black flex flex-col">
-      <Nav
-        links={[
-          ...PAGE_NAV_LINKS,
-          { href: '/extension', label: 'Extension', hideBelow: 'sm' },
-        ]}
-        cta={{ href: '/#scan', label: 'Try web app →' }}
-      />
+      <Nav links={PAGE_NAV_LINKS} />
 
       <main className="flex-1">
 

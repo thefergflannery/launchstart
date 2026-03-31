@@ -204,22 +204,21 @@ export default function Nav({ links, cta = DEFAULT_CTA, maxWidth = 'max-w-5xl' }
   );
 }
 
-// Pre-configured nav link sets (Sign in removed — handled by NavUserArea)
+// Standard nav links — used on every page
+export const PAGE_NAV_LINKS: NavLink[] = [
+  { href: '/tools',      label: 'Tools',     hideBelow: 'sm' },
+  { href: '/pricing',    label: 'Pricing',   hideBelow: 'sm' },
+  { href: '/blog',       label: 'Blog',      hideBelow: 'md' },
+  { href: '/extension',  label: 'Extension', hideBelow: 'md' },
+];
+
+// Homepage only — replaces pricing/tools with anchor links into the same page
 export const HOME_NAV_LINKS: NavLink[] = [
   { href: '#how-it-works', label: 'How it works', isAnchor: true, hideBelow: 'sm' },
-  { href: '#checks',       label: 'Checks',        isAnchor: true, hideBelow: 'sm' },
-  { href: '#pricing',      label: 'Pricing',        isAnchor: true, hideBelow: 'sm' },
-  { href: '/extension',    label: 'Extension',      hideBelow: 'md' },
+  { href: '#pricing',      label: 'Pricing',       isAnchor: true, hideBelow: 'sm' },
   { href: '/tools',        label: 'Tools',          hideBelow: 'md' },
+  { href: '/extension',    label: 'Extension',      hideBelow: 'md' },
 ];
 
-export const PAGE_NAV_LINKS: NavLink[] = [
-  { href: '/extension',   label: 'Extension', hideBelow: 'md' },
-  { href: '/tools',       label: 'Tools',     hideBelow: 'sm' },
-  { href: '/pricing',     label: 'Pricing',   hideBelow: 'sm' },
-];
-
-export const TOOLS_NAV_LINKS: NavLink[] = [
-  { href: '/tools',      label: '← Tools', hideBelow: 'sm' },
-  { href: '/pricing',    label: 'Pricing',  hideBelow: 'sm' },
-];
+// Alias — keeps old import working for tools pages
+export const TOOLS_NAV_LINKS = PAGE_NAV_LINKS;

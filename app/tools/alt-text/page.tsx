@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { ImageResult } from '@/app/api/alt-text/route';
-import Nav, { TOOLS_NAV_LINKS } from '@/components/Nav';
+import Nav, { PAGE_NAV_LINKS } from '@/components/Nav';
 import SiteFooter from '@/components/SiteFooter';
 import {
   PassIcon,
@@ -199,7 +199,7 @@ export default function AltTextTool() {
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
-      <Nav links={TOOLS_NAV_LINKS} cta={{ href: '/', label: 'Full audit →' }} maxWidth="max-w-4xl" />
+      <Nav links={PAGE_NAV_LINKS} />
 
       <main className="flex-1 py-12 px-6">
         <div className="max-w-4xl mx-auto">

@@ -35,10 +35,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
-      <Nav
-        links={PAGE_NAV_LINKS}
-        cta={{ href: '/', label: 'Full audit →' }}
-      />
+      <Nav links={PAGE_NAV_LINKS} />
 
       <main id="main-content" className="flex-1 py-12 px-6">
         <div className="max-w-3xl mx-auto">

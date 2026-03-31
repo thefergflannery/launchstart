@@ -25,7 +25,7 @@ const STATS = [
 export default function WhyA11YOPage() {
   return (
     <div className="min-h-screen bg-black flex flex-col">
-      <Nav links={PAGE_NAV_LINKS} cta={{ href: '/', label: 'Scan my site →' }} maxWidth="max-w-3xl" />
+      <Nav links={PAGE_NAV_LINKS} />
 
       <main id="main-content" className="flex-1 py-16 px-6">
         <div className="max-w-3xl mx-auto">

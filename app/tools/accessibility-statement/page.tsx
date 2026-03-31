@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { PassIcon, CopyIcon } from '@/components/Icons';
-import Nav, { TOOLS_NAV_LINKS } from '@/components/Nav';
+import Nav, { PAGE_NAV_LINKS } from '@/components/Nav';
 import SiteFooter from '@/components/SiteFooter';
 
 type ConformanceLevel = 'fully' | 'partially' | 'non';
@@ -213,7 +213,7 @@ export default function AccessibilityStatementTool() {
   return (
     <div className="min-h-screen bg-black flex flex-col">
 
-      <Nav links={TOOLS_NAV_LINKS} cta={{ href: '/', label: 'Full audit →' }} />
+      <Nav links={PAGE_NAV_LINKS} />
 
       <main id="main-content" className="flex-1 py-12 px-6">
         <div className="max-w-3xl mx-auto">

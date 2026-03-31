@@ -19,10 +19,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 export default function BlogPage() {
   return (
     <div className="min-h-screen bg-black flex flex-col">
-      <Nav
-        links={PAGE_NAV_LINKS}
-        cta={{ href: '/', label: 'Full audit →' }}
-      />
+      <Nav links={PAGE_NAV_LINKS} />
 
       <main id="main-content" className="flex-1">
 

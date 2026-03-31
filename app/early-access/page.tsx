@@ -60,7 +60,7 @@ export default function EarlyAccessPage() {
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
-      <Nav links={PAGE_NAV_LINKS} cta={{ href: '/', label: 'Full audit →' }} maxWidth="max-w-2xl" />
+      <Nav links={PAGE_NAV_LINKS} />
 
       <main id="main-content" className="flex-1 py-16 px-6">
         <div className="max-w-2xl mx-auto">
