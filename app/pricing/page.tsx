@@ -21,7 +21,7 @@ const ONCEOFF_FEATURES = [
 ];
 
 const RECURRING_FEATURES = [
-  'Everything in One-Off',
+  'Everything in Action Plan',
   '20 scans per day',
   'Score trend chart — track progress over time',
   'Chrome extension access',
@@ -42,8 +42,8 @@ const FAQ = [
     a: 'No. You can run 1 scan per day without an account. Create a free account and upgrade to save your history and run more scans.',
   },
   {
-    q: 'What is the One-Off plan?',
-    a: 'A one-time €10 payment that gives you 10 scans per day and full scan history saved to your dashboard. No subscription required.',
+    q: 'What is the Action Plan?',
+    a: 'A one-time €10 payment that gives you 10 scans per day and full scan history saved to your dashboard. No subscription required — pay once, keep access.',
   },
   {
     q: 'What is the difference between Recurring and Agency?',
@@ -107,16 +107,16 @@ export default function PricingPage() {
               </Link>
             </div>
 
-            {/* One-Off */}
+            {/* Action Plan */}
             <div className="bg-black p-7 flex flex-col">
               <div className="mb-8 flex-1">
-                <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">One-Off</span>
+                <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">Action Plan</span>
                 <div className="flex items-baseline gap-2 mb-2">
                   <span className="text-3xl font-display font-semibold text-white">€10</span>
                   <span className="text-secondary text-sm">one-time</span>
                 </div>
                 <p className="text-secondary text-sm mb-6">
-                  One payment. Scan history saved forever.
+                  A PDF action plan to hand to your developer. One payment, no subscription.
                 </p>
                 <ul className="space-y-3">
                   {ONCEOFF_FEATURES.map((f) => (
@@ -127,7 +127,7 @@ export default function PricingPage() {
                   ))}
                 </ul>
               </div>
-              <CheckoutButton plan="onceoff" label="Get One-Off — €10 →" />
+              <CheckoutButton plan="onceoff" label="Get Action Plan — €10 →" />
             </div>
 
             {/* Recurring */}

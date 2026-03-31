@@ -26,7 +26,7 @@ export default function IssueCard({ entry, count, defaultOpen = false, locked = 
       <button
         className="w-full text-left px-5 py-4 flex items-start gap-4 group"
         onClick={() => !locked && setOpen((o) => !o)}
-        aria-expanded={locked ? undefined : open}
+        aria-expanded={locked ? false : open}
       >
         {/* Severity badge */}
         <span

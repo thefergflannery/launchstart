@@ -8,7 +8,35 @@ export interface PageData {
   finalUrl: string;
 }
 
+/** Block requests to private/internal hosts (SSRF protection) */
+function assertPublicHost(url: string): void {
+  let parsed: URL;
+  try { parsed = new URL(url); } catch { throw new Error('Invalid URL'); }
+
+  const h = parsed.hostname.toLowerCase();
+  if (h === 'localhost' || h === '::1' || h === '[::1]') {
+    throw new Error('Invalid URL');
+  }
+  const ipv4 = h.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if (ipv4) {
+    const [a, b] = [Number(ipv4[1]), Number(ipv4[2])];
+    if (
+      a === 127 ||                            // loopback
+      a === 10 ||                             // RFC1918
+      (a === 172 && b >= 16 && b <= 31) ||    // RFC1918
+      (a === 192 && b === 168) ||             // RFC1918
+      (a === 169 && b === 254) ||             // link-local / AWS metadata
+      a === 0 ||                              // 0.0.0.0/8
+      (a === 100 && b >= 64 && b <= 127)      // CGNAT / RFC6598
+    ) {
+      throw new Error('Invalid URL');
+    }
+  }
+}
+
 export async function fetchPage(url: string): Promise<PageData> {
+  assertPublicHost(url);
+
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 15000);
 

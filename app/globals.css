@@ -13,7 +13,7 @@
   --color-white-rgb:      245 244 240;
   --color-surface-rgb:    22 26 22;
   --color-border-rgb:     30 42 30;
-  --color-muted-rgb:      74 94 74;
+  --color-muted-rgb:      122 149 122;
   --color-secondary-rgb:  143 168 143;
   --color-green-rgb:      0 233 106;
   --color-green-mid-rgb:  0 184 81;
@@ -29,7 +29,7 @@
   --color-green-dark: #003D1B;
   --color-surface:    #161A16;
   --color-border:     #1E2A1E;
-  --color-muted:      #4A5E4A;
+  --color-muted:      #7A957A;
   --color-secondary:  #8FA88F;
   --color-warn:       #FFB400;
   --color-fail:       #FF4D4D;
@@ -51,7 +51,7 @@ html.light {
   --color-white:      #0F110F;
   --color-surface:    #EEF2EE;
   --color-border:     #CCD8CC;
-  --color-muted:      #8CA08C;
+  --color-muted:      #5A7A5A;
   --color-secondary:  #506450;
 }
 

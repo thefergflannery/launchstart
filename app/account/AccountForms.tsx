@@ -232,7 +232,7 @@ export function DeleteAccountSection() {
           type="text"
           value={typed}
           onChange={(e) => setTyped(e.target.value)}
-          className="w-full px-3 py-2.5 bg-black border border-fail/40 text-white text-sm font-mono focus:outline-none"
+          className="w-full px-3 py-2.5 bg-black border border-fail/40 text-white text-sm font-mono focus:outline-none focus:border-fail focus:ring-1 focus:ring-fail/40"
           placeholder="DELETE"
         />
       </div>

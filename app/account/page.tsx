@@ -17,7 +17,7 @@ export const metadata: Metadata = { title: 'Account — A11YO' };
 
 const PLAN_LABELS: Record<string, string> = {
   free:         'Free',
-  onceoff:      'One-Off',
+  onceoff:      'Action Plan',
   recurring:    'Recurring',
   agency:       'Agency',
   early_access: 'Pro (Legacy)',
@@ -91,11 +91,11 @@ export default async function AccountPage() {
               </div>
             )}
 
-            {/* One-off plan — no recurring billing */}
+            {/* Action Plan — no recurring billing */}
             {plan === 'onceoff' && (
               <div className="pt-4 border-t border-border">
                 <p className="text-secondary text-sm">
-                  You&apos;re on the One-Off plan — a single payment with no recurring charges.
+                  You&apos;re on the Action Plan — a single payment with no recurring charges.
                   Upgrade to Recurring or Agency for ongoing monitoring.
                 </p>
                 <Link

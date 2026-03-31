@@ -18,7 +18,7 @@ export const revalidate = 0;
 
 const PLAN_CONFIG: Record<string, { label: string; badgeCls: string; limit: number }> = {
   free:         { label: 'Free',      badgeCls: 'text-secondary border-border', limit: 1 },
-  onceoff:      { label: 'One-Off',   badgeCls: 'text-green border-green',      limit: 10 },
+  onceoff:      { label: 'Action Plan', badgeCls: 'text-green border-green',     limit: 10 },
   recurring:    { label: 'Recurring', badgeCls: 'text-green border-green',      limit: 20 },
   agency:       { label: 'Agency',    badgeCls: 'text-green border-green',      limit: 9999 },
   // legacy

@@ -60,7 +60,7 @@ const FAQ = [
   },
   {
     q: 'Which plan includes the extension?',
-    a: 'The extension is included with the Pro plan (€5/month). Guest mode is free with no account needed.',
+    a: 'The extension is included with the Recurring plan (€29/month). Guest mode is free with no account needed.',
   },
   {
     q: 'Does it work on local dev servers?',
@@ -260,11 +260,11 @@ export default function ExtensionPage() {
               {/* Pro */}
               <div className="relative corner-mark p-10 bg-black border border-green/20" style={{ boxShadow: '0 0 40px -8px rgba(0,233,106,0.12)' }}>
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="font-mono text-xs tracking-widest uppercase text-green">Pro</span>
+                  <span className="font-mono text-xs tracking-widest uppercase text-green">Recurring</span>
                   <span className="font-mono text-[10px] border border-green/30 text-green px-2 py-0.5 uppercase tracking-wider">Includes extension</span>
                 </div>
                 <div className="flex items-baseline gap-2 mb-3">
-                  <span className="font-mono text-4xl font-semibold text-white">€5</span>
+                  <span className="font-mono text-4xl font-semibold text-white">€29</span>
                   <span className="text-secondary text-sm">/ month</span>
                 </div>
                 <p className="text-secondary text-sm mb-6 leading-relaxed">Full extension access — unlimited scans, saved history, shareable report links.</p>
@@ -284,7 +284,7 @@ export default function ExtensionPage() {
                   ))}
                 </ul>
                 <a href="/pricing" className="block text-center font-mono text-sm tracking-wider uppercase bg-green text-black px-6 py-3 hover:bg-green-mid transition-colors">
-                  Get Pro — €5/month →
+                  Get Recurring — €29/month →
                 </a>
               </div>
 

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
+import { createClient } from '@supabase/supabase-js';
 import { fetchPage } from '@/lib/scanner/fetch-page';
+import crypto from 'crypto';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -56,6 +58,28 @@ async function generateAltText(imageUrl: string): Promise<string> {
   return block.text.trim();
 }
 
+const ALT_TEXT_DAILY_LIMIT = 5;
+
+function ipHash(request: NextRequest): string {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    ?? request.headers.get('x-real-ip')
+    ?? 'unknown';
+  return crypto.createHash('sha256').update(ip).digest('hex');
+}
+
+async function checkRateLimit(hash: string): Promise<boolean> {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  );
+  const { data } = await supabase.rpc('check_and_increment_rate_limit', {
+    p_ip_hash: hash,
+    p_endpoint: 'alt-text',
+    p_max_per_day: ALT_TEXT_DAILY_LIMIT,
+  });
+  return data === true;
+}
+
 function isInternalHost(hostname: string): boolean {
   const h = hostname.toLowerCase();
   if (h === 'localhost' || h === '::1') return true;
@@ -77,6 +101,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { error: 'ANTHROPIC_API_KEY is not configured' },
       { status: 503 }
+    );
+  }
+
+  const allowed = await checkRateLimit(ipHash(request));
+  if (!allowed) {
+    return NextResponse.json(
+      { error: 'Daily limit reached. Try again tomorrow.' },
+      { status: 429 }
     );
   }
 

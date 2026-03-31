@@ -8,6 +8,7 @@ import SiteFooter from '@/components/SiteFooter';
 
 type ConformanceLevel = 'fully' | 'partially' | 'non';
 type Standard = 'wcag22aa' | 'wcag22a' | 'wcag22aaa' | 'en301549' | 'ada' | 'section508' | 'eaa' | 'aoda' | 'aca';
+type Exclusion = 'third-party' | 'archived-docs' | 'pre-eaa-pdfs' | 'maps' | 'live-media' | 'heritage';
 
 interface FormData {
   orgName: string;
@@ -15,12 +16,27 @@ interface FormData {
   statementDate: string;
   contactEmail: string;
   contactName: string;
+  phoneNumber: string;
+  postalAddress: string;
+  responseTimeframe: string;
   conformanceLevel: ConformanceLevel;
   standards: Standard[];
   knownIssues: string;
+  exclusions: Exclusion[];
+  disproportionateBurden: boolean;
+  disproportionateReason: string;
   feedbackUrl: string;
   enforcementBody: string;
 }
+
+const EXCLUSIONS: { id: Exclusion; label: string; text: string }[] = [
+  { id: 'third-party',   label: 'Third-party content', text: 'Third-party content that is neither funded, developed by, nor under the control of this organisation (e.g. embedded maps, social media feeds, payment widgets).' },
+  { id: 'archived-docs', label: 'Archived documents',  text: 'Documents published before the relevant accessibility deadline that are not needed for active administrative processes.' },
+  { id: 'pre-eaa-pdfs',  label: 'PDFs predating EAA deadline (28 June 2025)', text: 'PDF files and Office documents published before 28 June 2025, unless they contain information needed to use a current service.' },
+  { id: 'maps',          label: 'Online maps and mapping services', text: 'Online maps and mapping services, provided that essential navigational information is available in an accessible digital format.' },
+  { id: 'live-media',    label: 'Live audio and video', text: 'Live time-based media (live audio/video streams) at the time of broadcast.' },
+  { id: 'heritage',      label: 'Heritage and cultural reproductions', text: 'Reproductions of items in heritage collections that cannot be made fully accessible without fundamentally changing their nature or the preservation of the original.' },
+];
 
 const STANDARDS: { id: Standard; label: string; region: string }[] = [
   { id: 'wcag22aa',   label: 'WCAG 2.2 Level AA',       region: 'Global'    },
@@ -58,8 +74,18 @@ function generateStatement(f: FormData): string {
       ? `${f.orgName || '[Organisation name]'} is committed to ensuring digital accessibility for people with disabilities. We are actively working to increase the accessibility of our website and aim to adhere to the applicable standards.`
       : `${f.orgName || '[Organisation name]'} recognises the importance of web accessibility. We are currently in the process of reviewing and improving our website to meet applicable accessibility standards.`;
 
+  const selectedExclusions = EXCLUSIONS.filter((e) => f.exclusions.includes(e.id));
+
   const knownIssuesSection = f.knownIssues?.trim()
     ? `\n\nKnown limitations\n${'-'.repeat(40)}\nDespite our best efforts, some content may not yet be fully accessible. The following known limitations exist:\n\n${f.knownIssues.trim()}\n\nWe are actively working to address these issues.`
+    : '';
+
+  const exclusionsSection = selectedExclusions.length > 0
+    ? `\n\nFormal exclusions\n${'-'.repeat(40)}\nThe following content is formally excluded from the scope of this accessibility statement in accordance with applicable legislation:\n\n${selectedExclusions.map((e) => `  • ${e.text}`).join('\n')}`
+    : '';
+
+  const burdenSection = f.disproportionateBurden && f.disproportionateReason?.trim()
+    ? `\n\nDisproportionate burden\n${'-'.repeat(40)}\nWe have assessed certain content as presenting a disproportionate burden to make fully accessible. The following applies:\n\n${f.disproportionateReason.trim()}\n\nThis assessment is reviewed annually.`
     : '';
 
   const eaaSection = hasEAA
@@ -97,7 +123,7 @@ Conformance level: ${CONFORMANCE_LABELS[f.conformanceLevel]}
 This website is ${CONFORMANCE_LABELS[f.conformanceLevel].toLowerCase()} with the following standards:
 ${selectedStandards.length > 0 ? selectedStandards.map((s) => `  • ${s.label} (${s.region})`).join('\n') : '  • [No standards selected]'}
 
-The standards referenced define requirements for designers and developers to improve accessibility for people with disabilities.${knownIssuesSection}
+The standards referenced define requirements for designers and developers to improve accessibility for people with disabilities.${knownIssuesSection}${exclusionsSection}${burdenSection}
 
 3. Technical specification
 ${'-'.repeat(40)}
@@ -113,10 +139,9 @@ ${'-'.repeat(40)}
 We welcome your feedback on the accessibility of ${f.websiteUrl || 'this website'}. If you experience accessibility barriers or have suggestions, please contact us:
 
   Email: ${f.contactEmail || '[contact email]'}
-  Contact: ${f.contactName || '[contact name or team]'}
+  Contact: ${f.contactName || '[contact name or team]'}${f.phoneNumber ? `\n  Phone: ${f.phoneNumber}` : ''}${f.postalAddress ? `\n  Post: ${f.postalAddress}` : ''}
 ${f.feedbackUrl ? `  Accessibility feedback form: ${f.feedbackUrl}` : ''}
-
-We aim to respond to accessibility feedback within 5 working days.${eaaSection}${acaSection}${usSection}${caSection}
+We aim to respond to accessibility feedback within ${f.responseTimeframe || '5 working days'}.${eaaSection}${acaSection}${usSection}${caSection}
 
 5. Enforcement and escalation
 ${'-'.repeat(40)}
@@ -138,9 +163,15 @@ export default function AccessibilityStatementTool() {
     statementDate: today,
     contactEmail: '',
     contactName: '',
+    phoneNumber: '',
+    postalAddress: '',
+    responseTimeframe: '5 working days',
     conformanceLevel: 'partially',
     standards: ['wcag22aa', 'en301549', 'eaa'],
     knownIssues: '',
+    exclusions: [],
+    disproportionateBurden: false,
+    disproportionateReason: '',
     feedbackUrl: '',
     enforcementBody: '',
   });
@@ -155,6 +186,15 @@ export default function AccessibilityStatementTool() {
       standards: f.standards.includes(id)
         ? f.standards.filter((s) => s !== id)
         : [...f.standards, id],
+    }));
+  };
+
+  const toggleExclusion = (id: Exclusion) => {
+    setForm((f) => ({
+      ...f,
+      exclusions: f.exclusions.includes(id)
+        ? f.exclusions.filter((e) => e !== id)
+        : [...f.exclusions, id],
     }));
   };
 
@@ -270,6 +310,49 @@ export default function AccessibilityStatementTool() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
+                    <label htmlFor="phoneNumber" className="font-mono text-xs tracking-wider uppercase text-secondary block mb-2">
+                      Phone number (optional)
+                    </label>
+                    <input
+                      id="phoneNumber"
+                      type="tel"
+                      value={form.phoneNumber}
+                      onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })}
+                      placeholder="+353 1 234 5678"
+                      className="w-full px-4 py-3 bg-surface border border-border text-white placeholder-secondary focus:outline-none focus:border-green font-mono text-sm transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="responseTimeframe" className="font-mono text-xs tracking-wider uppercase text-secondary block mb-2">
+                      Response timeframe
+                    </label>
+                    <input
+                      id="responseTimeframe"
+                      type="text"
+                      value={form.responseTimeframe}
+                      onChange={(e) => setForm({ ...form, responseTimeframe: e.target.value })}
+                      placeholder="5 working days"
+                      className="w-full px-4 py-3 bg-surface border border-border text-white placeholder-secondary focus:outline-none focus:border-green font-mono text-sm transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="postalAddress" className="font-mono text-xs tracking-wider uppercase text-secondary block mb-2">
+                    Postal address (optional)
+                  </label>
+                  <textarea
+                    id="postalAddress"
+                    value={form.postalAddress}
+                    onChange={(e) => setForm({ ...form, postalAddress: e.target.value })}
+                    placeholder="123 Main Street, Dublin 1, Ireland"
+                    rows={2}
+                    className="w-full px-4 py-3 bg-surface border border-border text-white placeholder-secondary focus:outline-none focus:border-green font-mono text-sm transition-colors resize-none"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
                     <label htmlFor="statementDate" className="font-mono text-xs tracking-wider uppercase text-secondary block mb-2">
                       Statement date
                     </label>
@@ -361,6 +444,65 @@ export default function AccessibilityStatementTool() {
                   rows={4}
                   className="w-full px-4 py-3 bg-surface border border-border text-white placeholder-secondary focus:outline-none focus:border-green font-mono text-sm transition-colors resize-y"
                 />
+              </fieldset>
+
+              {/* Section: Formal exclusions */}
+              <fieldset className="border border-border p-6">
+                <legend className="font-mono text-xs tracking-widest uppercase text-green px-2">Formal exclusions (optional)</legend>
+                <p className="text-secondary text-sm mb-5 mt-2">
+                  Select content categories that are legally excluded from accessibility requirements under the EAA, EN 301 549, or equivalent legislation.
+                </p>
+                <div className="space-y-3">
+                  {EXCLUSIONS.map((excl) => (
+                    <label key={excl.id} className="flex items-start gap-3 cursor-pointer group py-2 border-b border-border/40 last:border-0">
+                      <input
+                        type="checkbox"
+                        checked={form.exclusions.includes(excl.id)}
+                        onChange={() => toggleExclusion(excl.id)}
+                        className="mt-0.5 accent-green flex-shrink-0"
+                      />
+                      <div>
+                        <span className="text-white text-sm font-medium group-hover:text-green transition-colors">{excl.label}</span>
+                        <p className="text-secondary text-xs mt-0.5 leading-relaxed">{excl.text}</p>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              {/* Section: Disproportionate burden */}
+              <fieldset className="border border-border p-6 space-y-4">
+                <legend className="font-mono text-xs tracking-widest uppercase text-green px-2">Disproportionate burden (optional)</legend>
+                <p className="text-secondary text-sm mt-2">
+                  Under the EAA and EN 301 549, organisations may claim disproportionate burden for specific content where full remediation is technically or financially impractical. This must be assessed and documented.
+                </p>
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={form.disproportionateBurden}
+                    onChange={(e) => setForm({ ...form, disproportionateBurden: e.target.checked })}
+                    className="accent-green flex-shrink-0"
+                  />
+                  <span className="text-white text-sm group-hover:text-green transition-colors">
+                    I am claiming disproportionate burden for certain content
+                  </span>
+                </label>
+                {form.disproportionateBurden && (
+                  <div>
+                    <label htmlFor="disproportionateReason" className="font-mono text-xs tracking-wider uppercase text-secondary block mb-2">
+                      Describe the content and reason for burden assessment <span aria-hidden="true" className="text-fail">*</span>
+                    </label>
+                    <textarea
+                      id="disproportionateReason"
+                      value={form.disproportionateReason}
+                      onChange={(e) => setForm({ ...form, disproportionateReason: e.target.value })}
+                      required={form.disproportionateBurden}
+                      placeholder="e.g. Our legacy document archive (400+ PDFs) predates current accessibility legislation. Full remediation would require an estimated 1,200 hours of manual work at a cost disproportionate to organisational benefit. We will prioritise the 20 most frequently accessed documents by Q4 2025."
+                      rows={5}
+                      className="w-full px-4 py-3 bg-surface border border-border text-white placeholder-secondary focus:outline-none focus:border-green font-mono text-sm transition-colors resize-y"
+                    />
+                  </div>
+                )}
               </fieldset>
 
               {/* Section: EU enforcement body */}
