@@ -24,12 +24,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Blog — medium priority, updated as posts are added
   const blog: MetadataRoute.Sitemap = [
-    { url: `${BASE_URL}/blog`,                        lastModified: now, changeFrequency: 'weekly',  priority: 0.7 },
+    { url: `${BASE_URL}/blog`,                                                                  lastModified: now, changeFrequency: 'weekly',  priority: 0.7 },
+    { url: `${BASE_URL}/blog/ten-accessibility-quick-wins`,                                     lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE_URL}/blog/what-is-the-european-accessibility-act`,                           lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE_URL}/blog/five-most-common-accessibility-failures`,                          lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE_URL}/blog/how-to-write-an-accessibility-statement`,                          lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
   ];
 
   // Legal / accessibility
   const legal: MetadataRoute.Sitemap = [
     { url: `${BASE_URL}/accessibility`,               lastModified: now, changeFrequency: 'yearly',  priority: 0.3 },
+    { url: `${BASE_URL}/privacy`,                     lastModified: now, changeFrequency: 'yearly',  priority: 0.3 },
+    { url: `${BASE_URL}/terms`,                       lastModified: now, changeFrequency: 'yearly',  priority: 0.3 },
   ];
 
   return [...marketing, ...tools, ...blog, ...legal];

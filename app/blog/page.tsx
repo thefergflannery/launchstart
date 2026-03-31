@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 const CATEGORY_COLORS: Record<string, string> = {
   Accessibility: 'text-green',
+  Compliance:    'text-green',
   SEO:           'text-green-mid',
   Checklist:     'text-warn',
 };

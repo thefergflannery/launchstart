@@ -331,6 +331,240 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
+
+  // ─── Post 3 ───────────────────────────────────────────────────────────────
+  {
+    slug: 'what-is-the-european-accessibility-act',
+    category: 'Compliance',
+    title: 'What Is the European Accessibility Act — and Does It Apply to Your Business?',
+    excerpt: 'The EAA came into force on 28 June 2025. Here\'s what it means in plain English, who it applies to, and what you actually need to do about it.',
+    date: 'Mar 2026',
+    readingTime: '6 min',
+    series: 'Web Accessibility for Irish Businesses · Article 3',
+    sections: [
+      {
+        body: [
+          'If you\'ve received a letter about accessibility compliance, or seen the term "EAA" appearing more frequently in conversations about your website, this article is for you.',
+          'The European Accessibility Act (EAA) — officially Directive (EU) 2019/882 — came into force across EU member states on 28 June 2025. It requires that a broad range of digital products and services be accessible to people with disabilities. In Ireland, it has been transposed into national law.',
+          'This article explains what the EAA requires, which businesses it applies to, what "accessible" actually means in practice, and what you can do right now to get ahead of it.',
+        ],
+      },
+      {
+        heading: 'What does the EAA actually require?',
+        headingLevel: 2,
+        body: [
+          'The EAA requires that digital services — including websites, mobile apps, e-commerce platforms, and digital documents — meet accessibility standards so they can be used by people with a wide range of disabilities, including visual, hearing, motor, and cognitive impairments.',
+          'The technical standard underpinning the EAA is EN 301 549, which references WCAG 2.2 Level AA as the web accessibility baseline. In practical terms: if your website meets WCAG 2.2 AA, you are well on your way to EAA compliance.',
+          'WCAG stands for Web Content Accessibility Guidelines. Level AA is the middle tier — not basic minimum, not exhaustive best practice. It covers the issues that most significantly affect real users: missing image descriptions, poor colour contrast, forms without labels, pages that can\'t be navigated by keyboard, and similar.',
+        ],
+      },
+      {
+        heading: 'Who does it apply to?',
+        headingLevel: 2,
+        body: [
+          'The EAA applies to businesses that provide products or services in EU member states, including Ireland. There is a size threshold: micro-enterprises (fewer than 10 employees and annual turnover under €2 million) providing services are currently exempt from most requirements. However, if you supply products — hardware, software, devices — the exemption is narrower.',
+          'In practice, the EAA applies to: e-commerce websites selling to customers in the EU, banking and financial services, transport services and booking platforms, streaming and media services, and software and app providers.',
+          'If your business has a public-facing website that sells goods or services to customers in Ireland or elsewhere in the EU, you should treat the EAA as applicable to you.',
+        ],
+        pullQuote: 'If your business has a public-facing website that sells goods or services to customers in Ireland or the EU, you should treat the EAA as applicable.',
+      },
+      {
+        heading: 'What happens if you don\'t comply?',
+        headingLevel: 2,
+        body: [
+          'Member states are responsible for enforcement. In Ireland, enforcement mechanisms are being established through the relevant national authorities. Users can file complaints, and regulators can investigate and issue orders to bring products and services into compliance.',
+          'More immediately practical: the reputational and commercial risk. As accessibility becomes better understood by consumers and businesses, a website that actively excludes users with disabilities is increasingly a liability — legally, commercially, and in terms of customer trust.',
+          'Accessibility complaints and legal challenges under ADA in the US have been rising sharply for a decade. The EAA creates a similar legal framework across the EU.',
+        ],
+      },
+      {
+        heading: 'What is an accessibility statement, and do you need one?',
+        headingLevel: 2,
+        body: [
+          'Yes. The EAA and related public sector regulations require organisations to publish an accessibility statement — a public declaration of how accessible your website is, what known issues remain, and how users can contact you if they encounter barriers.',
+          'The statement should be published at a permanent URL (typically /accessibility-statement) and linked from your site footer. It should be reviewed and updated at least annually.',
+          'An accessibility statement doesn\'t require your site to be perfect. It requires you to be honest about where you are, what you\'re doing about it, and how users can get help if they need it.',
+        ],
+      },
+      {
+        heading: 'What should you actually do right now?',
+        headingLevel: 2,
+        body: [
+          'First, scan your website. A free accessibility scan will give you a clear picture of where you stand — no technical knowledge required. A11YO scans any URL and produces a plain English report that lists every issue, explains what it means for real users, and tells your developer exactly what to fix.',
+          'Second, prioritise the critical issues. Not everything on an accessibility audit needs to be fixed immediately. Start with anything that actively blocks users: missing form labels, images with no descriptions, pages that break when using a keyboard. These are the issues most likely to affect the most people and carry the most legal weight.',
+          'Third, publish an accessibility statement. Even a partially accessible website with an honest accessibility statement is in a better position than a website with no statement at all. Use A11YO\'s free accessibility statement generator to produce a compliant statement in under two minutes.',
+          'Compliance with the EAA is not a one-time project. It\'s an ongoing commitment — the same way GDPR compliance isn\'t a form you fill in once. The businesses that treat it as a continuous process, rather than a deadline to meet and forget, are the ones that will stay ahead of enforcement.',
+        ],
+      },
+      {
+        heading: 'The bottom line',
+        headingLevel: 2,
+        body: [
+          'The EAA is in force. It applies to most Irish businesses with a public-facing digital presence. The standard you need to meet is WCAG 2.2 AA. The first step is knowing where you stand.',
+          'Scan your website for free at A11YO. You\'ll have a plain English report in under a minute — something you can read without Googling a single acronym, and hand straight to your developer.',
+        ],
+      },
+    ],
+  },
+
+  // ─── Post 4 ───────────────────────────────────────────────────────────────
+  {
+    slug: 'five-most-common-accessibility-failures',
+    category: 'Accessibility',
+    title: 'The 5 Most Common Accessibility Failures on Irish Websites',
+    excerpt: 'After scanning hundreds of Irish websites, these are the five issues that come up almost every time — and the plain English fix for each one.',
+    date: 'Mar 2026',
+    readingTime: '5 min',
+    series: 'Web Accessibility for Irish Businesses · Article 4',
+    sections: [
+      {
+        body: [
+          'Accessibility failures are not evenly distributed. A small number of issues account for the vast majority of barriers that users with disabilities encounter online. The WebAIM Million — an annual study of the top one million websites — consistently finds that over 95% of home pages have detectable WCAG failures, and the same few issue types appear again and again.',
+          'After scanning hundreds of Irish websites with A11YO, the pattern is the same here. Below are the five issues that come up most often, what they mean for real users, and what you need to ask your developer to do about them.',
+        ],
+      },
+      {
+        heading: '1. Images with no text description',
+        headingLevel: 2,
+        body: [
+          'The issue: Images on the website have no alternative text — the short description that screen readers read aloud when a blind user reaches an image.',
+          'What it means for users: A person using a screen reader hears nothing, or worse, hears the filename — something like "IMG_20240312_083421.jpg". They have no idea what the image shows or what it\'s trying to communicate.',
+          'The fix: Every meaningful image on your site needs an alt attribute containing a short, plain English description of what the image shows. Decorative images (backgrounds, dividers) should have an empty alt attribute (alt="") so screen readers skip them.',
+          'How common is it: WebAIM found missing or empty alt text on 39% of home pages in 2024. It is consistently the most frequently detected WCAG failure globally.',
+        ],
+        pullQuote: 'A screen reader user hears "IMG_20240312_083421.jpg". That is what a missing alt attribute sounds like.',
+      },
+      {
+        heading: '2. Poor colour contrast',
+        headingLevel: 2,
+        body: [
+          'The issue: Text on the website doesn\'t have enough contrast against its background, making it difficult or impossible to read for users with low vision, colour blindness, or anyone reading in bright sunlight.',
+          'What it means for users: Pale grey text on a white background, or light green text on a dark green background, is invisible to a significant portion of your audience. Approximately 8% of men and 0.5% of women have some form of colour vision deficiency.',
+          'The fix: WCAG 2.2 AA requires a contrast ratio of at least 4.5:1 for normal text and 3:1 for large text. Your designer or developer can check this using free tools — A11YO\'s colour contrast checker is one of them. The most common culprits are light grey placeholder text, small print, and text overlaid on images.',
+          'This is often a quick design fix: darken the text colour slightly, or lighten the background. It doesn\'t require a redesign.',
+        ],
+      },
+      {
+        heading: '3. Form fields with no labels',
+        headingLevel: 2,
+        body: [
+          'The issue: Input fields — name, email, phone, message — don\'t have visible labels or programmatic labels that screen readers can read.',
+          'What it means for users: A screen reader user navigating to a text box hears "edit text". Nothing else. They have no idea what they\'re supposed to type into it. They cannot fill in your contact form, your checkout form, or your enquiry form.',
+          'The fix: Every form field needs a label element that is explicitly associated with the input using a "for" attribute matching the input\'s ID. Placeholder text alone is not sufficient — it disappears when the user starts typing and isn\'t reliably read by all screen readers.',
+          'Forms are one of the highest-stakes accessibility issues for businesses because they are the mechanism through which customers contact you, buy from you, and sign up with you. An inaccessible form is direct lost revenue.',
+        ],
+      },
+      {
+        heading: '4. No way to navigate by keyboard',
+        headingLevel: 2,
+        body: [
+          'The issue: The website cannot be fully navigated using a keyboard alone — without a mouse or touch screen.',
+          'What it means for users: Many users with motor impairments, tremors, or paralysis navigate entirely by keyboard, or use keyboard-based assistive technology like switch access. If your navigation menus, dropdowns, modals, or interactive elements can\'t be reached or operated by pressing Tab and Enter, these users are completely locked out.',
+          'The fix: All interactive elements — links, buttons, form fields, menus, modals — must be reachable and operable by keyboard. There must also be a visible focus indicator: when you press Tab, you should be able to see which element is currently focused. Many websites deliberately remove the default browser focus ring for aesthetic reasons, which is a significant accessibility failure.',
+          'Test this yourself: close your mouse, press Tab on your website, and see if you can get to every part of the page. If you can\'t, neither can users who depend on keyboard navigation.',
+        ],
+        pullQuote: 'Test this yourself: close your mouse, press Tab, and see if you can get to every part of the page.',
+      },
+      {
+        heading: '5. Pages with no heading structure',
+        headingLevel: 2,
+        body: [
+          'The issue: Page content is not organised using proper heading elements (H1, H2, H3), or headings are used for styling rather than structure.',
+          'What it means for users: Screen reader users navigate pages by jumping between headings — it\'s how they skim and find what they need, just as sighted users scan a page visually. If there are no headings, or if the headings are in the wrong order, this navigation mechanism breaks entirely. A user lands on a long page of content with no way to find what they came for.',
+          'The fix: Every page should have exactly one H1 (the main title). Subheadings should use H2. Sub-subheadings should use H3. Don\'t skip levels (H1 to H3 with no H2). Don\'t use headings just to make text bigger — use CSS for styling. The heading structure is an outline of the page\'s content, not a formatting tool.',
+          'This is also one of the most significant SEO issues on the list. Search engines use heading structure to understand page content. A page with no H1 or a broken heading hierarchy is harder for Google to index correctly.',
+        ],
+      },
+      {
+        heading: 'What to do next',
+        headingLevel: 2,
+        body: [
+          'The five issues above are not exotic edge cases. They are the baseline — the things that come up on almost every site we scan. Getting these right won\'t make your website perfect, but it will remove the most significant barriers for the most users.',
+          'Scan your website free at A11YO. You\'ll get a plain English report showing exactly which of these issues exist on your site, how many instances were found, and what your developer needs to do to fix each one. No technical knowledge required — it\'s designed to be read by a business owner and handed straight to a developer.',
+        ],
+      },
+    ],
+  },
+
+  // ─── Post 5 ───────────────────────────────────────────────────────────────
+  {
+    slug: 'how-to-write-an-accessibility-statement',
+    category: 'Compliance',
+    title: 'How to Write an Accessibility Statement (With a Free Template)',
+    excerpt: 'An accessibility statement is a legal requirement under the EAA. Here\'s what it needs to contain, where to publish it, and how to generate one in under two minutes for free.',
+    date: 'Mar 2026',
+    readingTime: '5 min',
+    series: 'Web Accessibility for Irish Businesses · Article 5',
+    sections: [
+      {
+        body: [
+          'An accessibility statement is a public declaration on your website that explains how accessible your site is, what known issues remain, and how users can contact you if they encounter barriers.',
+          'Under the European Accessibility Act and related legislation, an accessibility statement is not optional. It\'s a required part of compliance — and publishing one, even before your site is fully accessible, demonstrates good faith and a commitment to improvement.',
+          'This article explains what a compliant accessibility statement must contain, where to publish it, and how to generate one for free using A11YO\'s accessibility statement generator.',
+        ],
+      },
+      {
+        heading: 'What does an accessibility statement need to contain?',
+        headingLevel: 2,
+        body: [
+          'A compliant accessibility statement under the EAA and EN 301 549 must include the following:',
+          'Your conformance status: is your site fully conformant, partially conformant, or non-conformant with the relevant standard (typically WCAG 2.2 AA)? Be honest. "Partially conformant" with an explanation is better than a false claim of full compliance.',
+          'The standards you\'re referencing: WCAG 2.2 AA, EN 301 549, or any national legislation that applies (e.g. EAA Directive 2019/882 if you operate in the EU).',
+          'Known limitations: a list of specific accessibility issues you are aware of and haven\'t yet resolved. This is important. It demonstrates that you\'ve actually assessed your site, and it gives users advance notice of barriers they may encounter.',
+          'Contact information: how users can report accessibility issues and request accessible alternatives. This must include an email address (at minimum) and a commitment to respond within a reasonable timeframe — typically 5 working days.',
+          'The date the statement was prepared or last reviewed.',
+        ],
+      },
+      {
+        heading: 'Formal exclusions — what content can you exempt?',
+        headingLevel: 2,
+        body: [
+          'The EAA includes specific categories of content that organisations can formally exclude from accessibility requirements. These are not loopholes — they are defined in the legislation with specific conditions. The main categories are:',
+          'Third-party content: content you did not fund, develop, or control — for example, an embedded Google Map or a social media feed widget. You can note this as out of scope.',
+          'Archived documents: documents published before the EAA\'s accessibility deadline that are not needed for active processes. Older PDFs that are kept for historical reference, not active use, may qualify.',
+          'Live media: live audio or video streams at the time of broadcast. Pre-recorded content does not qualify.',
+          'If any of these apply to your site, your accessibility statement should explicitly list them and explain why they fall under the relevant exclusion.',
+        ],
+      },
+      {
+        heading: 'What is a disproportionate burden claim?',
+        headingLevel: 2,
+        body: [
+          'Under the EAA, organisations can claim "disproportionate burden" for specific content where making it fully accessible would require resources grossly out of proportion to the benefit provided. This is not a blanket opt-out — it requires a formal assessment and must be documented.',
+          'If you are making a disproportionate burden claim, your accessibility statement must include a description of the content in question, an explanation of why remediation would be disproportionately burdensome, and a commitment to review the assessment annually.',
+          'Disproportionate burden claims are legitimate in specific circumstances — a small organisation with a large archive of legacy PDFs, for example. They are not appropriate as a substitute for routine accessibility fixes.',
+        ],
+        pullQuote: 'A disproportionate burden claim is not a blanket opt-out. It requires a formal assessment, documented in your accessibility statement.',
+      },
+      {
+        heading: 'Where do you publish it?',
+        headingLevel: 2,
+        body: [
+          'Publish your accessibility statement at a permanent, predictable URL. The convention is /accessibility-statement on your domain. Link to it from your site footer on every page.',
+          'It should be published on the same domain as the website it describes — not a third-party hosted page. It should be accessible itself: readable without JavaScript, usable by screen readers, with sufficient colour contrast.',
+          'Review and update it at least once a year, or whenever you make significant changes to your site. The date on the statement should reflect the last time it was genuinely reviewed, not just created.',
+        ],
+      },
+      {
+        heading: 'Generate one for free in under two minutes',
+        headingLevel: 2,
+        body: [
+          'A11YO\'s free accessibility statement generator takes your organisation details, conformance level, applicable standards, known issues, and contact information, and produces a ready-to-publish plain text statement.',
+          'It covers EAA 2025, EN 301 549, WCAG 2.2 AA, ADA, Section 508, AODA, and the Accessible Canada Act. It includes fields for formal exclusions (with the correct legal language for each EAA Article 14 category), disproportionate burden claims, and full contact details including phone and postal address.',
+          'No account required. Fills in under two minutes. Copy and paste directly to your website.',
+        ],
+      },
+      {
+        heading: 'A statement is a commitment, not a certificate',
+        headingLevel: 2,
+        body: [
+          'An accessibility statement is not a certificate of compliance. It doesn\'t mean your site is perfect. It means you\'ve assessed your site, you\'re transparent about where it stands, and you\'ve committed to improving it and supporting users who encounter barriers.',
+          'That commitment — backed by an actual contact email that someone responds to — is what regulators, users, and customers are looking for. A website with an honest accessibility statement is in a fundamentally better position than one that either ignores the issue or makes false claims of full compliance.',
+          'Start with the statement. Fix the critical issues. Update the statement to reflect your progress. That is the whole process.',
+        ],
+      },
+    ],
+  },
 ];
 
 export function getBlogPost(slug: string): BlogPost | undefined {

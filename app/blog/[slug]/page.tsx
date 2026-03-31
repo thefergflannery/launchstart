@@ -20,6 +20,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 const CATEGORY_COLORS: Record<string, string> = {
   Accessibility: 'text-green',
+  Compliance:    'text-green',
   SEO:           'text-green-mid',
   Checklist:     'text-warn',
 };
