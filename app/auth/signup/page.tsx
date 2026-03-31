@@ -40,6 +40,8 @@ export default function SignupPage() {
 
     // If Supabase auto-confirmed (email confirm disabled), session exists immediately
     if (data.session) {
+      // Fire welcome email — non-blocking, never fails signup
+      fetch('/api/email/welcome', { method: 'POST' }).catch(() => {});
       router.push('/dashboard');
       router.refresh();
       return;
@@ -153,7 +155,9 @@ export default function SignupPage() {
 
           <p className="font-mono text-xs text-secondary text-center mt-5">
             By signing up you agree to our{' '}
-            <Link href="/accessibility" className="text-green hover:underline">terms</Link>.
+            <Link href="/terms" className="text-green hover:underline">Terms of Service</Link>
+            {' '}and{' '}
+            <Link href="/privacy" className="text-green hover:underline">Privacy Policy</Link>.
           </p>
         </div>
 

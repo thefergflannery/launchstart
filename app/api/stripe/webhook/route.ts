@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
+import { sendSubscriptionConfirmationEmail } from '@/lib/email';
 
 export const runtime = 'nodejs';
 
@@ -31,12 +32,19 @@ export async function POST(request: NextRequest) {
     const session = event.data.object as Stripe.Checkout.Session;
     const userId = session.metadata?.supabase_user_id;
     const plan = session.metadata?.plan;
+    const customerEmail = session.customer_details?.email;
     const subscriptionId = typeof session.subscription === 'string'
       ? session.subscription
       : session.subscription?.id ?? '';
 
     if (userId && plan) {
       await updateProfile(userId, plan, subscriptionId);
+      // Send subscription confirmation — non-blocking
+      if (customerEmail && process.env.RESEND_API_KEY) {
+        sendSubscriptionConfirmationEmail(customerEmail, plan).catch((err) =>
+          console.error('Subscription confirmation email failed:', err)
+        );
+      }
     }
   }
 
