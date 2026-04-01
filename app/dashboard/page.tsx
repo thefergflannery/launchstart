@@ -28,6 +28,7 @@ const PLAN_CONFIG: Record<string, { label: string; badgeCls: string; limit: numb
 
 const PAID_PLANS = new Set(['onceoff', 'recurring', 'agency', 'pro', 'early_access']);
 const CHART_PLANS = new Set(['recurring', 'agency']);
+const STALE_DAYS = 14;
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-GB', {
@@ -69,7 +70,7 @@ export default async function DashboardPage() {
       .gte('created_at', todayStart.toISOString()),
     supabase
       .from('scans')
-      .select('id, url, summary, score, created_at')
+      .select('id, url, summary, score, created_at, critical_count, should_fix_count, nice_to_have_count')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(50),
@@ -79,10 +80,9 @@ export default async function DashboardPage() {
   const dailyLimit = planConfig.limit;
   const limitReached = !isPaid && scansToday >= dailyLimit;
 
-  // Build delta map: for each scan, find the previous scan of the same URL
-  const urlHistory: Record<string, number[]> = {};
-  // scans are newest-first; reverse to build history oldest-first
+  // Build per-URL history (oldest-first)
   const scansAsc = [...(scans ?? [])].reverse();
+  const urlHistory: Record<string, number[]> = {};
   for (const s of scansAsc) {
     if (s.score == null) continue;
     if (!urlHistory[s.url]) urlHistory[s.url] = [];
@@ -98,10 +98,30 @@ export default async function DashboardPage() {
     if (s.score == null || idx === 0) {
       deltaMap[s.id] = null;
     } else {
-      const hist = urlHistory[s.url];
-      deltaMap[s.id] = s.score - hist[idx - 1];
+      deltaMap[s.id] = s.score - urlHistory[s.url][idx - 1];
     }
   }
+
+  // Trajectory per URL: based on last 3 scans
+  const trajectoryMap: Record<string, 'improving' | 'declining' | 'stable'> = {};
+  for (const [url, scores] of Object.entries(urlHistory)) {
+    const last3 = scores.slice(-3);
+    if (last3.length < 2) { trajectoryMap[url] = 'stable'; continue; }
+    const trend = last3[last3.length - 1] - last3[0];
+    trajectoryMap[url] = trend >= 5 ? 'improving' : trend <= -5 ? 'declining' : 'stable';
+  }
+
+  // Latest scan per URL (for stale detection)
+  const latestScanPerUrl: Record<string, string> = {};
+  for (const s of scans ?? []) {
+    if (!latestScanPerUrl[s.url]) latestScanPerUrl[s.url] = s.created_at;
+  }
+  const now = Date.now();
+  const staleUrls = isPaid
+    ? Object.entries(latestScanPerUrl)
+        .filter(([, date]) => (now - new Date(date).getTime()) > STALE_DAYS * 86400_000)
+        .map(([url]) => url)
+    : [];
 
   // For ScoreChart: pick the URL with the most scans
   let chartUrl = '';
@@ -214,6 +234,26 @@ export default async function DashboardPage() {
             </div>
           )}
 
+          {/* Stale URL nudges (paid users, URLs not scanned in 14+ days) */}
+          {staleUrls.length > 0 && (
+            <section aria-labelledby="stale-heading">
+              <h2 id="stale-heading" className="font-mono text-xs uppercase tracking-widest text-secondary mb-3">
+                Re-scan suggested
+              </h2>
+              <div className="space-y-2">
+                {staleUrls.map((staleUrl) => (
+                  <div key={staleUrl} className="border border-border/60 bg-surface px-5 py-4 flex items-center justify-between gap-4 flex-wrap">
+                    <div>
+                      <p className="font-mono text-xs text-warn mb-0.5">Not scanned in {STALE_DAYS}+ days</p>
+                      <p className="text-white text-sm font-mono truncate max-w-xs">{staleUrl.replace(/^https?:\/\//, '')}</p>
+                    </div>
+                    <NewScanFormClient prefillUrl={staleUrl} />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
           {/* Scan history */}
           <section aria-labelledby="history-heading">
             <h2 id="history-heading" className="font-mono text-xs uppercase tracking-widest text-secondary mb-4">
@@ -227,9 +267,10 @@ export default async function DashboardPage() {
               </div>
             ) : (
               <div className="corner-mark border border-border bg-surface divide-y divide-border overflow-x-auto">
-                <div className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-4 px-5 py-3">
+                <div className="grid grid-cols-[1fr_auto_auto_auto_auto_auto] gap-4 px-5 py-3">
                   <span className="font-mono text-[10px] uppercase tracking-widest text-secondary">URL</span>
                   <span className="font-mono text-[10px] uppercase tracking-widest text-secondary hidden sm:block">Score</span>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-secondary hidden md:block">Trend</span>
                   <span className="font-mono text-[10px] uppercase tracking-widest text-secondary hidden sm:block">Delta</span>
                   <span className="font-mono text-[10px] uppercase tracking-widest text-secondary hidden sm:block">Date</span>
                   <span className="sr-only">Actions</span>
@@ -237,14 +278,20 @@ export default async function DashboardPage() {
                 {displayScans.map((scan) => {
                   const score = scan.score ?? null;
                   const delta = deltaMap[scan.id] ?? null;
+                  const trajectory = trajectoryMap[scan.url];
                   return (
                     <div
                       key={scan.id}
-                      className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-4 px-5 py-4 items-center hover:bg-white/[0.02] transition-colors"
+                      className="grid grid-cols-[1fr_auto_auto_auto_auto_auto] gap-4 px-5 py-4 items-center hover:bg-white/[0.02] transition-colors"
                     >
                       <span className="text-white text-sm truncate font-mono min-w-0" title={scan.url}>{scan.url}</span>
                       <span className={`font-mono text-sm font-semibold hidden sm:block ${scoreColor(score)}`}>
                         {score !== null ? `${score}%` : '—'}
+                      </span>
+                      <span className="font-mono text-[10px] hidden md:block whitespace-nowrap">
+                        {trajectory === 'improving' && <span className="text-green">↑ Improving</span>}
+                        {trajectory === 'declining' && <span className="text-fail">↓ Declining</span>}
+                        {trajectory === 'stable' && <span className="text-secondary">→ Stable</span>}
                       </span>
                       <span className="font-mono text-xs hidden sm:block w-12 text-right">
                         {delta === null ? (

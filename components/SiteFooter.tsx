@@ -43,6 +43,9 @@ export default function SiteFooter({ maxWidth = 'max-w-5xl' }: SiteFooterProps) 
           <Link href="/terms" className="font-mono text-xs text-secondary hover:text-white transition-colors hidden sm:inline">
             Terms
           </Link>
+          <a href="mailto:hello@a11yo.com" className="font-mono text-xs text-secondary hover:text-white transition-colors hidden sm:inline">
+            Contact
+          </a>
         </div>
         <span className="font-mono text-[10px] text-muted tracking-wider" title="Build version">
           {BUILD_VERSION}

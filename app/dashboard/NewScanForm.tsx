@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function NewScanFormClient() {
+export default function NewScanFormClient({ prefillUrl }: { prefillUrl?: string } = {}) {
   const router = useRouter();
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState(prefillUrl ?? '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 

@@ -88,21 +88,19 @@ const FREE_FEATURES = [
   'No account required',
 ];
 
-const PRO_FEATURES = [
-  'All 17 checks',
-  '20 scans / day',
+const ACTION_PLAN_FEATURES = [
+  'Everything in Free',
+  '10 scans / day',
   'Scan history saved to dashboard',
   'PDF export for client delivery',
-  'Chrome extension access',
-  'Shareable report URL',
 ];
 
-const FULL_SITE_FEATURES = [
-  'Everything in Pro',
-  '50-page full site crawl',
-  '50 scans / day',
-  'Site-wide compliance score',
-  'Priority support',
+const RECURRING_FEATURES = [
+  'Everything in Action Plan',
+  '20 scans / day',
+  'Score trend chart',
+  'Chrome extension access',
+  'Delta badge — track improvement',
 ];
 
 export default function HomePage() {
@@ -481,50 +479,18 @@ export default function HomePage() {
                 </a>
               </div>
 
-              {/* Pro */}
-              <div className="relative corner-mark p-8 bg-black border border-green/20" style={{ boxShadow: '0 0 40px -8px rgba(0,233,106,0.12)' }}>
-                <div className="mb-6">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="font-mono text-xs tracking-widest uppercase text-green">Pro</span>
-                    <span className="font-mono text-[10px] border border-green/30 text-green px-2 py-0.5 uppercase tracking-wider">
-                      Most popular
-                    </span>
-                  </div>
-                  <div className="flex items-baseline gap-2 mb-2">
-                    <span className="font-mono text-4xl font-semibold text-white">€5</span>
-                    <span className="text-secondary text-sm">/ month</span>
-                  </div>
-                  <p className="text-secondary text-sm">Everything you need to audit client sites and track history.</p>
-                </div>
-                <ul className="space-y-3 mb-8">
-                  {PRO_FEATURES.map((f) => (
-                    <li key={f} className="flex items-start gap-3">
-                      <span className="mt-0.5 flex-shrink-0 text-green"><SparkleIcon size={11} /></span>
-                      <span className="text-secondary text-sm">{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href="/pricing"
-                  className="block text-center font-mono text-sm tracking-wider uppercase bg-green text-black px-6 py-3 hover:bg-green-mid transition-colors"
-                >
-                  Get Pro — €5/month →
-                </a>
-              </div>
-
-              {/* Full Site */}
+              {/* Action Plan */}
               <div className="bg-black p-8">
                 <div className="mb-6">
-                  <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">Full Site</span>
+                  <span className="font-mono text-xs tracking-widest uppercase text-secondary block mb-3">Action Plan</span>
                   <div className="flex items-baseline gap-2 mb-2">
-                    <span className="font-mono text-4xl font-semibold text-white">€15</span>
+                    <span className="font-mono text-4xl font-semibold text-white">€10</span>
                     <span className="text-secondary text-sm">one-time</span>
                   </div>
-                  <p className="text-secondary text-sm">One payment. Every page. Done.</p>
-                  <p className="text-secondary text-sm mt-2">The fastest way to get a site-wide compliance score before a launch or handoff. 50 pages. One-time payment. No subscription.</p>
+                  <p className="text-secondary text-sm">Pay once. Get 10 scans a day and full history — no subscription.</p>
                 </div>
                 <ul className="space-y-3 mb-8">
-                  {FULL_SITE_FEATURES.map((f) => (
+                  {ACTION_PLAN_FEATURES.map((f) => (
                     <li key={f} className="flex items-start gap-3">
                       <span className="mt-0.5 flex-shrink-0 text-green"><SparkleIcon size={11} /></span>
                       <span className="text-secondary text-sm">{f}</span>
@@ -535,7 +501,38 @@ export default function HomePage() {
                   href="/pricing"
                   className="block text-center font-mono text-sm tracking-wider uppercase border border-border px-6 py-3 text-white hover:border-white transition-colors"
                 >
-                  Get Full Site — €15 one-time →
+                  Get Action Plan — €10 →
+                </a>
+              </div>
+
+              {/* Recurring */}
+              <div className="relative corner-mark p-8 bg-black border border-green/20" style={{ boxShadow: '0 0 40px -8px rgba(0,233,106,0.12)' }}>
+                <div className="mb-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="font-mono text-xs tracking-widest uppercase text-green">Recurring</span>
+                    <span className="font-mono text-[10px] border border-green/30 text-green px-2 py-0.5 uppercase tracking-wider">
+                      Most popular
+                    </span>
+                  </div>
+                  <div className="flex items-baseline gap-2 mb-2">
+                    <span className="font-mono text-4xl font-semibold text-white">€29</span>
+                    <span className="text-secondary text-sm">/ month</span>
+                  </div>
+                  <p className="text-secondary text-sm">Everything you need to audit client sites and track history.</p>
+                </div>
+                <ul className="space-y-3 mb-8">
+                  {RECURRING_FEATURES.map((f) => (
+                    <li key={f} className="flex items-start gap-3">
+                      <span className="mt-0.5 flex-shrink-0 text-green"><SparkleIcon size={11} /></span>
+                      <span className="text-secondary text-sm">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href="/pricing"
+                  className="block text-center font-mono text-sm tracking-wider uppercase bg-green text-black px-6 py-3 hover:bg-green-mid transition-colors"
+                >
+                  Get Recurring — €29/month →
                 </a>
               </div>
 
