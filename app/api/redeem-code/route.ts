@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Increment the global early access counter (non-blocking — don't fail if this errors)
-  await supabase.rpc('increment_early_access_count').catch(() => {});
+  try { await supabase.rpc('increment_early_access_count'); } catch { /* ignore */ }
 
   return NextResponse.json({ success: true, plan: 'early_access' });
 }
