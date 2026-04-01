@@ -206,10 +206,11 @@ export default function Nav({ links, cta = DEFAULT_CTA, maxWidth = 'max-w-5xl' }
 
 // Standard nav links — used on every page
 export const PAGE_NAV_LINKS: NavLink[] = [
-  { href: '/tools',      label: 'Tools',     hideBelow: 'sm' },
-  { href: '/pricing',    label: 'Pricing',   hideBelow: 'sm' },
-  { href: '/blog',       label: 'Blog',      hideBelow: 'md' },
-  { href: '/extension',  label: 'Extension', hideBelow: 'md' },
+  { href: '/tools',      label: 'Tools',      hideBelow: 'sm' },
+  { href: '/pricing',    label: 'Pricing',    hideBelow: 'sm' },
+  { href: '/why-a11yo',  label: 'Why A11YO',  hideBelow: 'md' },
+  { href: '/blog',       label: 'Blog',       hideBelow: 'md' },
+  { href: '/extension',  label: 'Extension',  hideBelow: 'md' },
 ];
 
 // Homepage only — replaces pricing/tools with anchor links into the same page

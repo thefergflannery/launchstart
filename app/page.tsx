@@ -19,9 +19,9 @@ const SCAN_MESSAGES = [
 ];
 
 const STEPS = [
-  { n: '01', title: 'Enter your URL', desc: 'Paste any public URL — staging, production, or a client site.' },
-  { n: '02', title: 'We scan it', desc: 'A headless browser runs up to 17 checks across accessibility, SEO, and launch readiness.' },
-  { n: '03', title: 'Get your report', desc: 'Every check returns pass, amber, or fail with a one-line fix. Share the link instantly.' },
+  { n: '01', title: 'Paste your URL', desc: 'Any public URL works — staging, production, or a client\'s live site. No install. No setup.' },
+  { n: '02', title: 'We scan it', desc: 'A headless browser runs up to 17 checks across accessibility, SEO, and launch readiness — mapped to WCAG 2.2 AA and EAA 2025 standards.' },
+  { n: '03', title: 'Get your report', desc: 'Every check returns pass, amber, or fail — with a one-line fix attached. Share the link instantly. No login required for your first 5 checks.' },
 ];
 
 const ALL_CHECKS = [
@@ -207,7 +207,7 @@ export default function HomePage() {
               {/* Left — headline + stats */}
               <div className="min-w-0">
                 <span className="font-mono text-xs tracking-widest uppercase text-green block mb-7">
-                  Accessibility · SEO · Launch readiness
+                  Accessibility · SEO · EAA 2025 Compliance
                 </span>
                 <h1
                   className="text-5xl lg:text-[3.25rem] font-display font-extrabold leading-[0.92] tracking-tight mb-7"
@@ -218,10 +218,10 @@ export default function HomePage() {
                     backgroundClip: 'text',
                   }}
                 >
-                  Ship sites<br />that work<br />for everyone.
+                  The fast accessibility checker for websites that need to be ready.
                 </h1>
                 <p className="text-secondary text-lg leading-relaxed max-w-sm mb-12">
-                  Paste a URL. Get a full accessibility, SEO, and launch-readiness audit in under 30 seconds — with one-line fixes for every issue.
+                  Paste a URL. Get a full WCAG 2.2 AA, SEO, and launch-readiness audit in under 30 seconds — with a one-line fix for every issue. Free to start. No account needed.
                 </p>
 
                 {/* Stats row */}
@@ -291,7 +291,7 @@ export default function HomePage() {
                     style={(!loading && url.trim()) ? { boxShadow: '0 0 24px rgba(0,233,106,0.25)' } : {}}
                     aria-busy={loading}
                   >
-                    <span>{loading ? SCAN_MESSAGES[msgIndex] : 'Audit this site'}</span>
+                    <span>{loading ? SCAN_MESSAGES[msgIndex] : 'Run a free audit →'}</span>
                     {loading ? (
                       <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" aria-hidden="true" />
                     ) : (
@@ -320,7 +320,7 @@ export default function HomePage() {
                     </span>
                     <p className="font-mono text-xs text-secondary">
                       No account needed.{' '}
-                      <a href="/auth/signup" className="text-green hover:underline">Create free →</a>
+                      <a href="/auth/signup" className="text-green hover:underline">Create a free account</a>
                     </p>
                   </div>
                 </form>
@@ -366,6 +366,7 @@ export default function HomePage() {
         {/* ── Compliance standards strip ── */}
         <section className="border-b border-border bg-black overflow-hidden" aria-label="Supported compliance standards">
           <div className="max-w-5xl mx-auto px-6 py-5">
+            <p className="text-secondary text-sm mb-4">A11YO checks against the standards that matter — including the European Accessibility Act, which applies to all websites serving EU users from June 2025.</p>
             <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
               <span className="font-mono text-[10px] tracking-widest uppercase text-muted flex-shrink-0">Standards covered</span>
               {[
@@ -389,7 +390,7 @@ export default function HomePage() {
           <div className="max-w-5xl mx-auto px-6">
             <div className="mb-12">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">How it works</span>
-              <h2 className="text-3xl font-semibold text-white tracking-tight">Three steps to a full audit</h2>
+              <h2 className="text-3xl font-semibold text-white tracking-tight">Three steps. Under 30 seconds.</h2>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border">
               {STEPS.map((step) => (
@@ -409,12 +410,14 @@ export default function HomePage() {
             <div className="mb-10 flex items-end justify-between gap-4">
               <div>
                 <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">What we check</span>
-                <h2 className="text-3xl font-semibold text-white tracking-tight">17 checks. 5 free.</h2>
+                <h2 className="text-3xl font-semibold text-white tracking-tight">17 checks. Instant results.</h2>
               </div>
               <a href="#pricing" className="font-mono text-xs tracking-wider uppercase text-green hover:underline hidden sm:block">
                 See pricing →
               </a>
             </div>
+
+            <p className="text-secondary font-body mb-8">A11YO runs automated checks across three categories: accessibility (WCAG 2.2 AA), SEO fundamentals, and launch readiness. Free accounts get 5. Pro gets all 17.</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
               {ALL_CHECKS.map((check) => (
@@ -444,7 +447,7 @@ export default function HomePage() {
           <div className="max-w-5xl mx-auto px-6">
             <div className="mb-12 text-center">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">Pricing</span>
-              <h2 className="text-3xl font-semibold text-white tracking-tight mb-3">Simple, honest pricing.</h2>
+              <h2 className="text-3xl font-semibold text-white tracking-tight mb-3">Simple pricing. No surprises.</h2>
               <p className="text-secondary max-w-sm mx-auto">
                 Start free with no account. Upgrade when you need more.
               </p>
@@ -460,7 +463,7 @@ export default function HomePage() {
                     <span className="font-mono text-4xl font-semibold text-white">€0</span>
                     <span className="text-secondary text-sm">forever</span>
                   </div>
-                  <p className="text-secondary text-sm">No account. No credit card. Just paste and scan.</p>
+                  <p className="text-secondary text-sm">No account, no card — just paste and go.</p>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {FREE_FEATURES.map((f) => (
@@ -491,7 +494,7 @@ export default function HomePage() {
                     <span className="font-mono text-4xl font-semibold text-white">€5</span>
                     <span className="text-secondary text-sm">/ month</span>
                   </div>
-                  <p className="text-secondary text-sm">Single-page scans with history and Chrome extension.</p>
+                  <p className="text-secondary text-sm">Everything you need to audit client sites and track history.</p>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {PRO_FEATURES.map((f) => (
@@ -517,7 +520,8 @@ export default function HomePage() {
                     <span className="font-mono text-4xl font-semibold text-white">€15</span>
                     <span className="text-secondary text-sm">one-time</span>
                   </div>
-                  <p className="text-secondary text-sm">One payment. Full site crawl — audit every page at once.</p>
+                  <p className="text-secondary text-sm">One payment. Every page. Done.</p>
+                  <p className="text-secondary text-sm mt-2">The fastest way to get a site-wide compliance score before a launch or handoff. 50 pages. One-time payment. No subscription.</p>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {FULL_SITE_FEATURES.map((f) => (
@@ -551,10 +555,13 @@ export default function HomePage() {
                   <span className="font-mono text-[10px] border border-green/30 text-green/60 px-2 py-0.5 uppercase tracking-wider">Beta</span>
                 </div>
                 <h2 className="text-4xl font-display font-bold text-white tracking-tight leading-tight mb-5">
-                  Audit any page,<br />right from your browser.
+                  Audit while you browse.
                 </h2>
+                <p className="text-white/80 leading-relaxed mb-4">
+                  The A11YO Chrome Extension runs a full accessibility check on any page you&apos;re looking at — no copy-pasting, no tab-switching.
+                </p>
                 <p className="text-secondary leading-relaxed mb-8">
-                  Click the A11YO icon while you&apos;re on any page — staging, production, or a client&apos;s live site. A full accessibility audit runs in seconds. Plain English results. Shareable report in one click.
+                  One click on any page — staging, localhost, or a client&apos;s live site. Plain-English results. Shareable report. Saved to your dashboard automatically.
                 </p>
 
                 <ul className="space-y-3 mb-10">
@@ -633,12 +640,13 @@ export default function HomePage() {
         <section id="blog" className="border-b border-border py-20">
           <div className="max-w-5xl mx-auto px-6">
 
-            <div className="mb-12 flex items-end justify-between gap-4">
+            <div className="mb-8 flex items-end justify-between gap-4">
               <div>
                 <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">From the blog</span>
-                <h2 className="text-3xl font-display font-semibold text-white tracking-tight">Accessibility, SEO & launch guides</h2>
+                <h2 className="text-3xl font-display font-semibold text-white tracking-tight">From the A11YO blog</h2>
               </div>
             </div>
+            <p className="text-secondary mb-10">Practical guides on web accessibility, WCAG compliance, and getting sites ready for the European Accessibility Act.</p>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border">
               {BLOG_POSTS.map((post) => (
@@ -666,6 +674,27 @@ export default function HomePage() {
         </section>
 
       </main>
+
+      {/* ── AEO FAQ ── */}
+      <section className="border-b border-border py-20 bg-black">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-2xl font-display font-semibold text-white tracking-tight mb-10">About A11YO</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <div>
+              <h3 className="font-mono text-sm tracking-wide text-white mb-3">What is A11YO?</h3>
+              <p className="text-secondary text-sm leading-relaxed">A11YO is a free web accessibility and launch-readiness checker. Paste any URL and get an automated WCAG 2.2 AA audit in under 30 seconds — with plain-English fixes for every issue found.</p>
+            </div>
+            <div>
+              <h3 className="font-mono text-sm tracking-wide text-white mb-3">Who is A11YO for?</h3>
+              <p className="text-secondary text-sm leading-relaxed">A11YO is built for web developers, digital agencies, and business owners who need to check their site&apos;s accessibility compliance quickly — without commissioning a full audit. It&apos;s particularly useful for teams working toward EAA 2025 or WCAG 2.2 AA requirements.</p>
+            </div>
+            <div>
+              <h3 className="font-mono text-sm tracking-wide text-white mb-3">Is A11YO free?</h3>
+              <p className="text-secondary text-sm leading-relaxed">Yes. A11YO is free to use with no account required. Free accounts run 5 checks. Pro accounts (€5/month) unlock all 17 checks, scan history, and PDF export.</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ── Footer ── */}
       <SiteFooter />

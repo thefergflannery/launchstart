@@ -26,10 +26,10 @@ const dmMono = DM_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000'),
   title: {
-    default: 'A11YO — Accessibility & Launch Readiness Checker',
+    default: 'A11YO — Free Accessibility & WCAG 2.2 Checker for Websites',
     template: '%s — A11YO',
   },
-  description: 'Paste a URL and get a shareable accessibility, SEO, and launch readiness report in under 30 seconds.',
+  description: 'Paste a URL and get a full WCAG 2.2 AA, SEO, and launch-readiness audit in under 30 seconds. Free to start. No account needed. Built for developers, agencies, and EAA 2025 compliance.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
