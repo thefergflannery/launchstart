@@ -1,14 +1,16 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const FROM = 'A11YO <hello@a11yo.com>';
+
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY);
+}
 const BASE_URL = 'https://a11yo.com';
 
 // ─── Welcome email ────────────────────────────────────────────────────────────
 
 export async function sendWelcomeEmail(to: string) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM,
     to,
     subject: 'Welcome to A11YO',
@@ -73,7 +75,7 @@ export async function sendSubscriptionConfirmationEmail(to: string, plan: string
   const planName = PLAN_NAMES[plan] ?? plan;
   const planDetail = PLAN_DETAILS[plan] ?? 'Full access to A11YO.';
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM,
     to,
     subject: `You're on the ${planName} plan`,

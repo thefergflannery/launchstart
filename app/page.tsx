@@ -218,7 +218,7 @@ export default function HomePage() {
                     backgroundClip: 'text',
                   }}
                 >
-                  The fast accessibility checker for websites that need to be ready.
+                  The fast accessibility checker for websites.
                 </h1>
                 <p className="text-secondary text-lg leading-relaxed max-w-sm mb-12">
                   Paste a URL. Get a full WCAG 2.2 AA, SEO, and launch-readiness audit in under 30 seconds — with a one-line fix for every issue. Free to start. No account needed.
