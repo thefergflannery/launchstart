@@ -12,6 +12,7 @@ import {
   BillingPortalButton,
   DeleteAccountSection,
 } from './AccountForms';
+import RedeemCode from '@/components/RedeemCode';
 
 export const metadata: Metadata = { title: 'Account — A11YO' };
 
@@ -79,6 +80,14 @@ export default async function AccountPage() {
                 </Link>
               )}
             </div>
+
+            {/* Early access code redemption — free users only */}
+            {plan === 'free' && (
+              <div className="pt-4 border-t border-border">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-secondary mb-3">Have an early access code?</p>
+                <RedeemCode />
+              </div>
+            )}
 
             {/* Billing portal — subscription plans only */}
             {isSubscription && profile?.stripe_customer_id && (
