@@ -6,9 +6,13 @@
  */
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ISSUE_LIBRARY, SEVERITY_CONFIG } from '@/lib/issue-library';
-import IssueCard from '@/components/IssueCard';
+import { mapScanToReportIssues } from '@/lib/report-mapper';
+import ExecutiveSummaryCard from '@/components/report/ExecutiveSummary';
+import ReportTabs from '@/components/report/ReportTabs';
+import ReportIssueCard from '@/components/report/IssueCard';
 import Logo from '@/components/Logo';
+import type { CheckResult } from '@/lib/types';
+import type { ExecutiveSummary, ReportIssue } from '@/types/report';
 
 export const metadata: Metadata = {
   title: 'Sample Accessibility Report — A11YO',
@@ -16,28 +20,70 @@ export const metadata: Metadata = {
     'See a real A11YO accessibility report for a fictional Irish business. Plain English issues, fix instructions, and a compliance score — no jargon.',
 };
 
-// Fictional Irish business: Keogh's Hardware, Athlone
-const SAMPLE_URL = 'keoughshardware.ie';
-const SAMPLE_DATE = '4 March 2026';
-const SAMPLE_SCORE = 41;
+// ── Fictional Irish business: Keogh's Hardware, Athlone ──────────────────────
 
-// Issues the fictional site has — realistic mix
-const CRITICAL_IDS = ['image-alt', 'form-labels', 'keyboard-focus', 'https'];
-const SHOULD_FIX_IDS = ['meta-description', 'heading-structure', 'load-time', 'broken-links'];
-const NICE_TO_HAVE_IDS = ['og-image', 'og-title', 'robots-txt', 'sitemap'];
-const PASSED_IDS = ['color-contrast', 'title-lang', 'aria-errors', 'viewport', 'mobile-viewport'];
+const SAMPLE_URL = 'https://keoughshardware.ie';
+const SAMPLE_DATE = '2026-03-04T10:30:00.000Z';
 
-// Sample instance counts for realism
-const COUNTS: Record<string, number> = {
-  'image-alt': 23,
-  'form-labels': 4,
-  'keyboard-focus': 1,
-  'heading-structure': 3,
-  'broken-links': 5,
+// Build CheckResult arrays matching the real scanner category buckets
+
+function fail(id: string, label: string, message: string): CheckResult {
+  return { id, label, status: 'fail', message, fixHint: '' };
+}
+function pass(id: string, label: string): CheckResult {
+  return { id, label, status: 'pass', message: '', fixHint: '' };
+}
+
+const sampleScan = {
+  accessibility: [
+    fail('image-alt', 'Image alt text', '23 images found without alt attributes'),
+    fail('form-labels', 'Form labels', '4 form fields are missing associated labels'),
+    pass('color-contrast', 'Colour contrast'),
+    pass('title-lang', 'Page title and language'),
+    pass('aria-errors', 'ARIA usage'),
+    fail('heading-structure', 'Heading structure', '3 heading levels are skipped or missing'),
+    fail('keyboard-focus', 'Keyboard navigation', 'Positive tabindex values found; no skip link detected'),
+  ],
+  seo: [
+    fail('meta-description', 'Meta description', 'No meta description tag found'),
+    fail('og-image', 'OG image', 'No og:image tag found'),
+    fail('og-title', 'OG title', 'No og:title tag found'),
+    pass('viewport', 'Viewport meta'),
+    pass('https', 'HTTPS'),
+  ],
+  launch: [
+    fail('robots-txt', 'robots.txt', 'No robots.txt file found'),
+    fail('sitemap', 'Sitemap', 'No sitemap.xml found'),
+    fail('load-time', 'Page load time', 'Page took 4.3 s to load (threshold: 3 s)'),
+    fail('broken-links', 'Broken links', '5 broken links found on this page'),
+    pass('mobile-viewport', 'Mobile viewport'),
+  ],
 };
 
-const SCORE_COLOR = SAMPLE_SCORE >= 80 ? 'text-green-mid' : SAMPLE_SCORE >= 50 ? 'text-warn' : 'text-fail';
-const SCORE_BAR_COLOR = SAMPLE_SCORE >= 80 ? '#16A34A' : SAMPLE_SCORE >= 50 ? '#D97706' : '#DC2626';
+// Map to enriched ReportIssue[]
+const allIssues = mapScanToReportIssues(sampleScan);
+const failedIssues = allIssues.filter((i) => i.status !== 'pass');
+const passedIssues = allIssues.filter((i) => i.status === 'pass');
+
+const criticalIssues = failedIssues.filter((i: ReportIssue) => i.severity === 'critical');
+const shouldFixIssues = failedIssues.filter((i: ReportIssue) => i.severity === 'should-fix');
+const niceToHaveIssues = failedIssues.filter((i: ReportIssue) => i.severity === 'nice-to-have');
+const quickWins = failedIssues.filter((i: ReportIssue) => i.estimated_cost === 'minutes');
+
+// Score: weighted (critical=3, should-fix=2, nice-to-have=1)
+const SAMPLE_SCORE = 41;
+
+const summary: ExecutiveSummary = {
+  score: SAMPLE_SCORE,
+  critical_count: criticalIssues.length,
+  should_fix_count: shouldFixIssues.length,
+  nice_to_have_count: niceToHaveIssues.length,
+  total_checks: allIssues.length,
+  passed_checks: passedIssues.length,
+  eaa_ready: criticalIssues.length === 0,
+  quick_wins: quickWins,
+  top_priority: [...criticalIssues, ...shouldFixIssues].slice(0, 3),
+};
 
 function SectionHeader({ id, color, title, subtitle }: { id: string; color: string; title: string; subtitle: string }) {
   return (
@@ -49,15 +95,6 @@ function SectionHeader({ id, color, title, subtitle }: { id: string; color: stri
 }
 
 export default function SampleReportPage() {
-  const criticalEntries = CRITICAL_IDS.map((id) => ISSUE_LIBRARY[id]).filter(Boolean);
-  const shouldFixEntries = SHOULD_FIX_IDS.map((id) => ISSUE_LIBRARY[id]).filter(Boolean);
-  const niceToHaveEntries = NICE_TO_HAVE_IDS.map((id) => ISSUE_LIBRARY[id]).filter(Boolean);
-  const passedEntries = PASSED_IDS.map((id) => ISSUE_LIBRARY[id]).filter(Boolean);
-
-  // Quick wins: entries flagged as quick wins from all issue buckets
-  const quickWinEntries = [...criticalEntries, ...shouldFixEntries, ...niceToHaveEntries]
-    .filter((e) => e.quickWin);
-
   return (
     <div className="min-h-screen bg-black flex flex-col">
 
@@ -91,118 +128,99 @@ export default function SampleReportPage() {
       <main id="main-content" className="flex-1 py-12 px-6">
         <div className="max-w-3xl mx-auto space-y-6">
 
-          {/* ── 1. COVER SUMMARY ── */}
-          <div className="corner-mark border border-border bg-surface">
-            <div className="px-6 pt-6 pb-4">
-              <span className="font-mono text-xs tracking-widest uppercase text-green block mb-4">
-                Accessibility Report
-              </span>
-              <p className="text-secondary text-xs leading-relaxed mb-6 border-l-2 border-border pl-4">
-                Generated by A11YO on {SAMPLE_DATE} for{' '}
-                <span className="text-white font-semibold">{SAMPLE_URL}</span>.{' '}
-                Share this with your developer — every issue below includes a plain English fix instruction.
-                Tick each item as it is resolved.
-              </p>
+          {/* ── 1. EXECUTIVE SUMMARY ── */}
+          <ExecutiveSummaryCard
+            summary={summary}
+            url={SAMPLE_URL}
+            scannedAt={SAMPLE_DATE}
+          />
 
-              <div className="flex items-start justify-between gap-6 flex-wrap">
-                <div className="min-w-0 flex-1">
-                  <span className="text-white font-semibold text-lg block mb-1">{SAMPLE_URL}</span>
-                  <p className="font-mono text-xs text-secondary">{SAMPLE_DATE}</p>
+          {/* ── 2–5. ISSUES (owner / dev tab view) ── */}
+          <ReportTabs>
+
+            {/* Quick Wins */}
+            {quickWins.length > 0 && (
+              <section aria-labelledby="qw-heading">
+                <SectionHeader id="qw-heading" color="text-green" title="Quick Wins" subtitle="easy fixes — do these first regardless of severity" />
+                <div className="space-y-2">
+                  {quickWins.map((issue) => (
+                    <ReportIssueCard key={issue.id} issue={issue} />
+                  ))}
                 </div>
-                <div className="flex-shrink-0 text-right">
-                  <span className={`font-display text-6xl font-extrabold leading-none ${SCORE_COLOR}`}>
-                    {SAMPLE_SCORE}<span className="text-3xl">%</span>
-                  </span>
-                  <p className="font-mono text-xs text-secondary mt-1">compliance score</p>
+              </section>
+            )}
+
+            {/* Critical */}
+            {criticalIssues.length > 0 && (
+              <section aria-labelledby="critical-heading">
+                <SectionHeader id="critical-heading" color="text-fail" title="Critical" subtitle="must fix before EAA deadline — legal risk" />
+                <div className="space-y-2">
+                  {criticalIssues.map((issue, i) => (
+                    <ReportIssueCard
+                      key={issue.id}
+                      issue={issue}
+                      defaultOpen={i === 0}
+                    />
+                  ))}
                 </div>
-              </div>
-            </div>
+              </section>
+            )}
 
-            {/* Score bar */}
-            <div className="h-1 bg-border">
-              <div className="h-full" style={{ width: `${SAMPLE_SCORE}%`, backgroundColor: SCORE_BAR_COLOR }} />
-            </div>
-
-            {/* Severity counts */}
-            <div className="px-6 py-4 flex flex-wrap items-center gap-x-8 gap-y-3">
-              {[
-                { count: criticalEntries.length, label: 'Critical', cls: 'text-fail' },
-                { count: shouldFixEntries.length, label: 'Should Fix', cls: 'text-warn' },
-                { count: niceToHaveEntries.length, label: 'Nice to Have', cls: 'text-blue-400' },
-                { count: passedEntries.length, label: 'Passed', cls: 'text-green-mid' },
-              ].map(({ count, label, cls }) => (
-                <div key={label} className="flex items-baseline gap-1.5">
-                  <span className={`font-mono text-2xl font-bold ${cls}`}>{count}</span>
-                  <span className="font-mono text-[10px] text-secondary uppercase tracking-widest">{label}</span>
+            {/* Should Fix */}
+            {shouldFixIssues.length > 0 && (
+              <section aria-labelledby="should-fix-heading">
+                <SectionHeader id="should-fix-heading" color="text-warn" title="Should Fix" subtitle="required for full EAA compliance" />
+                <div className="space-y-2">
+                  {shouldFixIssues.map((issue) => (
+                    <ReportIssueCard key={issue.id} issue={issue} />
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              </section>
+            )}
 
-          {/* ── 2. QUICK WINS ── */}
-          {quickWinEntries.length > 0 && (
-            <section aria-labelledby="qw-heading">
-              <SectionHeader id="qw-heading" color="text-green" title="Quick Wins" subtitle="easy fixes — do these first regardless of severity" />
-              <div className="space-y-2">
-                {quickWinEntries.map((entry) => (
-                  <IssueCard key={entry.id} entry={entry} count={COUNTS[entry.id]} />
+            {/* Nice to Have */}
+            {niceToHaveIssues.length > 0 && (
+              <section aria-labelledby="nth-heading">
+                <SectionHeader id="nth-heading" color="text-blue-400" title="Nice to Have" subtitle="best practice — not legally required" />
+                <div className="space-y-2">
+                  {niceToHaveIssues.map((issue) => (
+                    <ReportIssueCard key={issue.id} issue={issue} />
+                  ))}
+                </div>
+              </section>
+            )}
+
+          </ReportTabs>
+
+          {/* ── 6. WHAT PASSED ── */}
+          {passedIssues.length > 0 && (
+            <section aria-labelledby="passed-heading">
+              <SectionHeader
+                id="passed-heading"
+                color="text-green"
+                title="What Passed"
+                subtitle={`${passedIssues.length} checks passed`}
+              />
+              <div className="corner-mark border border-border bg-surface divide-y divide-border">
+                {passedIssues.map((issue) => (
+                  <div key={issue.id} className="px-5 py-3 flex items-center gap-3">
+                    <span className="text-green-mid text-sm flex-shrink-0" aria-hidden="true">✓</span>
+                    <span className="text-secondary text-sm">{issue.pass_title}</span>
+                  </div>
                 ))}
               </div>
             </section>
           )}
-
-          {/* ── 3. CRITICAL ── */}
-          <section aria-labelledby="critical-heading">
-            <SectionHeader id="critical-heading" color="text-fail" title="Critical" subtitle="must fix before EAA deadline — legal risk" />
-            <div className="space-y-2">
-              {criticalEntries.map((entry) => (
-                <IssueCard key={entry.id} entry={entry} count={COUNTS[entry.id]} defaultOpen={entry.id === 'image-alt'} />
-              ))}
-            </div>
-          </section>
-
-          {/* ── 4. SHOULD FIX ── */}
-          <section aria-labelledby="should-fix-heading">
-            <SectionHeader id="should-fix-heading" color="text-warn" title="Should Fix" subtitle="required for full EAA compliance" />
-            <div className="space-y-2">
-              {shouldFixEntries.map((entry) => (
-                <IssueCard key={entry.id} entry={entry} count={COUNTS[entry.id]} />
-              ))}
-            </div>
-          </section>
-
-          {/* ── 5. NICE TO HAVE ── */}
-          <section aria-labelledby="nth-heading">
-            <SectionHeader id="nth-heading" color="text-blue-400" title="Nice to Have" subtitle="best practice — not legally required" />
-            <div className="space-y-2">
-              {niceToHaveEntries.map((entry) => (
-                <IssueCard key={entry.id} entry={entry} />
-              ))}
-            </div>
-          </section>
-
-          {/* ── 6. WHAT PASSED ── */}
-          <section aria-labelledby="passed-heading">
-            <SectionHeader id="passed-heading" color="text-green" title="What Passed" subtitle={`${passedEntries.length} checks passed`} />
-            <div className="corner-mark border border-border bg-surface divide-y divide-border">
-              {passedEntries.map((entry) => (
-                <div key={entry.id} className="px-5 py-3 flex items-center gap-3">
-                  <span className="text-green-mid text-sm flex-shrink-0" aria-hidden="true">✓</span>
-                  <span className="text-secondary text-sm">{entry.passTitle}</span>
-                </div>
-              ))}
-            </div>
-          </section>
 
           {/* ── 7. NEXT STEPS ── */}
           <section aria-labelledby="next-heading">
             <SectionHeader id="next-heading" color="text-green" title="Next Steps" subtitle="your plain English action plan" />
             <div className="corner-mark border border-border bg-surface px-6 py-5 space-y-3">
               <p className="text-secondary text-sm leading-relaxed">
-                Start with the {criticalEntries.length} Critical issues. These block users entirely and carry legal risk under the EAA — fix them first. Then work through the {shouldFixEntries.length} Should Fix items to reach full EAA compliance.
+                Start with the {criticalIssues.length} Critical issues. These block users entirely and carry legal risk under the EAA — fix them first. Then work through the {shouldFixIssues.length} Should Fix items to reach full EAA compliance.
               </p>
               <p className="text-secondary text-sm leading-relaxed">
-                Forward this report to your developer. Every issue above includes a plain English fix instruction — they have everything they need to get started without any further briefing from you.
+                Forward this report to your developer. Switch to the <strong className="text-white">Developer View</strong> on any issue for step-by-step technical fix instructions — they have everything they need without any further briefing.
               </p>
             </div>
           </section>

@@ -321,6 +321,17 @@ export default function HomePage() {
                       <a href="/auth/signup" className="text-green hover:underline">Create a free account</a>
                     </p>
                   </div>
+
+                  {/* Sample report link */}
+                  <div className="border-t border-border/40 pt-3">
+                    <a
+                      href="/sample-report"
+                      className="font-mono text-[10px] tracking-wider uppercase text-secondary hover:text-green transition-colors flex items-center gap-2"
+                    >
+                      <span aria-hidden="true">↗</span>
+                      See what a report looks like first
+                    </a>
+                  </div>
                 </form>
 
                 {/* Card ambient glow */}
@@ -348,7 +359,7 @@ export default function HomePage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-border">
               {[
                 { value: '5',    label: 'Free checks' },
-                { value: '17',   label: 'Pro checks'  },
+                { value: '17',   label: 'All checks'  },
                 { value: '<30s', label: 'Per scan'    },
                 { value: '€0',   label: 'To start'   },
               ].map((s) => (
@@ -402,6 +413,110 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── Report preview ── */}
+        <section id="report" className="border-b border-border py-20 bg-surface">
+          <div className="max-w-5xl mx-auto px-6">
+
+            <div className="mb-10">
+              <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">Your report</span>
+              <h2 className="text-3xl font-semibold text-white tracking-tight mb-3">Two views. One for you. One for your developer.</h2>
+              <p className="text-secondary max-w-xl leading-relaxed">
+                Every issue in your report has an <strong className="text-white">Owner View</strong> — plain English, business impact, what to ask for — and a <strong className="text-white">Developer View</strong> with step-by-step fix instructions, WCAG references, and effort estimates. No translation needed.
+              </p>
+            </div>
+
+            {/* Two-column preview */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-border mb-10">
+
+              {/* Owner View */}
+              <div className="bg-black p-7 space-y-5">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="font-mono text-[10px] uppercase tracking-widest px-3 py-1.5 bg-green text-black">Owner View</span>
+                  <span className="font-mono text-[10px] text-secondary">plain English · no jargon</span>
+                </div>
+
+                {/* Sample issue header */}
+                <div className="border border-fail/30 bg-surface px-4 py-3 flex items-center gap-3">
+                  <span className="font-mono text-[10px] uppercase tracking-widest px-2 py-1 text-fail bg-fail/10">Critical</span>
+                  <span className="text-white text-sm font-semibold">Images have no description for screen readers</span>
+                </div>
+
+                {/* Owner fields */}
+                <div className="space-y-4 px-1">
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1.5">Who is affected</p>
+                    <p className="text-secondary text-sm leading-relaxed">People who are blind or have low vision and use a screen reader to navigate the web.</p>
+                  </div>
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1.5">Why it matters</p>
+                    <p className="text-secondary text-sm leading-relaxed">Screen reader users will hear nothing when they reach these images. This is a direct EAA compliance risk affecting roughly 1 in 6 people.</p>
+                  </div>
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1.5">What to do next</p>
+                    <p className="text-secondary text-sm leading-relaxed">Forward this report to your developer and ask them to add a text description to every meaningful image.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Developer View */}
+              <div className="bg-black p-7 space-y-5">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="font-mono text-[10px] uppercase tracking-widest px-3 py-1.5 bg-surface border border-border text-white">Developer View</span>
+                  <span className="font-mono text-[10px] text-secondary">fix instructions · WCAG refs · effort</span>
+                </div>
+
+                {/* Same issue header */}
+                <div className="border border-fail/30 bg-surface px-4 py-3 flex items-center gap-3">
+                  <span className="font-mono text-[10px] uppercase tracking-widest px-2 py-1 text-fail bg-fail/10">Critical</span>
+                  <span className="text-white text-sm font-semibold">Images have no description for screen readers</span>
+                </div>
+
+                {/* Dev fields */}
+                <div className="space-y-4 px-1">
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1.5">Fix instruction</p>
+                    <p className="text-secondary text-sm leading-relaxed mb-2">Add an <code className="font-mono text-xs bg-black border border-border px-1 py-0.5 text-green">alt</code> attribute to every <code className="font-mono text-xs bg-black border border-border px-1 py-0.5 text-green">&lt;img&gt;</code> element. Decorative images use <code className="font-mono text-xs bg-black border border-border px-1 py-0.5 text-green">alt=&quot;&quot;</code>. Run axe after to confirm no violations remain.</p>
+                  </div>
+                  <div className="flex gap-8">
+                    {[
+                      { label: 'Responsible', value: 'Developer' },
+                      { label: 'Effort', value: '1–4 hrs' },
+                      { label: 'Scope', value: 'Page-level' },
+                    ].map(({ label, value }) => (
+                      <div key={label}>
+                        <p className="font-mono text-[9px] uppercase tracking-widest text-muted mb-0.5">{label}</p>
+                        <p className="font-mono text-xs text-white">{value}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="border-l-2 border-border pl-4 space-y-1">
+                    <p className="font-mono text-xs text-secondary">WCAG 2.2 — 1.1.1 Non-text Content (Level A)</p>
+                    <p className="font-mono text-xs text-secondary">EN 301 549 §9.1.1.1</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* CTA */}
+            <div className="flex items-center gap-6 flex-wrap">
+              <a
+                href="/sample-report"
+                className="font-mono text-sm tracking-wider uppercase bg-green text-black px-7 py-3 hover:bg-green-mid transition-colors"
+              >
+                See a full sample report →
+              </a>
+              <a
+                href="#scan"
+                className="font-mono text-sm tracking-wider uppercase text-secondary hover:text-white transition-colors"
+              >
+                Scan your site free →
+              </a>
+            </div>
+
+          </div>
+        </section>
+
         {/* ── What we check ── */}
         <section id="checks" className="border-b border-border py-20 bg-surface">
           <div className="max-w-5xl mx-auto px-6">
@@ -415,7 +530,7 @@ export default function HomePage() {
               </a>
             </div>
 
-            <p className="text-secondary font-body mb-8">A11YO runs automated checks across three categories: accessibility (WCAG 2.2 AA), SEO fundamentals, and launch readiness. Free accounts get 5. Pro gets all 17.</p>
+            <p className="text-secondary font-body mb-8">A11YO runs automated checks across three categories: accessibility (WCAG 2.2 AA), SEO fundamentals, and launch readiness. Free accounts get 5. Paid plans get all 17.</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
               {ALL_CHECKS.map((check) => (
@@ -687,7 +802,7 @@ export default function HomePage() {
             </div>
             <div>
               <h3 className="font-mono text-sm tracking-wide text-white mb-3">Is A11YO free?</h3>
-              <p className="text-secondary text-sm leading-relaxed">Yes. A11YO is free to use with no account required. Free accounts run 5 checks. Pro accounts (€5/month) unlock all 17 checks, scan history, and PDF export.</p>
+              <p className="text-secondary text-sm leading-relaxed">Yes. A11YO is free to use with no account required. Free accounts run 5 checks. Paid plans (from €10 one-time) unlock all 17 checks, scan history, and PDF export.</p>
             </div>
           </div>
         </div>

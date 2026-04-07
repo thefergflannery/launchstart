@@ -1,7 +1,5 @@
 /**
  * F-008 — Why Choose A11YO (/why-a11yo)
- * Footer link only — not in main navigation.
- * EAA context, Irish statistics, CTA to signup.
  * PRD ref: §F-008
  */
 import type { Metadata } from 'next';
@@ -38,7 +36,7 @@ export default function WhyA11YOPage() {
           </h1>
           <p className="text-secondary text-lg leading-relaxed mb-12 max-w-2xl">
             The European Accessibility Act (EAA) came into force on 28 June 2025. Businesses that sell
-            products or services online in Ireland or the EU must now meet WCAG 2.1 Level AA accessibility
+            products or services online in Ireland or the EU must now meet WCAG 2.2 Level AA accessibility
             standards — or face enforcement action.
           </p>
 
@@ -64,7 +62,7 @@ export default function WhyA11YOPage() {
                 with their website.
               </p>
               <p>
-                A 5,000 euro consultant audit is thorough, but it is out of reach for most Irish SMEs. And ignoring
+                A five-thousand euro consultant audit is thorough, but it is out of reach for most Irish SMEs. And ignoring
                 the problem entirely is no longer an option — EAA enforcement is already underway across the EU.
               </p>
             </section>
@@ -72,13 +70,17 @@ export default function WhyA11YOPage() {
             <section aria-labelledby="solution-heading">
               <h2 id="solution-heading" className="text-white font-semibold text-xl mb-3">What A11YO does differently</h2>
               <p className="mb-3">
-                A11YO runs the same automated checks as Axe and Lighthouse, but rewrites the output in plain
-                English. Every issue gets a plain-language title, a human impact explanation, and a specific
-                fix instruction your developer can act on immediately — without any further briefing from you.
+                A11YO runs the same automated checks as Axe and Lighthouse, but every issue comes in two views:
+                an <strong className="text-white">Owner View</strong> and a <strong className="text-white">Developer View</strong>.
+              </p>
+              <p className="mb-3">
+                The Owner View explains the issue in plain English — who is affected, why it matters for your
+                business, and what to ask for. The Developer View gives step-by-step fix instructions, WCAG 2.2
+                references, EN 301 549 clause numbers, and an effort estimate.
               </p>
               <p>
-                The result is a document that a business owner can read without Googling anything, and a
-                developer can use as a checklist. That is the whole job.
+                The result is one document that a business owner can read without Googling anything, and a
+                developer can use as a complete checklist without any further briefing. No translation needed in either direction.
               </p>
             </section>
 
@@ -106,9 +108,9 @@ export default function WhyA11YOPage() {
                 through the European Union (Accessibility Requirements for Products and Services) Regulations 2023.
               </p>
               <p className="mb-3">
-                The standard required is WCAG 2.1 Level AA — the same standard used by the UK&apos;s accessibility
-                regulations and the US Section 508. Non-compliance can result in complaints, enforcement action,
-                and fines from the relevant national authority.
+                The standard required is WCAG 2.2 Level AA — the same baseline used across the EU, the UK, and the
+                US Section 508. Non-compliance can result in complaints, enforcement action, and fines from the
+                relevant national authority.
               </p>
               <p>
                 The deadline passed on 28 June 2025. If your website is not compliant, the time to fix it is now.
@@ -118,9 +120,9 @@ export default function WhyA11YOPage() {
             <section aria-labelledby="pricing-heading">
               <h2 id="pricing-heading" className="text-white font-semibold text-xl mb-3">Transparent pricing</h2>
               <p className="mb-3">
-                A11YO has a generous free tier — run a scan and see your compliance score and a summary of issues
-                with no sign-up required. A full report with all issue cards, fix instructions, scan history, and
-                PDF export costs €10/month.
+                A11YO has a generous free tier — run a scan and see your compliance score with no sign-up required.
+                A full report with all issue cards, Owner and Developer views, scan history, and PDF export is
+                available from <strong className="text-white">€10 as a one-time payment</strong> — no subscription needed.
               </p>
               <p>
                 That is not a consultant. It is a tool that gives you everything you need to brief one.
