@@ -30,6 +30,15 @@ export const metadata: Metadata = {
     template: '%s — A11YO',
   },
   description: 'Paste a URL and get a full WCAG 2.2 AA, SEO, and launch-readiness audit in under 30 seconds. Free to start. No account needed. Built for developers, agencies, and EAA 2025 compliance.',
+  icons: {
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.ico' },
+    ],
+    apple: '/apple-touch-icon.png',
+    other: [{ rel: 'manifest', url: '/site.webmanifest' }],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
