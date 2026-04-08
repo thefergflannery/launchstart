@@ -31,7 +31,7 @@ export default function WhyA11YOPage() {
           <span className="font-mono text-xs uppercase tracking-widest text-green block mb-4">
             Why A11YO
           </span>
-          <h1 className="text-4xl lg:text-5xl font-display font-extrabold text-white mb-4 leading-tight">
+          <h1 className="font-display font-extrabold text-white mb-4 leading-tight" style={{ fontSize: 'clamp(2.25rem, 5vw, 3.5rem)' }}>
             Web accessibility is now the law.<br className="hidden sm:block" /> Most Irish websites aren&apos;t compliant.
           </h1>
           <p className="text-secondary text-lg leading-relaxed mb-12 max-w-2xl">

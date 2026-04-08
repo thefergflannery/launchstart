@@ -4,55 +4,65 @@
 
 /* ── CSS custom properties ───────────────────────────── */
 
-/* Dark mode (default) */
+/* Light mode (default) — brand palette */
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
   /* RGB triplets — used by Tailwind for opacity support (bg-black/90 etc.) */
-  --color-black-rgb:      10 10 10;
+  /* "black" = page background, "white" = primary text — inverted semantics in light mode */
+  --color-black-rgb:      255 255 255;   /* page bg = #FFFFFF */
+  --color-white-rgb:      28 28 28;      /* primary text = #1c1c1c */
+  --color-surface-rgb:    217 217 217;   /* elevated surface = #D9D9D9 */
+  --color-border-rgb:     210 210 210;   /* slightly darker than surface */
+  --color-muted-rgb:      170 170 170;   /* muted text */
+  --color-secondary-rgb:  101 101 101;   /* secondary text = #656565 */
+  --color-green-rgb:      0 233 106;
+  --color-green-mid-rgb:  0 184 81;
+  --color-green-dark-rgb: 0 61 27;
+  --color-warn-rgb:       200 130 0;     /* amber — darkened for light bg contrast */
+  --color-fail-rgb:       200 50 50;     /* red — darkened for light bg contrast */
+
+  /* Hex aliases — used in direct CSS (focus ring, skip link, etc.) */
+  --color-black:      #FFFFFF;
+  --color-white:      #1c1c1c;
+  --color-green:      #00E96A;
+  --color-green-mid:  #00B851;
+  --color-green-dark: #003D1B;
+  --color-surface:    #D9D9D9;
+  --color-border:     #D2D2D2;
+  --color-muted:      #AAAAAA;
+  --color-secondary:  #656565;
+  --color-warn:       #C88200;
+  --color-fail:       #C83232;
+}
+
+/* Dark mode — applied when JS adds class="dark" to <html> (app pages) */
+html.dark {
+  color-scheme: dark;
+
+  --color-black-rgb:      28 28 28;      /* page bg = #1c1c1c */
   --color-white-rgb:      245 244 240;
-  --color-surface-rgb:    22 26 22;
-  --color-border-rgb:     30 42 30;
-  --color-muted-rgb:      122 149 122;
-  --color-secondary-rgb:  143 168 143;
+  --color-surface-rgb:    38 38 38;
+  --color-border-rgb:     52 52 52;
+  --color-muted-rgb:      110 130 110;
+  --color-secondary-rgb:  140 165 140;
   --color-green-rgb:      0 233 106;
   --color-green-mid-rgb:  0 184 81;
   --color-green-dark-rgb: 0 61 27;
   --color-warn-rgb:       255 180 0;
   --color-fail-rgb:       255 77 77;
 
-  /* Hex aliases — used in direct CSS (focus ring, skip link, etc.) */
-  --color-black:      #0A0A0A;
+  --color-black:      #1c1c1c;
   --color-white:      #F5F4F0;
   --color-green:      #00E96A;
   --color-green-mid:  #00B851;
   --color-green-dark: #003D1B;
-  --color-surface:    #161A16;
-  --color-border:     #1E2A1E;
-  --color-muted:      #7A957A;
-  --color-secondary:  #8FA88F;
+  --color-surface:    #262626;
+  --color-border:     #343434;
+  --color-muted:      #6E826E;
+  --color-secondary:  #8CA58C;
   --color-warn:       #FFB400;
   --color-fail:       #FF4D4D;
-}
-
-/* Light mode — applied when JS adds class="light" to <html> */
-html.light {
-  color-scheme: light;
-
-  --color-black-rgb:      250 250 248;
-  --color-white-rgb:      15 17 15;
-  --color-surface-rgb:    238 242 238;
-  --color-border-rgb:     204 216 204;
-  --color-muted-rgb:      140 160 140;
-  --color-secondary-rgb:  80 100 80;
-  /* green / warn / fail are brand colours — unchanged in light mode */
-
-  --color-black:      #FAFAF8;
-  --color-white:      #0F110F;
-  --color-surface:    #EEF2EE;
-  --color-border:     #CCD8CC;
-  --color-muted:      #5A7A5A;
-  --color-secondary:  #506450;
 }
 
 /* ── Base ─────────────────────────────────────────────── */
@@ -81,7 +91,6 @@ h1, h2, h3, h4, h5, h6 {
 :focus-visible {
   outline: 3px solid var(--color-green);
   outline-offset: 2px;
-  /* SC 2.4.11 — prevent sticky header from obscuring focused elements */
   scroll-margin-top: 4rem;
 }
 
@@ -105,7 +114,7 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 9999;
   padding: 0.5rem 1rem;
   background: var(--color-green);
-  color: var(--color-black);
+  color: #1c1c1c;
   font-family: var(--font-dm-mono), 'DM Mono', monospace;
   font-size: 0.75rem;
   font-weight: 600;
@@ -116,16 +125,22 @@ h1, h2, h3, h4, h5, h6 {
 }
 .skip-link:focus {
   top: 1rem;
-  outline: 2px solid var(--color-black);
+  outline: 2px solid #1c1c1c;
   outline-offset: 2px;
 }
 
 /* ── Grid background ─────────────────────────────────── */
 .grid-bg {
   background-image:
+    linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+html.dark .grid-bg {
+  background-image:
     linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 80px 80px;
 }
 
 /* ── Corner marks ────────────────────────────────────── */
@@ -152,7 +167,7 @@ h1, h2, h3, h4, h5, h6 {
   border-width: 0 1.5px 1.5px 0;
 }
 
-/* ── Form inputs — dark base ────────────────────────── */
+/* ── Form inputs ────────────────────────────────────── */
 input[type="text"],
 input[type="email"],
 input[type="url"],
@@ -177,11 +192,11 @@ input[type="url"]:focus,
 input[type="password"]:focus,
 textarea:focus {
   border-color: var(--color-green);
-  box-shadow: 0 0 0 2px rgba(0, 233, 106, 0.1);
+  box-shadow: 0 0 0 2px rgba(0, 233, 106, 0.15);
 }
 
 /* ── Selection colour ────────────────────────────────── */
 ::selection {
-  background-color: rgba(0, 233, 106, 0.2);
+  background-color: rgba(0, 233, 106, 0.25);
   color: var(--color-white);
 }

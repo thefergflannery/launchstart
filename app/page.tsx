@@ -150,195 +150,120 @@ export default function HomePage() {
 
       <Nav links={HOME_NAV_LINKS} cta={{ href: '#scan', label: 'Audit →', isAnchor: true }} />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
 
         {/* ── Hero ── */}
-        <section id="scan" className="relative border-b border-border overflow-hidden min-h-[92vh] flex items-center">
+        <section id="scan" className="border-b border-border">
 
-          {/* Dashed grid overlay */}
-          <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-            <div className="h-full flex">
-              {[0,1,2,3].map(i => (
-                <div key={i} className="flex-1 border-r border-dashed border-border/40 h-full" />
+          {/* Top strip — standards */}
+          <div className="border-b border-border bg-surface">
+            <div className="max-w-5xl mx-auto px-6 py-3 flex items-center gap-6 overflow-x-auto">
+              <span className="font-mono text-[10px] tracking-widest uppercase text-muted whitespace-nowrap">Standards covered</span>
+              {['WCAG 2.2 AA', 'EN 301 549', 'EAA 2025', 'ADA Title III', 'Section 508', 'AODA'].map((s) => (
+                <span key={s} className="font-mono text-[10px] tracking-wider uppercase text-secondary whitespace-nowrap">
+                  {s}
+                </span>
               ))}
             </div>
-            <div className="absolute top-1/2 left-0 right-0 border-t border-dashed border-border/25" />
           </div>
 
-          {/* Radar rings — centred on right column */}
-          <div className="absolute right-[18%] top-1/2 -translate-y-1/2 pointer-events-none select-none" aria-hidden="true">
-            {[160, 260, 360, 460, 560, 660].map(size => (
-              <div
-                key={size}
-                className="absolute rounded-full border border-dashed border-border/30"
-                style={{ width: size, height: size, top: -size / 2, left: -size / 2 }}
-              />
-            ))}
-            {/* Sweeping arc */}
-            <div
-              className="absolute rounded-full animate-radar"
-              style={{
-                width: 660, height: 660,
-                top: -330, left: -330,
-                background: 'conic-gradient(from 0deg, rgba(0,233,106,0.14) 0deg, rgba(0,233,106,0.04) 55deg, transparent 85deg)',
-              }}
-            />
-            {/* Scanner line */}
-            <div
-              className="absolute w-px origin-bottom animate-radar"
-              style={{
-                height: 330, top: -330, left: 0,
-                background: 'linear-gradient(to top, rgba(0,233,106,0.5), transparent)',
-              }}
-            />
-            {/* Ping dot */}
-            <div className="absolute" style={{ top: -105, left: 55 }}>
-              <span className="absolute inline-flex h-2 w-2 rounded-full bg-green/60 animate-ping" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-green/80" />
+          {/* Main hero content */}
+          <div className="max-w-5xl mx-auto px-6 py-16 lg:py-24">
+
+            {/* Headline */}
+            <div className="max-w-3xl mb-12">
+              <span className="font-mono text-xs tracking-widest uppercase text-green block mb-6">
+                Accessibility · SEO · EAA 2025 Compliance
+              </span>
+              <h1 className="font-display font-extrabold text-white leading-[0.95] tracking-tight mb-6"
+                style={{ fontSize: 'clamp(2.5rem, 6vw, 4.25rem)' }}>
+                The fast accessibility checker for websites.
+              </h1>
+              <p className="text-secondary text-lg leading-relaxed max-w-xl">
+                Paste a URL. Get a full WCAG 2.2 AA, SEO, and launch-readiness audit in under 30 seconds — with a one-line fix for every issue. Free to start. No account needed.
+              </p>
             </div>
-          </div>
 
-          {/* Two-column content */}
-          <div className="relative w-full max-w-5xl mx-auto px-6 py-20 lg:py-28">
-            <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
-
-              {/* Left — headline + stats */}
-              <div className="min-w-0">
-                <span className="font-mono text-xs tracking-widest uppercase text-green block mb-7">
-                  Accessibility · SEO · EAA 2025 Compliance
-                </span>
-                <h1
-                  className="text-5xl lg:text-[3.25rem] font-display font-extrabold leading-[0.92] tracking-tight mb-7"
-                  style={{
-                    background: 'linear-gradient(170deg, #F5F4F0 25%, #4A5E4A 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
-                >
-                  The fast accessibility checker for websites.
-                </h1>
-                <p className="text-secondary text-lg leading-relaxed max-w-sm mb-12">
-                  Paste a URL. Get a full WCAG 2.2 AA, SEO, and launch-readiness audit in under 30 seconds — with a one-line fix for every issue. Free to start. No account needed.
-                </p>
-
-                {/* Stats row */}
-                <div className="flex items-stretch divide-x divide-dashed divide-border/60">
-                  {[
-                    { value: '17',   label: 'Checks run'  },
-                    { value: '<30s', label: 'Per scan'     },
-                    { value: '€0',   label: 'To start'    },
-                  ].map((stat, i) => (
-                    <div key={stat.label} className={`py-2 ${i === 0 ? 'pr-8' : 'px-8'}`}>
-                      <p className="font-mono text-3xl font-semibold text-white mb-0.5">{stat.value}</p>
-                      <p className="font-mono text-[10px] tracking-widest uppercase text-secondary">{stat.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right — scan card */}
-              <div className="relative">
-                <form
-                  onSubmit={handleSubmit}
-                  className="border border-border/70 p-7 space-y-5"
-                  style={{ background: 'rgba(22,26,22,0.85)', backdropFilter: 'blur(24px)' }}
-                >
-                  {/* URL input */}
-                  <div>
-                    <p className="font-mono text-[10px] tracking-widest uppercase text-secondary mb-2">Your website URL</p>
-                    <label htmlFor="hero-url" className="sr-only">Website URL to audit</label>
-                    <div className="flex items-stretch border border-border/60">
-                      <input
-                        id="hero-url"
-                        type="text"
-                        value={url}
-                        onChange={(e) => setUrl(e.target.value)}
-                        placeholder="yoursite.com"
-                        className="flex-1 px-4 py-3.5 bg-black/50 text-white placeholder-secondary/40 focus:outline-none text-base font-mono"
-                        disabled={loading}
-                        autoFocus
-                        aria-invalid={error ? 'true' : 'false'}
-                        aria-describedby={error ? 'hero-error' : undefined}
-                      />
-                      <div className="border-l border-border/60 px-3 flex items-center">
-                        <span className="font-mono text-[10px] text-green uppercase tracking-widest">URL</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* What runs */}
-                  <div className="border border-border/40 px-4 py-3 flex items-center justify-between bg-black/20">
-                    <span className="font-mono text-xs text-secondary">17 checks · accessibility + SEO + launch</span>
-                    <span className="font-mono text-xs text-green/50" aria-hidden="true">→</span>
-                  </div>
-
-                  {/* You receive */}
-                  <div>
-                    <p className="font-mono text-[10px] tracking-widest uppercase text-secondary mb-2">You receive</p>
-                    <div className="border border-border/40 px-4 py-3.5 bg-black/30">
-                      <span className="font-mono text-sm text-white/50">Full report + shareable link + one-line fixes</span>
-                    </div>
-                  </div>
-
-                  {/* CTA button */}
+            {/* Scan form */}
+            <div className="max-w-2xl mb-6">
+              <form onSubmit={handleSubmit} aria-label="Run an accessibility audit">
+                <label htmlFor="hero-url" className="sr-only">Website URL to audit</label>
+                <div className="flex items-stretch border border-border focus-within:border-white transition-colors">
+                  <input
+                    id="hero-url"
+                    type="text"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    placeholder="yoursite.com"
+                    className="flex-1 px-5 py-4 bg-black text-white placeholder-muted focus:outline-none text-base font-mono"
+                    disabled={loading}
+                    autoFocus
+                    aria-invalid={error ? 'true' : 'false'}
+                    aria-describedby={error ? 'hero-error' : 'hero-hint'}
+                  />
                   <button
                     type="submit"
                     disabled={loading || !url.trim()}
-                    className="w-full flex items-center justify-between px-6 py-4 bg-green text-black font-mono text-sm tracking-wider uppercase hover:bg-green-mid disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-                    style={(!loading && url.trim()) ? { boxShadow: '0 0 24px rgba(0,233,106,0.25)' } : {}}
+                    className="px-7 py-4 bg-white text-black font-mono text-sm tracking-wider uppercase hover:bg-green disabled:opacity-40 disabled:cursor-not-allowed transition-colors whitespace-nowrap flex items-center gap-3"
                     aria-busy={loading}
                   >
-                    <span>{loading ? SCAN_MESSAGES[msgIndex] : 'Run a free audit →'}</span>
                     {loading ? (
-                      <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" aria-hidden="true" />
+                      <>
+                        <span className="w-3.5 h-3.5 border-2 border-black border-t-transparent rounded-full animate-spin flex-shrink-0" aria-hidden="true" />
+                        <span className="hidden sm:inline">{SCAN_MESSAGES[msgIndex]}</span>
+                        <span className="sm:hidden">Scanning…</span>
+                      </>
                     ) : (
-                      <span className="w-6 h-6 rounded-full bg-black/20 flex items-center justify-center text-xs font-bold" aria-hidden="true">→</span>
+                      'Run audit →'
                     )}
                   </button>
+                </div>
+              </form>
 
-                  {/* Error */}
-                  {error && (
-                    <div aria-live="polite">
-                      <p id="hero-error" role="alert" className="font-mono text-xs text-fail">{error}</p>
-                      {(error.includes('Sign up') || error.includes('Upgrade') || error.includes('limit')) && (
-                        <div className="flex gap-4 mt-2">
-                          <a href="/auth/signup" className="font-mono text-xs text-green hover:underline font-semibold">Create free account →</a>
-                          <a href="/auth/login" className="font-mono text-xs text-secondary hover:text-white">Already have an account?</a>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Status indicator */}
-                  <div className="flex items-center gap-2.5 pt-0.5">
-                    <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
-                      <span className="absolute inline-flex h-full w-full rounded-full bg-green/50 animate-ping" />
-                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-green/70" />
-                    </span>
-                    <p className="font-mono text-xs text-secondary">
-                      No account needed.{' '}
-                      <a href="/auth/signup" className="text-green hover:underline">Create a free account</a>
-                    </p>
-                  </div>
-
-                  {/* Sample report link */}
-                  <div className="border-t border-border/40 pt-3">
-                    <a
-                      href="/sample-report"
-                      className="font-mono text-[10px] tracking-wider uppercase text-secondary hover:text-green transition-colors flex items-center gap-2"
-                    >
-                      <span aria-hidden="true">↗</span>
-                      See what a report looks like first
-                    </a>
-                  </div>
-                </form>
-
-                {/* Card ambient glow */}
-                <div className="absolute -inset-4 bg-green/4 -z-10 blur-3xl pointer-events-none rounded-full" aria-hidden="true" />
+              {/* Form meta */}
+              <div className="flex items-center justify-between mt-3 gap-4 flex-wrap">
+                <div id="hero-hint" className="flex items-center gap-2">
+                  <span className="relative flex h-1.5 w-1.5 flex-shrink-0" aria-hidden="true">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-green/50 animate-ping" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-green" />
+                  </span>
+                  <p className="font-mono text-xs text-secondary">
+                    No account needed.{' '}
+                    <a href="/auth/signup" className="text-white hover:text-green transition-colors">Create a free account</a>
+                  </p>
+                </div>
+                <a href="/sample-report" className="font-mono text-xs text-secondary hover:text-white transition-colors">
+                  See a sample report ↗
+                </a>
               </div>
 
+              {error && (
+                <div aria-live="polite" className="mt-3">
+                  <p id="hero-error" role="alert" className="font-mono text-xs text-fail">{error}</p>
+                  {(error.includes('Sign up') || error.includes('Upgrade') || error.includes('limit')) && (
+                    <div className="flex gap-4 mt-2">
+                      <a href="/auth/signup" className="font-mono text-xs text-green hover:underline font-semibold">Create free account →</a>
+                      <a href="/auth/login" className="font-mono text-xs text-secondary hover:text-white">Already have an account?</a>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
+
+            {/* Stats */}
+            <div className="flex items-stretch divide-x divide-border max-w-sm">
+              {[
+                { value: '17',   label: 'Checks run' },
+                { value: '<30s', label: 'Per scan'    },
+                { value: '€0',   label: 'To start'   },
+              ].map((stat, i) => (
+                <div key={stat.label} className={`py-3 ${i === 0 ? 'pr-8' : 'px-8'}`}>
+                  <p className="font-mono text-2xl font-semibold text-white leading-none mb-1">{stat.value}</p>
+                  <p className="font-mono text-[10px] tracking-widest uppercase text-secondary">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+
           </div>
         </section>
 
@@ -353,59 +278,20 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── Stats bar ── */}
-        <section className="border-b border-border bg-surface">
-          <div className="max-w-5xl mx-auto px-6">
-            <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-border">
-              {[
-                { value: '5',    label: 'Free checks' },
-                { value: '17',   label: 'All checks'  },
-                { value: '<30s', label: 'Per scan'    },
-                { value: '€0',   label: 'To start'   },
-              ].map((s) => (
-                <div key={s.label} className="px-6 py-6 text-center">
-                  <p className="font-mono text-2xl font-semibold text-white mb-1">{s.value}</p>
-                  <p className="font-mono text-xs tracking-wider uppercase text-secondary">{s.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Compliance standards strip ── */}
-        <section className="border-b border-border bg-black overflow-hidden" aria-label="Supported compliance standards">
-          <div className="max-w-5xl mx-auto px-6 py-5">
-            <p className="text-secondary text-sm mb-4">A11YO checks against the standards that matter — including the European Accessibility Act, which applies to all websites serving EU users from June 2025.</p>
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
-              <span className="font-mono text-[10px] tracking-widest uppercase text-muted flex-shrink-0">Standards covered</span>
-              {[
-                { label: 'WCAG 2.2 AA' },
-                { label: 'EN 301 549' },
-                { label: 'ADA Title III' },
-                { label: 'Section 508' },
-                { label: 'EAA 2025' },
-                { label: 'AODA' },
-              ].map((s) => (
-                <span key={s.label} className="font-mono text-xs tracking-wider uppercase text-secondary border border-border px-3 py-1.5">
-                  {s.label}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* ── How it works ── */}
-        <section id="how-it-works" className="border-b border-border py-20">
+        <section id="how-it-works" className="border-b border-border py-20 bg-black">
           <div className="max-w-5xl mx-auto px-6">
             <div className="mb-12">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">How it works</span>
-              <h2 className="text-3xl font-semibold text-white tracking-tight">Three steps. Under 30 seconds.</h2>
+              <h2 className="font-display font-bold text-white tracking-tight" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
+                Three steps. Under 30 seconds.
+              </h2>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border">
               {STEPS.map((step) => (
                 <div key={step.n} className="bg-black p-8">
                   <span className="font-mono text-xs tracking-widest text-green block mb-6">{step.n}</span>
-                  <h3 className="text-white font-semibold text-lg mb-3">{step.title}</h3>
+                  <h3 className="text-white font-semibold text-lg mb-3 font-display">{step.title}</h3>
                   <p className="text-secondary text-sm leading-relaxed">{step.desc}</p>
                 </div>
               ))}
@@ -419,9 +305,11 @@ export default function HomePage() {
 
             <div className="mb-10">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">Your report</span>
-              <h2 className="text-3xl font-semibold text-white tracking-tight mb-3">Two views. One for you. One for your developer.</h2>
+              <h2 className="font-display font-bold text-white tracking-tight mb-3" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
+                Two views. One for you. One for your developer.
+              </h2>
               <p className="text-secondary max-w-xl leading-relaxed">
-                Every issue in your report has an <strong className="text-white">Owner View</strong> — plain English, business impact, what to ask for — and a <strong className="text-white">Developer View</strong> with step-by-step fix instructions, WCAG references, and effort estimates. No translation needed.
+                Every issue has an <strong className="text-white font-semibold">Owner View</strong> — plain English, business impact, what to ask for — and a <strong className="text-white font-semibold">Developer View</strong> with step-by-step fix instructions, WCAG references, and effort estimates.
               </p>
             </div>
 
@@ -431,17 +319,15 @@ export default function HomePage() {
               {/* Owner View */}
               <div className="bg-black p-7 space-y-5">
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="font-mono text-[10px] uppercase tracking-widest px-3 py-1.5 bg-green text-black">Owner View</span>
+                  <span className="font-mono text-[10px] uppercase tracking-widest px-3 py-1.5 bg-green text-black font-semibold">Owner View</span>
                   <span className="font-mono text-[10px] text-secondary">plain English · no jargon</span>
                 </div>
 
-                {/* Sample issue header */}
                 <div className="border border-fail/30 bg-surface px-4 py-3 flex items-center gap-3">
                   <span className="font-mono text-[10px] uppercase tracking-widest px-2 py-1 text-fail bg-fail/10">Critical</span>
                   <span className="text-white text-sm font-semibold">Images have no description for screen readers</span>
                 </div>
 
-                {/* Owner fields */}
                 <div className="space-y-4 px-1">
                   <div>
                     <p className="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1.5">Who is affected</p>
@@ -465,17 +351,15 @@ export default function HomePage() {
                   <span className="font-mono text-[10px] text-secondary">fix instructions · WCAG refs · effort</span>
                 </div>
 
-                {/* Same issue header */}
                 <div className="border border-fail/30 bg-surface px-4 py-3 flex items-center gap-3">
                   <span className="font-mono text-[10px] uppercase tracking-widest px-2 py-1 text-fail bg-fail/10">Critical</span>
                   <span className="text-white text-sm font-semibold">Images have no description for screen readers</span>
                 </div>
 
-                {/* Dev fields */}
                 <div className="space-y-4 px-1">
                   <div>
                     <p className="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1.5">Fix instruction</p>
-                    <p className="text-secondary text-sm leading-relaxed mb-2">Add an <code className="font-mono text-xs bg-black border border-border px-1 py-0.5 text-green">alt</code> attribute to every <code className="font-mono text-xs bg-black border border-border px-1 py-0.5 text-green">&lt;img&gt;</code> element. Decorative images use <code className="font-mono text-xs bg-black border border-border px-1 py-0.5 text-green">alt=&quot;&quot;</code>. Run axe after to confirm no violations remain.</p>
+                    <p className="text-secondary text-sm leading-relaxed mb-2">Add an <code className="font-mono text-xs bg-surface border border-border px-1 py-0.5 text-green">alt</code> attribute to every <code className="font-mono text-xs bg-surface border border-border px-1 py-0.5 text-green">&lt;img&gt;</code> element. Decorative images use <code className="font-mono text-xs bg-surface border border-border px-1 py-0.5 text-green">alt=&quot;&quot;</code>.</p>
                   </div>
                   <div className="flex gap-8">
                     {[
@@ -498,18 +382,11 @@ export default function HomePage() {
 
             </div>
 
-            {/* CTA */}
             <div className="flex items-center gap-6 flex-wrap">
-              <a
-                href="/sample-report"
-                className="font-mono text-sm tracking-wider uppercase bg-green text-black px-7 py-3 hover:bg-green-mid transition-colors"
-              >
+              <a href="/sample-report" className="font-mono text-sm tracking-wider uppercase bg-white text-black px-7 py-3 hover:bg-green transition-colors">
                 See a full sample report →
               </a>
-              <a
-                href="#scan"
-                className="font-mono text-sm tracking-wider uppercase text-secondary hover:text-white transition-colors"
-              >
+              <a href="#scan" className="font-mono text-sm tracking-wider uppercase text-secondary hover:text-white transition-colors">
                 Scan your site free →
               </a>
             </div>
@@ -518,19 +395,21 @@ export default function HomePage() {
         </section>
 
         {/* ── What we check ── */}
-        <section id="checks" className="border-b border-border py-20 bg-surface">
+        <section id="checks" className="border-b border-border py-20 bg-black">
           <div className="max-w-5xl mx-auto px-6">
             <div className="mb-10 flex items-end justify-between gap-4">
               <div>
                 <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">What we check</span>
-                <h2 className="text-3xl font-semibold text-white tracking-tight">17 checks. Instant results.</h2>
+                <h2 className="font-display font-bold text-white tracking-tight" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
+                  17 checks. Instant results.
+                </h2>
               </div>
-              <a href="#pricing" className="font-mono text-xs tracking-wider uppercase text-green hover:underline hidden sm:block">
+              <a href="#pricing" className="font-mono text-xs tracking-wider uppercase text-green hover:underline hidden sm:block flex-shrink-0">
                 See pricing →
               </a>
             </div>
 
-            <p className="text-secondary font-body mb-8">A11YO runs automated checks across three categories: accessibility (WCAG 2.2 AA), SEO fundamentals, and launch readiness. Free accounts get 5. Paid plans get all 17.</p>
+            <p className="text-secondary mb-8 leading-relaxed">A11YO runs automated checks across three categories: accessibility (WCAG 2.2 AA), SEO fundamentals, and launch readiness. Free accounts get 5. Paid plans get all 17.</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
               {ALL_CHECKS.map((check) => (
@@ -546,7 +425,7 @@ export default function HomePage() {
                   <span className={`text-sm flex-1 ${check.free ? 'text-white' : 'text-secondary'}`}>
                     {check.label}
                   </span>
-                  <span className={`font-mono text-[10px] uppercase tracking-wider flex-shrink-0 ${CATEGORY_COLORS[check.category]} ${!check.free ? 'opacity-30' : ''}`}>
+                  <span className={`font-mono text-[10px] uppercase tracking-wider flex-shrink-0 ${CATEGORY_COLORS[check.category]} ${!check.free ? 'opacity-40' : ''}`}>
                     {check.category}
                   </span>
                 </div>
@@ -556,11 +435,13 @@ export default function HomePage() {
         </section>
 
         {/* ── Pricing ── */}
-        <section id="pricing" className="grid-bg border-b border-border py-20">
+        <section id="pricing" className="grid-bg border-b border-border py-20 bg-surface">
           <div className="max-w-5xl mx-auto px-6">
             <div className="mb-12 text-center">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">Pricing</span>
-              <h2 className="text-3xl font-semibold text-white tracking-tight mb-3">Simple pricing. No surprises.</h2>
+              <h2 className="font-display font-bold text-white tracking-tight mb-3" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
+                Simple pricing. No surprises.
+              </h2>
               <p className="text-secondary max-w-sm mx-auto">
                 Start free with no account. Upgrade when you need more.
               </p>
@@ -621,7 +502,7 @@ export default function HomePage() {
               </div>
 
               {/* Recurring */}
-              <div className="relative corner-mark p-8 bg-black border border-green/20" style={{ boxShadow: '0 0 40px -8px rgba(0,233,106,0.12)' }}>
+              <div className="relative corner-mark p-8 bg-black border border-green/30">
                 <div className="mb-6">
                   <div className="flex items-center gap-3 mb-3">
                     <span className="font-mono text-xs tracking-widest uppercase text-green">Recurring</span>
@@ -656,7 +537,7 @@ export default function HomePage() {
         </section>
 
         {/* ── Chrome Extension ── */}
-        <section className="border-b border-border py-20 bg-surface">
+        <section className="border-b border-border py-20 bg-black">
           <div className="max-w-5xl mx-auto px-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
 
@@ -666,10 +547,10 @@ export default function HomePage() {
                   <span className="font-mono text-xs tracking-widest uppercase text-green">Chrome Extension</span>
                   <span className="font-mono text-[10px] border border-green/30 text-green/60 px-2 py-0.5 uppercase tracking-wider">Beta</span>
                 </div>
-                <h2 className="text-4xl font-display font-bold text-white tracking-tight leading-tight mb-5">
+                <h2 className="font-display font-bold text-white tracking-tight leading-tight mb-5" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)' }}>
                   Audit while you browse.
                 </h2>
-                <p className="text-white/80 leading-relaxed mb-4">
+                <p className="text-secondary leading-relaxed mb-4">
                   The A11YO Chrome Extension runs a full accessibility check on any page you&apos;re looking at — no copy-pasting, no tab-switching.
                 </p>
                 <p className="text-secondary leading-relaxed mb-8">
@@ -684,17 +565,14 @@ export default function HomePage() {
                     'Works on localhost and staging URLs',
                   ].map((f) => (
                     <li key={f} className="flex items-start gap-3">
-                      <span className="mt-1.5 w-1.5 h-1.5 bg-green flex-shrink-0" />
+                      <span className="mt-2 w-1.5 h-1.5 bg-green flex-shrink-0" aria-hidden="true" />
                       <span className="text-secondary text-sm">{f}</span>
                     </li>
                   ))}
                 </ul>
 
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <a
-                    href="/extension"
-                    className="font-mono text-xs tracking-wider uppercase bg-green text-black px-6 py-3 hover:bg-green-mid transition-colors text-center"
-                  >
+                  <a href="/extension" className="font-mono text-xs tracking-wider uppercase bg-white text-black px-6 py-3 hover:bg-green transition-colors text-center">
                     Learn more →
                   </a>
                   <div className="flex-1">
@@ -703,9 +581,9 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Popup mockup */}
+              {/* Extension popup mockup */}
               <div className="relative flex justify-center lg:justify-end">
-                <div className="border border-border bg-black" style={{ width: 300 }}>
+                <div className="border border-border bg-black shadow-lg" style={{ width: 300 }}>
                   <div className="border-b border-border px-4 py-3 flex items-center justify-between">
                     <span className="font-mono text-sm font-bold text-white">A11<span className="text-green">YO</span></span>
                     <span className="font-mono text-[10px] text-green uppercase tracking-wider">Scan complete</span>
@@ -716,17 +594,17 @@ export default function HomePage() {
                       <div className="font-mono text-[9px] text-secondary uppercase tracking-wider">compliance score</div>
                     </div>
                     <div className="flex gap-3 text-right">
-                      <div><div className="font-mono text-base font-bold text-red-400">2</div><div className="font-mono text-[9px] text-secondary">Critical</div></div>
-                      <div><div className="font-mono text-base font-bold text-amber-400">3</div><div className="font-mono text-[9px] text-secondary">Should fix</div></div>
+                      <div><div className="font-mono text-base font-bold text-fail">2</div><div className="font-mono text-[9px] text-secondary">Critical</div></div>
+                      <div><div className="font-mono text-base font-bold text-warn">3</div><div className="font-mono text-[9px] text-secondary">Should fix</div></div>
                       <div><div className="font-mono text-base font-bold text-secondary">1</div><div className="font-mono text-[9px] text-secondary">Nice to have</div></div>
                     </div>
                   </div>
                   <div className="divide-y divide-border">
                     {[
-                      { label: 'Images have no text description', sev: 'CRITICAL', cls: 'text-red-400 bg-red-400/10' },
-                      { label: 'Form fields have no labels', sev: 'CRITICAL', cls: 'text-red-400 bg-red-400/10' },
-                      { label: 'Text may be hard to read', sev: 'SHOULD FIX', cls: 'text-amber-400 bg-amber-400/10' },
-                      { label: 'No meta description found', sev: 'SHOULD FIX', cls: 'text-amber-400 bg-amber-400/10' },
+                      { label: 'Images have no text description', sev: 'CRITICAL', cls: 'text-fail bg-fail/10' },
+                      { label: 'Form fields have no labels', sev: 'CRITICAL', cls: 'text-fail bg-fail/10' },
+                      { label: 'Text may be hard to read', sev: 'SHOULD FIX', cls: 'text-warn bg-warn/10' },
+                      { label: 'No meta description found', sev: 'SHOULD FIX', cls: 'text-warn bg-warn/10' },
                     ].map((item) => (
                       <div key={item.label} className="px-4 py-2.5 flex items-center justify-between gap-3">
                         <span className="font-mono text-xs text-white leading-snug flex-1">{item.label}</span>
@@ -741,7 +619,6 @@ export default function HomePage() {
                     <span className="font-mono text-[10px] text-secondary">Scan again</span>
                   </div>
                 </div>
-                <div className="absolute -inset-px bg-green/5 -z-10 blur-2xl pointer-events-none" aria-hidden="true" />
               </div>
 
             </div>
@@ -749,16 +626,16 @@ export default function HomePage() {
         </section>
 
         {/* ── Blog ── */}
-        <section id="blog" className="border-b border-border py-20">
+        <section id="blog" className="border-b border-border py-20 bg-surface">
           <div className="max-w-5xl mx-auto px-6">
 
-            <div className="mb-8 flex items-end justify-between gap-4">
-              <div>
-                <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">From the blog</span>
-                <h2 className="text-3xl font-display font-semibold text-white tracking-tight">From the A11YO blog</h2>
-              </div>
+            <div className="mb-10">
+              <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">From the blog</span>
+              <h2 className="font-display font-semibold text-white tracking-tight" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
+                Practical accessibility guides
+              </h2>
             </div>
-            <p className="text-secondary mb-10">Practical guides on web accessibility, WCAG compliance, and getting sites ready for the European Accessibility Act.</p>
+            <p className="text-secondary mb-10 leading-relaxed">Guides on web accessibility, WCAG compliance, and getting sites ready for the European Accessibility Act.</p>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border">
               {BLOG_POSTS.map((post) => (
@@ -787,10 +664,12 @@ export default function HomePage() {
 
       </main>
 
-      {/* ── AEO FAQ ── */}
+      {/* ── FAQ ── */}
       <section className="border-b border-border py-20 bg-black">
         <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-2xl font-display font-semibold text-white tracking-tight mb-10">About A11YO</h2>
+          <h2 className="font-display font-semibold text-white tracking-tight mb-10" style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)' }}>
+            About A11YO
+          </h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
             <div>
               <h3 className="font-mono text-sm tracking-wide text-white mb-3">What is A11YO?</h3>

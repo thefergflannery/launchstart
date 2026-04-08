@@ -63,7 +63,7 @@ export default function ToolsPage() {
       <main id="main-content" className="flex-1">
 
         {/* Hero */}
-        <section className="grid-bg border-b border-border">
+        <section className="border-b border-border">
           <div className="max-w-5xl mx-auto px-6 py-20 lg:py-28">
             <span className="font-mono text-xs tracking-widest uppercase text-green block mb-5">Free tools</span>
             <h1 className="text-5xl lg:text-7xl font-display font-extrabold text-white leading-none tracking-tight mb-5">
@@ -135,7 +135,7 @@ export default function ToolsPage() {
         {/* CTA — full audit */}
         <section className="py-16">
           <div className="max-w-5xl mx-auto px-6">
-            <div className="grid-bg border border-border p-10 lg:p-14 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+            <div className="bg-surface border border-border p-10 lg:p-14 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
               <div>
                 <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">Need more?</span>
                 <h2 className="text-3xl font-display font-bold text-white tracking-tight mb-3">

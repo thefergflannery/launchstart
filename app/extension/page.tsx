@@ -81,11 +81,11 @@ export default function ExtensionPage() {
     <div className="min-h-screen bg-black flex flex-col">
       <Nav links={PAGE_NAV_LINKS} />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
 
         {/* ── Hero ── */}
-        <section className="grid-bg border-b border-border">
-          <div className="max-w-5xl mx-auto px-6 py-24 lg:py-36">
+        <section className="border-b border-border">
+          <div className="max-w-5xl mx-auto px-6 py-20 lg:py-32">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
               {/* Copy */}
@@ -94,7 +94,8 @@ export default function ExtensionPage() {
                   <span className="font-mono text-xs tracking-widest uppercase text-green">Chrome Extension</span>
                   <span className="font-mono text-[10px] border border-green/30 text-green/70 px-2 py-0.5 uppercase tracking-wider">Beta</span>
                 </div>
-                <h1 className="text-5xl lg:text-6xl font-display font-extrabold text-white leading-none tracking-tight mb-6">
+                <h1 className="font-display font-extrabold text-white leading-none tracking-tight mb-6"
+                  style={{ fontSize: 'clamp(2.5rem, 6vw, 4.25rem)' }}>
                   Audit any page.<br />
                   Right from<br />
                   <span className="text-green">your browser.</span>
@@ -135,11 +136,11 @@ export default function ExtensionPage() {
                     </div>
                     <div className="flex gap-4 text-right">
                       <div>
-                        <div className="font-mono text-lg font-bold text-red-400">2</div>
+                        <div className="font-mono text-lg font-bold text-fail">2</div>
                         <div className="font-mono text-[9px] text-secondary uppercase tracking-wider">Critical</div>
                       </div>
                       <div>
-                        <div className="font-mono text-lg font-bold text-amber-400">3</div>
+                        <div className="font-mono text-lg font-bold text-warn">3</div>
                         <div className="font-mono text-[9px] text-secondary uppercase tracking-wider">Should Fix</div>
                       </div>
                       <div>
@@ -152,10 +153,10 @@ export default function ExtensionPage() {
                   {/* Issue cards */}
                   <div className="divide-y divide-border">
                     {[
-                      { label: 'Images have no text description', sev: 'CRITICAL', color: 'text-red-400 bg-red-400/10' },
-                      { label: 'Form fields have no labels', sev: 'CRITICAL', color: 'text-red-400 bg-red-400/10' },
-                      { label: 'Text may be hard to read', sev: 'SHOULD FIX', color: 'text-amber-400 bg-amber-400/10' },
-                      { label: 'No meta description found', sev: 'SHOULD FIX', color: 'text-amber-400 bg-amber-400/10' },
+                      { label: 'Images have no text description', sev: 'CRITICAL', color: 'text-fail bg-fail/10' },
+                      { label: 'Form fields have no labels', sev: 'CRITICAL', color: 'text-fail bg-fail/10' },
+                      { label: 'Text may be hard to read', sev: 'SHOULD FIX', color: 'text-warn bg-warn/10' },
+                      { label: 'No meta description found', sev: 'SHOULD FIX', color: 'text-warn bg-warn/10' },
                     ].map((item) => (
                       <div key={item.label} className="px-4 py-3 flex items-center justify-between gap-3">
                         <span className="font-mono text-xs text-white leading-snug flex-1">{item.label}</span>
@@ -173,8 +174,6 @@ export default function ExtensionPage() {
                   </div>
                 </div>
 
-                {/* Glow */}
-                <div className="absolute -inset-px bg-green/5 -z-10 blur-2xl pointer-events-none" aria-hidden="true" />
               </div>
 
             </div>
@@ -186,7 +185,7 @@ export default function ExtensionPage() {
           <div className="max-w-5xl mx-auto px-6">
             <div className="mb-12">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">How it works</span>
-              <h2 className="text-3xl font-semibold text-white tracking-tight">Three steps to a browser audit</h2>
+              <h2 className="font-display font-bold text-white tracking-tight" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>Three steps to a browser audit</h2>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border">
               {STEPS.map((step) => (
@@ -205,7 +204,7 @@ export default function ExtensionPage() {
           <div className="max-w-5xl mx-auto px-6">
             <div className="mb-12">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">Features</span>
-              <h2 className="text-3xl font-semibold text-white tracking-tight">Everything you need, in your toolbar</h2>
+              <h2 className="font-display font-bold text-white tracking-tight" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>Everything you need, in your toolbar</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
               {FEATURES.map((f) => (
@@ -252,7 +251,7 @@ export default function ExtensionPage() {
               </div>
 
               {/* Pro */}
-              <div className="relative corner-mark p-10 bg-black border border-green/20" style={{ boxShadow: '0 0 40px -8px rgba(0,233,106,0.12)' }}>
+              <div className="relative corner-mark p-10 bg-black border border-green/30">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="font-mono text-xs tracking-widest uppercase text-green">Recurring</span>
                   <span className="font-mono text-[10px] border border-green/30 text-green px-2 py-0.5 uppercase tracking-wider">Includes extension</span>
@@ -291,7 +290,7 @@ export default function ExtensionPage() {
           <div className="max-w-5xl mx-auto px-6">
             <div className="max-w-lg">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">Chrome Web Store launch</span>
-              <h2 className="text-3xl font-semibold text-white tracking-tight mb-4">
+              <h2 className="font-display font-bold text-white tracking-tight mb-4" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
                 Be first to know when it drops.
               </h2>
               <p className="text-secondary text-sm leading-relaxed mb-8">
@@ -308,7 +307,7 @@ export default function ExtensionPage() {
           <div className="max-w-5xl mx-auto px-6">
             <div className="mb-12">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">FAQ</span>
-              <h2 className="text-3xl font-semibold text-white tracking-tight">Common questions</h2>
+              <h2 className="font-display font-bold text-white tracking-tight" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>Common questions</h2>
             </div>
             <div className="divide-y divide-border">
               {FAQ.map((item) => (

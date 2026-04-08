@@ -68,7 +68,7 @@ export default function PricingPage() {
             <span className="font-mono text-xs tracking-widest uppercase text-green block mb-4">
               Pricing
             </span>
-            <h1 className="text-5xl font-display font-semibold text-white tracking-tight mb-4">
+            <h1 className="font-display font-extrabold text-white tracking-tight mb-4" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.25rem)' }}>
               Simple, honest pricing.
             </h1>
             <p className="text-secondary text-lg max-w-md mx-auto">
@@ -131,7 +131,7 @@ export default function PricingPage() {
             </div>
 
             {/* Recurring */}
-            <div className="bg-black p-7 flex flex-col border border-green/20" style={{ boxShadow: '0 0 40px -8px rgba(0,233,106,0.12)' }}>
+            <div className="bg-black p-7 flex flex-col border border-green/30">
               <div className="mb-8 flex-1">
                 <div className="flex items-center gap-3 mb-3">
                   <span className="font-mono text-xs tracking-widest uppercase text-green block">Recurring</span>

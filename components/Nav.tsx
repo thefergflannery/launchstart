@@ -148,7 +148,7 @@ export default function Nav({ links, cta = DEFAULT_CTA, maxWidth = 'max-w-5xl' }
         <div
           id="mobile-menu"
           ref={drawerRef}
-          className="sm:hidden fixed inset-x-0 top-14 bottom-0 z-30 bg-black border-t border-border flex flex-col overflow-y-auto"
+          className="sm:hidden fixed inset-x-0 top-14 bottom-0 z-30 bg-black border-t border-border flex flex-col overflow-y-auto shadow-lg"
           role="dialog"
           aria-label="Navigation menu"
           aria-modal="true"
