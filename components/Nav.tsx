@@ -218,6 +218,7 @@ export const HOME_NAV_LINKS: NavLink[] = [
   { href: '#how-it-works', label: 'How it works', isAnchor: true, hideBelow: 'sm' },
   { href: '#pricing',      label: 'Pricing',       isAnchor: true, hideBelow: 'sm' },
   { href: '/tools',        label: 'Tools',          hideBelow: 'md' },
+  { href: '/why-a11yo',    label: 'Why A11YO',      hideBelow: 'md' },
   { href: '/extension',    label: 'Extension',      hideBelow: 'md' },
 ];
 

@@ -155,6 +155,15 @@ export default function HomePage() {
         {/* ── Hero ── */}
         <section id="scan" className="border-b border-border">
 
+          {/* Standards context line */}
+          <div className="border-b border-border bg-surface">
+            <div className="max-w-5xl mx-auto px-6 pt-3 pb-1">
+              <p className="font-mono text-[10px] text-secondary leading-relaxed">
+                A11YO checks against the standards that matter — including the European Accessibility Act, which applies to all websites serving EU users from June 2025.
+              </p>
+            </div>
+          </div>
+
           {/* Top strip — standards */}
           <div className="border-b border-border bg-surface">
             <div className="max-w-5xl mx-auto px-6 py-3 flex items-center gap-6 overflow-x-auto">
@@ -177,7 +186,7 @@ export default function HomePage() {
               </span>
               <h1 className="font-display font-extrabold text-white leading-[0.95] tracking-tight mb-6"
                 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.25rem)' }}>
-                The fast accessibility checker for websites.
+                The fast accessibility checker for websites that need to be ready.
               </h1>
               <p className="text-secondary text-lg leading-relaxed max-w-xl">
                 Paste a URL. Get a full WCAG 2.2 AA, SEO, and launch-readiness audit in under 30 seconds — with a one-line fix for every issue. Free to start. No account needed.
@@ -214,7 +223,7 @@ export default function HomePage() {
                         <span className="sm:hidden">Scanning…</span>
                       </>
                     ) : (
-                      'Run audit →'
+                      'Run a free audit →'
                     )}
                   </button>
                 </div>
@@ -409,7 +418,7 @@ export default function HomePage() {
               </a>
             </div>
 
-            <p className="text-secondary mb-8 leading-relaxed">A11YO runs automated checks across three categories: accessibility (WCAG 2.2 AA), SEO fundamentals, and launch readiness. Free accounts get 5. Paid plans get all 17.</p>
+            <p className="text-secondary mb-8 leading-relaxed">A11YO runs automated checks across three categories: accessibility (WCAG 2.2 AA), SEO fundamentals, and launch readiness. Free accounts get 5. Pro gets all 17.</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
               {ALL_CHECKS.map((check) => (
@@ -632,10 +641,10 @@ export default function HomePage() {
             <div className="mb-10">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">From the blog</span>
               <h2 className="font-display font-semibold text-white tracking-tight" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
-                Practical accessibility guides
+                From the A11YO blog
               </h2>
             </div>
-            <p className="text-secondary mb-10 leading-relaxed">Guides on web accessibility, WCAG compliance, and getting sites ready for the European Accessibility Act.</p>
+            <p className="text-secondary mb-10 leading-relaxed">Practical guides on web accessibility, WCAG compliance, and getting sites ready for the European Accessibility Act.</p>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border">
               {BLOG_POSTS.map((post) => (
@@ -681,7 +690,7 @@ export default function HomePage() {
             </div>
             <div>
               <h3 className="font-mono text-sm tracking-wide text-white mb-3">Is A11YO free?</h3>
-              <p className="text-secondary text-sm leading-relaxed">Yes. A11YO is free to use with no account required. Free accounts run 5 checks. Paid plans (from €10 one-time) unlock all 17 checks, scan history, and PDF export.</p>
+              <p className="text-secondary text-sm leading-relaxed">Yes. A11YO is free to use with no account required. Free accounts run 5 checks. Pro accounts (€5/month) unlock all 17 checks, scan history, and PDF export.</p>
             </div>
           </div>
         </div>
