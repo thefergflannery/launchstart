@@ -155,19 +155,10 @@ export default function HomePage() {
         {/* ── Hero ── */}
         <section id="scan" className="border-b border-border">
 
-          {/* Standards context line */}
+          {/* Standards strip */}
           <div className="border-b border-border bg-surface">
-            <div className="max-w-5xl mx-auto px-6 pt-3 pb-1">
-              <p className="font-mono text-[10px] text-secondary leading-relaxed">
-                A11YO checks against the standards that matter — including the European Accessibility Act, which applies to all websites serving EU users from June 2025.
-              </p>
-            </div>
-          </div>
-
-          {/* Top strip — standards */}
-          <div className="border-b border-border bg-surface">
-            <div className="max-w-5xl mx-auto px-6 py-3 flex items-center gap-6 overflow-x-auto">
-              <span className="font-mono text-[10px] tracking-widest uppercase text-muted whitespace-nowrap">Standards covered</span>
+            <div className="max-w-5xl mx-auto px-6 py-2.5 flex items-center gap-6 overflow-x-auto">
+              <span className="font-mono text-[10px] tracking-widest uppercase text-muted whitespace-nowrap flex-shrink-0">Covers</span>
               {['WCAG 2.2 AA', 'EN 301 549', 'EAA 2025', 'ADA Title III', 'Section 508', 'AODA'].map((s) => (
                 <span key={s} className="font-mono text-[10px] tracking-wider uppercase text-secondary whitespace-nowrap">
                   {s}
@@ -176,103 +167,159 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Main hero content */}
-          <div className="max-w-5xl mx-auto px-6 py-16 lg:py-24">
+          {/* Main hero content — two column */}
+          <div className="max-w-5xl mx-auto px-6 py-16 lg:py-28">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12 lg:gap-20 items-start">
 
-            {/* Headline */}
-            <div className="max-w-3xl mb-12">
-              <span className="font-mono text-xs tracking-widest uppercase text-green block mb-6">
-                Accessibility · SEO · EAA 2025 Compliance
-              </span>
-              <h1 className="font-display font-extrabold text-white leading-[0.95] tracking-tight mb-6"
-                style={{ fontSize: 'clamp(2.5rem, 6vw, 4.25rem)' }}>
-                The fast accessibility checker for websites that need to be ready.
-              </h1>
-              <p className="text-secondary text-lg leading-relaxed max-w-xl">
-                Paste a URL. Get a full WCAG 2.2 AA, SEO, and launch-readiness audit in under 30 seconds — with a one-line fix for every issue. Free to start. No account needed.
-              </p>
-            </div>
+              {/* Left — headline + form + stats */}
+              <div>
+                <span className="font-mono text-xs tracking-widest uppercase text-green block mb-6">
+                  Accessibility · SEO · EAA 2025 Compliance
+                </span>
+                <h1 className="font-display font-extrabold text-white leading-[0.9] tracking-tight mb-6"
+                  style={{ fontSize: 'clamp(3rem, 7vw, 5.5rem)' }}>
+                  The fast accessibility checker for websites that need to be ready.
+                </h1>
+                <p className="text-secondary text-lg leading-relaxed max-w-xl mb-10">
+                  Paste a URL. Get a full WCAG 2.2 AA, SEO, and launch-readiness audit in under 30 seconds — with a one-line fix for every issue. Free to start. No account needed.
+                </p>
 
-            {/* Scan form */}
-            <div className="max-w-2xl mb-6">
-              <form onSubmit={handleSubmit} aria-label="Run an accessibility audit">
-                <label htmlFor="hero-url" className="sr-only">Website URL to audit</label>
-                <div className="flex items-stretch border border-border focus-within:border-white transition-colors">
-                  <input
-                    id="hero-url"
-                    type="text"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                    placeholder="yoursite.com"
-                    className="flex-1 px-5 py-4 bg-black text-white placeholder-muted focus:outline-none text-base font-mono"
-                    disabled={loading}
-                    autoFocus
-                    aria-invalid={error ? 'true' : 'false'}
-                    aria-describedby={error ? 'hero-error' : 'hero-hint'}
-                  />
-                  <button
-                    type="submit"
-                    disabled={loading || !url.trim()}
-                    className="px-7 py-4 bg-white text-black font-mono text-sm tracking-wider uppercase hover:bg-green disabled:opacity-40 disabled:cursor-not-allowed transition-colors whitespace-nowrap flex items-center gap-3"
-                    aria-busy={loading}
-                  >
-                    {loading ? (
-                      <>
-                        <span className="w-3.5 h-3.5 border-2 border-black border-t-transparent rounded-full animate-spin flex-shrink-0" aria-hidden="true" />
-                        <span className="hidden sm:inline">{SCAN_MESSAGES[msgIndex]}</span>
-                        <span className="sm:hidden">Scanning…</span>
-                      </>
-                    ) : (
-                      'Run a free audit →'
-                    )}
-                  </button>
-                </div>
-              </form>
+                {/* Scan form */}
+                <div className="max-w-lg mb-6">
+                  <form onSubmit={handleSubmit} aria-label="Run an accessibility audit">
+                    <label htmlFor="hero-url" className="sr-only">Website URL to audit</label>
+                    <div className="flex items-stretch border border-border focus-within:border-white transition-colors">
+                      <input
+                        id="hero-url"
+                        type="text"
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                        placeholder="yoursite.com"
+                        className="flex-1 px-5 py-4 bg-black text-white placeholder-muted focus:outline-none text-base font-mono"
+                        disabled={loading}
+                        autoFocus
+                        aria-invalid={error ? 'true' : 'false'}
+                        aria-describedby={error ? 'hero-error' : 'hero-hint'}
+                      />
+                      <button
+                        type="submit"
+                        disabled={loading || !url.trim()}
+                        className="px-6 py-4 bg-white text-black font-mono text-sm tracking-wider uppercase hover:bg-green disabled:opacity-40 disabled:cursor-not-allowed transition-colors whitespace-nowrap flex items-center gap-3"
+                        aria-busy={loading}
+                      >
+                        {loading ? (
+                          <>
+                            <span className="w-3.5 h-3.5 border-2 border-black border-t-transparent rounded-full animate-spin flex-shrink-0" aria-hidden="true" />
+                            <span className="hidden sm:inline">{SCAN_MESSAGES[msgIndex]}</span>
+                            <span className="sm:hidden">Scanning…</span>
+                          </>
+                        ) : (
+                          'Run a free audit →'
+                        )}
+                      </button>
+                    </div>
+                  </form>
 
-              {/* Form meta */}
-              <div className="flex items-center justify-between mt-3 gap-4 flex-wrap">
-                <div id="hero-hint" className="flex items-center gap-2">
-                  <span className="relative flex h-1.5 w-1.5 flex-shrink-0" aria-hidden="true">
-                    <span className="absolute inline-flex h-full w-full rounded-full bg-green/50 animate-ping" />
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-green" />
-                  </span>
-                  <p className="font-mono text-xs text-secondary">
-                    No account needed.{' '}
-                    <a href="/auth/signup" className="text-white hover:text-green transition-colors">Create a free account</a>
-                  </p>
-                </div>
-                <a href="/sample-report" className="font-mono text-xs text-secondary hover:text-white transition-colors">
-                  See a sample report ↗
-                </a>
-              </div>
+                  {/* Form meta */}
+                  <div className="flex items-center justify-between mt-3 gap-4 flex-wrap">
+                    <div id="hero-hint" className="flex items-center gap-2">
+                      <span className="relative flex h-1.5 w-1.5 flex-shrink-0" aria-hidden="true">
+                        <span className="absolute inline-flex h-full w-full rounded-full bg-green/50 animate-ping" />
+                        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-green" />
+                      </span>
+                      <p className="font-mono text-xs text-secondary">
+                        No account needed.{' '}
+                        <a href="/auth/signup" className="text-white hover:text-green transition-colors">Create a free account</a>
+                      </p>
+                    </div>
+                    <a href="/sample-report" className="font-mono text-xs text-secondary hover:text-white transition-colors">
+                      See a sample report ↗
+                    </a>
+                  </div>
 
-              {error && (
-                <div aria-live="polite" className="mt-3">
-                  <p id="hero-error" role="alert" className="font-mono text-xs text-fail">{error}</p>
-                  {(error.includes('Sign up') || error.includes('Upgrade') || error.includes('limit')) && (
-                    <div className="flex gap-4 mt-2">
-                      <a href="/auth/signup" className="font-mono text-xs text-green hover:underline font-semibold">Create free account →</a>
-                      <a href="/auth/login" className="font-mono text-xs text-secondary hover:text-white">Already have an account?</a>
+                  {error && (
+                    <div aria-live="polite" className="mt-3">
+                      <p id="hero-error" role="alert" className="font-mono text-xs text-fail">{error}</p>
+                      {(error.includes('Sign up') || error.includes('Upgrade') || error.includes('limit')) && (
+                        <div className="flex gap-4 mt-2">
+                          <a href="/auth/signup" className="font-mono text-xs text-green hover:underline font-semibold">Create free account →</a>
+                          <a href="/auth/login" className="font-mono text-xs text-secondary hover:text-white">Already have an account?</a>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
-              )}
-            </div>
 
-            {/* Stats */}
-            <div className="flex items-stretch divide-x divide-border max-w-sm">
-              {[
-                { value: '17',   label: 'Checks run' },
-                { value: '<30s', label: 'Per scan'    },
-                { value: '€0',   label: 'To start'   },
-              ].map((stat, i) => (
-                <div key={stat.label} className={`py-3 ${i === 0 ? 'pr-8' : 'px-8'}`}>
-                  <p className="font-mono text-2xl font-semibold text-white leading-none mb-1">{stat.value}</p>
-                  <p className="font-mono text-[10px] tracking-widest uppercase text-secondary">{stat.label}</p>
+                {/* Stats */}
+                <div className="flex items-stretch divide-x divide-border">
+                  {[
+                    { value: '17',   label: 'Checks run' },
+                    { value: '<30s', label: 'Per scan'    },
+                    { value: '€0',   label: 'To start'   },
+                  ].map((stat, i) => (
+                    <div key={stat.label} className={`py-3 ${i === 0 ? 'pr-8' : 'px-8'}`}>
+                      <p className="font-mono text-2xl font-semibold text-white leading-none mb-1">{stat.value}</p>
+                      <p className="font-mono text-[10px] tracking-widest uppercase text-secondary">{stat.label}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
 
+              {/* Right — live score preview */}
+              <div className="hidden lg:block border border-border bg-surface">
+                <div className="border-b border-border px-5 py-3 flex items-center justify-between">
+                  <span className="font-mono text-xs text-secondary truncate">example.com</span>
+                  <span className="font-mono text-[10px] text-green uppercase tracking-wider flex-shrink-0 flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green inline-block" aria-hidden="true" />
+                    Scan complete
+                  </span>
+                </div>
+                <div className="px-5 py-6 border-b border-border">
+                  <div className="flex items-end gap-5 mb-4">
+                    <span className="font-display text-7xl font-extrabold text-green leading-none">78</span>
+                    <div className="pb-1.5">
+                      <p className="font-mono text-[10px] uppercase tracking-widest text-secondary mb-3">Compliance score</p>
+                      <div className="flex gap-5">
+                        <div>
+                          <p className="font-mono text-xl font-bold text-fail leading-none">2</p>
+                          <p className="font-mono text-[9px] text-secondary mt-1 uppercase tracking-wider">Critical</p>
+                        </div>
+                        <div>
+                          <p className="font-mono text-xl font-bold text-warn leading-none">3</p>
+                          <p className="font-mono text-[9px] text-secondary mt-1 uppercase tracking-wider">Warnings</p>
+                        </div>
+                        <div>
+                          <p className="font-mono text-xl font-bold text-green leading-none">12</p>
+                          <p className="font-mono text-[9px] text-secondary mt-1 uppercase tracking-wider">Passed</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="h-1 bg-border overflow-hidden">
+                    <div className="h-full bg-green" style={{ width: '78%' }} aria-hidden="true" />
+                  </div>
+                </div>
+                <div className="divide-y divide-border">
+                  {[
+                    { label: 'Images have no alt text',   sev: 'Critical', cls: 'text-fail bg-fail/10' },
+                    { label: 'Colour contrast too low',   sev: 'Critical', cls: 'text-fail bg-fail/10' },
+                    { label: 'Missing meta description',  sev: 'Warning',  cls: 'text-warn bg-warn/10' },
+                    { label: 'Form inputs lack labels',   sev: 'Warning',  cls: 'text-warn bg-warn/10' },
+                    { label: 'HTTPS enforced',            sev: 'Passed',   cls: 'text-green bg-green/10' },
+                    { label: 'Page has valid title tag',  sev: 'Passed',   cls: 'text-green bg-green/10' },
+                  ].map((item) => (
+                    <div key={item.label} className="px-5 py-2.5 flex items-center justify-between gap-3">
+                      <span className="font-mono text-xs text-white leading-snug">{item.label}</span>
+                      <span className={`font-mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 whitespace-nowrap flex-shrink-0 ${item.cls}`}>{item.sev}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="border-t border-border px-5 py-3">
+                  <span className="font-mono text-[10px] text-green">View full report with fix instructions →</span>
+                </div>
+              </div>
+
+            </div>
           </div>
         </section>
 
@@ -288,20 +335,21 @@ export default function HomePage() {
         </section>
 
         {/* ── How it works ── */}
-        <section id="how-it-works" className="border-b border-border py-20 bg-black">
+        <section id="how-it-works" className="border-b border-border py-24 bg-black">
           <div className="max-w-5xl mx-auto px-6">
-            <div className="mb-12">
+            <div className="mb-14">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">How it works</span>
-              <h2 className="font-display font-bold text-white tracking-tight" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
+              <h2 className="font-display font-bold text-white tracking-tight" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
                 Three steps. Under 30 seconds.
               </h2>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border">
               {STEPS.map((step) => (
-                <div key={step.n} className="bg-black p-8">
-                  <span className="font-mono text-xs tracking-widest text-green block mb-6">{step.n}</span>
-                  <h3 className="text-white font-semibold text-lg mb-3 font-display">{step.title}</h3>
-                  <p className="text-secondary text-sm leading-relaxed">{step.desc}</p>
+                <div key={step.n} className="bg-black p-8 relative overflow-hidden">
+                  <span className="absolute bottom-2 right-4 font-display font-extrabold text-white/[0.04] leading-none select-none pointer-events-none" style={{ fontSize: '7rem' }} aria-hidden="true">{step.n}</span>
+                  <span className="font-mono text-xs tracking-widest text-green block mb-8 relative z-10">{step.n}</span>
+                  <h3 className="text-white font-semibold text-xl mb-3 font-display relative z-10">{step.title}</h3>
+                  <p className="text-secondary text-sm leading-relaxed relative z-10">{step.desc}</p>
                 </div>
               ))}
             </div>
@@ -309,12 +357,12 @@ export default function HomePage() {
         </section>
 
         {/* ── Report preview ── */}
-        <section id="report" className="border-b border-border py-20 bg-surface">
+        <section id="report" className="border-b border-border py-24 bg-surface">
           <div className="max-w-5xl mx-auto px-6">
 
-            <div className="mb-10">
+            <div className="mb-12">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">Your report</span>
-              <h2 className="font-display font-bold text-white tracking-tight mb-3" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
+              <h2 className="font-display font-bold text-white tracking-tight mb-3" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
                 Two views. One for you. One for your developer.
               </h2>
               <p className="text-secondary max-w-xl leading-relaxed">
@@ -404,12 +452,12 @@ export default function HomePage() {
         </section>
 
         {/* ── What we check ── */}
-        <section id="checks" className="border-b border-border py-20 bg-black">
+        <section id="checks" className="border-b border-border py-24 bg-black">
           <div className="max-w-5xl mx-auto px-6">
-            <div className="mb-10 flex items-end justify-between gap-4">
+            <div className="mb-12 flex items-end justify-between gap-4">
               <div>
                 <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">What we check</span>
-                <h2 className="font-display font-bold text-white tracking-tight" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
+                <h2 className="font-display font-bold text-white tracking-tight" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
                   17 checks. Instant results.
                 </h2>
               </div>
@@ -444,11 +492,11 @@ export default function HomePage() {
         </section>
 
         {/* ── Pricing ── */}
-        <section id="pricing" className="grid-bg border-b border-border py-20 bg-surface">
+        <section id="pricing" className="grid-bg border-b border-border py-24 bg-surface">
           <div className="max-w-5xl mx-auto px-6">
-            <div className="mb-12 text-center">
+            <div className="mb-14 text-center">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">Pricing</span>
-              <h2 className="font-display font-bold text-white tracking-tight mb-3" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
+              <h2 className="font-display font-bold text-white tracking-tight mb-3" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
                 Simple pricing. No surprises.
               </h2>
               <p className="text-secondary max-w-sm mx-auto">
@@ -546,7 +594,7 @@ export default function HomePage() {
         </section>
 
         {/* ── Chrome Extension ── */}
-        <section className="border-b border-border py-20 bg-black">
+        <section className="border-b border-border py-24 bg-black">
           <div className="max-w-5xl mx-auto px-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
 
@@ -556,7 +604,7 @@ export default function HomePage() {
                   <span className="font-mono text-xs tracking-widest uppercase text-green">Chrome Extension</span>
                   <span className="font-mono text-[10px] border border-green/30 text-green/60 px-2 py-0.5 uppercase tracking-wider">Beta</span>
                 </div>
-                <h2 className="font-display font-bold text-white tracking-tight leading-tight mb-5" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)' }}>
+                <h2 className="font-display font-bold text-white tracking-tight leading-tight mb-5" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
                   Audit while you browse.
                 </h2>
                 <p className="text-secondary leading-relaxed mb-4">
@@ -635,12 +683,12 @@ export default function HomePage() {
         </section>
 
         {/* ── Blog ── */}
-        <section id="blog" className="border-b border-border py-20 bg-surface">
+        <section id="blog" className="border-b border-border py-24 bg-surface">
           <div className="max-w-5xl mx-auto px-6">
 
-            <div className="mb-10">
+            <div className="mb-12">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">From the blog</span>
-              <h2 className="font-display font-semibold text-white tracking-tight" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
+              <h2 className="font-display font-semibold text-white tracking-tight" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
                 From the A11YO blog
               </h2>
             </div>
@@ -674,7 +722,7 @@ export default function HomePage() {
       </main>
 
       {/* ── FAQ ── */}
-      <section className="border-b border-border py-20 bg-black">
+      <section className="border-b border-border py-24 bg-black">
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="font-display font-semibold text-white tracking-tight mb-10" style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)' }}>
             About A11YO
