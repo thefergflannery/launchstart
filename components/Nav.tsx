@@ -39,7 +39,7 @@ function HamburgerIcon({ open }: { open: boolean }) {
   );
 }
 
-export default function Nav({ links, cta = DEFAULT_CTA, maxWidth = 'max-w-5xl' }: NavProps) {
+export default function Nav({ links, cta = DEFAULT_CTA, maxWidth = 'max-w-7xl' }: NavProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);

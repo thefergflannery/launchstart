@@ -44,11 +44,6 @@ const ALL_CHECKS = [
   { label: 'Mobile viewport',   category: 'Launch', free: false },
 ];
 
-const CATEGORY_COLORS: Record<string, string> = {
-  A11y:   'text-green',
-  SEO:    'text-green-mid',
-  Launch: 'text-warn',
-};
 
 const BLOG_POSTS = [
   {
@@ -157,7 +152,7 @@ export default function HomePage() {
 
           {/* Standards strip */}
           <div className="border-b border-border bg-surface">
-            <div className="max-w-5xl mx-auto px-6 py-2.5 flex items-center gap-6 overflow-x-auto">
+            <div className="max-w-7xl mx-auto px-6 py-2.5 flex items-center gap-6 overflow-x-auto">
               <span className="font-mono text-[10px] tracking-widest uppercase text-muted whitespace-nowrap flex-shrink-0">Covers</span>
               {['WCAG 2.2 AA', 'EN 301 549', 'EAA 2025', 'ADA Title III', 'Section 508', 'AODA'].map((s) => (
                 <span key={s} className="font-mono text-[10px] tracking-wider uppercase text-secondary whitespace-nowrap">
@@ -168,8 +163,8 @@ export default function HomePage() {
           </div>
 
           {/* Main hero content — two column */}
-          <div className="max-w-5xl mx-auto px-6 py-16 lg:py-28">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12 lg:gap-20 items-start">
+          <div className="max-w-7xl mx-auto px-6 py-16 lg:py-28">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-12 lg:gap-20 items-start">
 
               {/* Left — headline + form + stats */}
               <div>
@@ -266,39 +261,55 @@ export default function HomePage() {
               </div>
 
               {/* Right — live score preview */}
-              <div className="hidden lg:block border border-border bg-surface">
-                <div className="border-b border-border px-5 py-3 flex items-center justify-between">
+              <div className="hidden lg:block border border-border bg-surface overflow-hidden">
+                {/* URL bar */}
+                <div className="border-b border-border px-5 py-3 flex items-center justify-between bg-black/40">
                   <span className="font-mono text-xs text-secondary truncate">example.com</span>
                   <span className="font-mono text-[10px] text-green uppercase tracking-wider flex-shrink-0 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green inline-block" aria-hidden="true" />
+                    <span className="relative flex w-1.5 h-1.5 flex-shrink-0">
+                      <span className="absolute inline-flex h-full w-full rounded-full bg-green/50 animate-ping" aria-hidden="true" />
+                      <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-green" aria-hidden="true" />
+                    </span>
                     Scan complete
                   </span>
                 </div>
-                <div className="px-5 py-6 border-b border-border">
-                  <div className="flex items-end gap-5 mb-4">
-                    <span className="font-display text-7xl font-extrabold text-green leading-none">78</span>
-                    <div className="pb-1.5">
-                      <p className="font-mono text-[10px] uppercase tracking-widest text-secondary mb-3">Compliance score</p>
-                      <div className="flex gap-5">
-                        <div>
-                          <p className="font-mono text-xl font-bold text-fail leading-none">2</p>
-                          <p className="font-mono text-[9px] text-secondary mt-1 uppercase tracking-wider">Critical</p>
-                        </div>
-                        <div>
-                          <p className="font-mono text-xl font-bold text-warn leading-none">3</p>
-                          <p className="font-mono text-[9px] text-secondary mt-1 uppercase tracking-wider">Warnings</p>
-                        </div>
-                        <div>
-                          <p className="font-mono text-xl font-bold text-green leading-none">12</p>
-                          <p className="font-mono text-[9px] text-secondary mt-1 uppercase tracking-wider">Passed</p>
-                        </div>
+
+                {/* Score block */}
+                <div className="px-6 py-8 border-b border-border relative overflow-hidden">
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    aria-hidden="true"
+                    style={{ background: 'radial-gradient(ellipse 60% 80% at 20% 50%, rgba(0,233,106,0.08) 0%, transparent 70%)' }}
+                  />
+                  <div className="flex items-center gap-6 relative z-10 mb-5">
+                    <div>
+                      <span className="font-display font-extrabold text-green leading-none block" style={{ fontSize: '6rem' }}>78</span>
+                      <p className="font-mono text-[10px] uppercase tracking-widest text-secondary mt-1">Compliance score</p>
+                    </div>
+                    <div className="flex flex-col gap-4">
+                      <div>
+                        <p className="font-mono text-2xl font-bold text-fail leading-none">2</p>
+                        <p className="font-mono text-[9px] text-secondary mt-1 uppercase tracking-wider">Critical</p>
+                      </div>
+                      <div>
+                        <p className="font-mono text-2xl font-bold text-warn leading-none">3</p>
+                        <p className="font-mono text-[9px] text-secondary mt-1 uppercase tracking-wider">Warnings</p>
+                      </div>
+                      <div>
+                        <p className="font-mono text-2xl font-bold text-green leading-none">12</p>
+                        <p className="font-mono text-[9px] text-secondary mt-1 uppercase tracking-wider">Passed</p>
                       </div>
                     </div>
                   </div>
-                  <div className="h-1 bg-border overflow-hidden">
-                    <div className="h-full bg-green" style={{ width: '78%' }} aria-hidden="true" />
+                  {/* Progress bar — segmented fail/warn/pass */}
+                  <div className="flex h-1.5 gap-px relative z-10" aria-hidden="true">
+                    <div className="bg-fail" style={{ width: '12%' }} />
+                    <div className="bg-warn" style={{ width: '17%' }} />
+                    <div className="bg-green" style={{ width: '71%' }} />
                   </div>
                 </div>
+
+                {/* Issue rows */}
                 <div className="divide-y divide-border">
                   {[
                     { label: 'Images have no alt text',   sev: 'Critical', cls: 'text-fail bg-fail/10' },
@@ -307,15 +318,17 @@ export default function HomePage() {
                     { label: 'Form inputs lack labels',   sev: 'Warning',  cls: 'text-warn bg-warn/10' },
                     { label: 'HTTPS enforced',            sev: 'Passed',   cls: 'text-green bg-green/10' },
                     { label: 'Page has valid title tag',  sev: 'Passed',   cls: 'text-green bg-green/10' },
+                    { label: 'Viewport meta tag present', sev: 'Passed',   cls: 'text-green bg-green/10' },
                   ].map((item) => (
-                    <div key={item.label} className="px-5 py-2.5 flex items-center justify-between gap-3">
+                    <div key={item.label} className="px-5 py-3 flex items-center justify-between gap-3">
                       <span className="font-mono text-xs text-white leading-snug">{item.label}</span>
                       <span className={`font-mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 whitespace-nowrap flex-shrink-0 ${item.cls}`}>{item.sev}</span>
                     </div>
                   ))}
                 </div>
-                <div className="border-t border-border px-5 py-3">
+                <div className="border-t border-border px-5 py-3.5 flex items-center justify-between">
                   <span className="font-mono text-[10px] text-green">View full report with fix instructions →</span>
+                  <span className="font-mono text-[10px] text-secondary">17 checks run</span>
                 </div>
               </div>
 
@@ -325,7 +338,7 @@ export default function HomePage() {
 
         {/* ── Signup panel ── */}
         <section className="border-b border-border bg-surface">
-          <div className="max-w-5xl mx-auto px-6 py-10">
+          <div className="max-w-7xl mx-auto px-6 py-10">
             <div className="mb-5">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-1">Free account</span>
               <p className="text-white font-semibold text-sm">Save your results and scan more pages</p>
@@ -336,7 +349,7 @@ export default function HomePage() {
 
         {/* ── How it works ── */}
         <section id="how-it-works" className="border-b border-border py-24 bg-black">
-          <div className="max-w-5xl mx-auto px-6">
+          <div className="max-w-7xl mx-auto px-6">
             <div className="mb-14">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">How it works</span>
               <h2 className="font-display font-bold text-white tracking-tight" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
@@ -358,7 +371,7 @@ export default function HomePage() {
 
         {/* ── Report preview ── */}
         <section id="report" className="border-b border-border py-24 bg-surface">
-          <div className="max-w-5xl mx-auto px-6">
+          <div className="max-w-7xl mx-auto px-6">
 
             <div className="mb-12">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">Your report</span>
@@ -453,7 +466,7 @@ export default function HomePage() {
 
         {/* ── What we check ── */}
         <section id="checks" className="border-b border-border py-24 bg-black">
-          <div className="max-w-5xl mx-auto px-6">
+          <div className="max-w-7xl mx-auto px-6">
             <div className="mb-12 flex items-end justify-between gap-4">
               <div>
                 <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">What we check</span>
@@ -466,25 +479,52 @@ export default function HomePage() {
               </a>
             </div>
 
-            <p className="text-secondary mb-8 leading-relaxed">A11YO runs automated checks across three categories: accessibility (WCAG 2.2 AA), SEO fundamentals, and launch readiness. Free accounts get 5. Pro gets all 17.</p>
+            <p className="text-secondary mb-12 leading-relaxed max-w-2xl">A11YO runs automated checks across three categories. Free accounts get 5 checks. Pro gets all 17.</p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-              {ALL_CHECKS.map((check) => (
-                <div
-                  key={check.label}
-                  className={`flex items-center gap-3 px-4 py-3 border transition-colors ${
-                    check.free ? 'border-border bg-black' : 'border-border/40 bg-black/30'
-                  }`}
-                >
-                  <div className={check.free ? 'text-green-mid flex-shrink-0' : 'text-border flex-shrink-0'}>
-                    {check.free ? <PassIcon size={13} /> : <LockIcon size={13} />}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border">
+              {[
+                {
+                  category: 'Accessibility',
+                  tag: 'A11y',
+                  color: 'text-green',
+                  borderColor: 'border-green/20',
+                  checks: ALL_CHECKS.filter(c => c.category === 'A11y'),
+                  desc: 'WCAG 2.2 AA — mapped to EN 301 549 and EAA 2025',
+                },
+                {
+                  category: 'SEO',
+                  tag: 'SEO',
+                  color: 'text-green-mid',
+                  borderColor: 'border-green-mid/20',
+                  checks: ALL_CHECKS.filter(c => c.category === 'SEO'),
+                  desc: 'Meta, Open Graph, HTTPS, and indexability fundamentals',
+                },
+                {
+                  category: 'Launch Readiness',
+                  tag: 'Launch',
+                  color: 'text-warn',
+                  borderColor: 'border-warn/20',
+                  checks: ALL_CHECKS.filter(c => c.category === 'Launch'),
+                  desc: 'Performance, robots, sitemap, and mobile checks',
+                },
+              ].map((group) => (
+                <div key={group.category} className="bg-black p-8">
+                  <div className="mb-6 pb-6 border-b border-border">
+                    <span className={`font-mono text-xs tracking-widest uppercase ${group.color} block mb-2`}>{group.category}</span>
+                    <p className="font-mono text-[10px] text-secondary leading-relaxed">{group.desc}</p>
                   </div>
-                  <span className={`text-sm flex-1 ${check.free ? 'text-white' : 'text-secondary'}`}>
-                    {check.label}
-                  </span>
-                  <span className={`font-mono text-[10px] uppercase tracking-wider flex-shrink-0 ${CATEGORY_COLORS[check.category]} ${!check.free ? 'opacity-40' : ''}`}>
-                    {check.category}
-                  </span>
+                  <ul className="space-y-0 divide-y divide-border/50">
+                    {group.checks.map((check) => (
+                      <li key={check.label} className={`flex items-center gap-3 py-3 ${!check.free ? 'opacity-40' : ''}`}>
+                        <span className={check.free ? `${group.color} flex-shrink-0` : 'text-border flex-shrink-0'}>
+                          {check.free ? <PassIcon size={13} /> : <LockIcon size={13} />}
+                        </span>
+                        <span className={`text-sm flex-1 ${check.free ? 'text-white' : 'text-secondary'}`}>
+                          {check.label}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ))}
             </div>
@@ -493,7 +533,7 @@ export default function HomePage() {
 
         {/* ── Pricing ── */}
         <section id="pricing" className="grid-bg border-b border-border py-24 bg-surface">
-          <div className="max-w-5xl mx-auto px-6">
+          <div className="max-w-7xl mx-auto px-6">
             <div className="mb-14 text-center">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">Pricing</span>
               <h2 className="font-display font-bold text-white tracking-tight mb-3" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
@@ -595,7 +635,7 @@ export default function HomePage() {
 
         {/* ── Chrome Extension ── */}
         <section className="border-b border-border py-24 bg-black">
-          <div className="max-w-5xl mx-auto px-6">
+          <div className="max-w-7xl mx-auto px-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
 
               {/* Copy */}
@@ -684,7 +724,7 @@ export default function HomePage() {
 
         {/* ── Blog ── */}
         <section id="blog" className="border-b border-border py-24 bg-surface">
-          <div className="max-w-5xl mx-auto px-6">
+          <div className="max-w-7xl mx-auto px-6">
 
             <div className="mb-12">
               <span className="font-mono text-xs tracking-widest uppercase text-green block mb-3">From the blog</span>
@@ -696,17 +736,21 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border">
               {BLOG_POSTS.map((post) => (
-                <a key={post.slug} href={`/blog/${post.slug}`} className="bg-black p-8 flex flex-col group">
-                  <div className="flex items-center justify-between mb-6">
-                    <span className={`font-mono text-xs uppercase tracking-wider ${BLOG_CATEGORY_COLORS[post.category] ?? 'text-secondary'}`}>
+                <a key={post.slug} href={`/blog/${post.slug}`} className="bg-black p-10 flex flex-col group border-b-2 border-transparent hover:border-green transition-colors">
+                  <div className="flex items-center justify-between mb-8">
+                    <span className={`font-mono text-[10px] uppercase tracking-widest px-2 py-1 border ${
+                      BLOG_CATEGORY_COLORS[post.category] === 'text-green' ? 'text-green border-green/30' :
+                      BLOG_CATEGORY_COLORS[post.category] === 'text-green-mid' ? 'text-green-mid border-green-mid/30' :
+                      'text-warn border-warn/30'
+                    }`}>
                       {post.category}
                     </span>
-                    <span className="font-mono text-xs text-secondary">{post.date}</span>
+                    <span className="font-mono text-xs text-muted">{post.date}</span>
                   </div>
-                  <h3 className="text-white font-semibold text-base leading-snug mb-3 group-hover:text-green transition-colors">
+                  <h3 className="text-white font-semibold text-lg leading-snug mb-4 group-hover:text-green transition-colors">
                     {post.title}
                   </h3>
-                  <p className="text-secondary text-sm leading-relaxed flex-1 mb-6">
+                  <p className="text-secondary text-sm leading-relaxed flex-1 mb-8">
                     {post.excerpt}
                   </p>
                   <span className="font-mono text-xs uppercase tracking-wider text-green mt-auto self-start">
@@ -723,7 +767,7 @@ export default function HomePage() {
 
       {/* ── FAQ ── */}
       <section className="border-b border-border py-24 bg-black">
-        <div className="max-w-5xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-6">
           <h2 className="font-display font-semibold text-white tracking-tight mb-10" style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)' }}>
             About A11YO
           </h2>
@@ -745,7 +789,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Footer ── */}
-      <SiteFooter />
+      <SiteFooter maxWidth="max-w-7xl" />
 
     </div>
   );
